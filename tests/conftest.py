@@ -27,3 +27,23 @@ def sample_chart_response():
             ],
         },
     }
+
+@pytest.fixture
+def sample_report_response():
+    return {
+        "httpsDomain": "https://m2.melon.com",
+        "response": {
+            "RESULTCODE": "0",
+            "RESPONSE": "chartReport",
+            "SONGINFO": {
+                "SONGID": "37928381",
+                "SONGNAME": "LOVE ATTACK",
+                "ALBUMNAME": "SCENEDROME",
+                "CURRANK": "1",
+                "PASTRANK": "1",
+                "RANKGAP": "0",
+                "RANKTYPE": "NONE",
+            },
+            "LISTENERDATA": {"ONEHOUR": "-", "ONEDAY": "-"},
+        },
+    }

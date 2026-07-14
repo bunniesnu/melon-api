@@ -7,7 +7,6 @@ class TestMelonClientLive:
     """
     Integration tests that hit the real Melon API.
     Run explicitly with: uv run pytest -m live
-    Excluded from default runs since they depend on network + external service.
     """
 
     def test_get_hourly_chart_returns_valid_response(self):
@@ -33,3 +32,10 @@ class TestMelonClientLive:
             data = client.get_hourly_chart(page_size=10)
 
         assert len(data["response"]["CHARTLIST"]) <= 10
+
+    def test_get_chart_report_returns_valid_response(self):
+        with MelonClient() as client:
+            data = client.get_chart_report(song_id="37928381")
+
+        assert data["response"]["RESULTCODE"] == "0"
+        assert data["response"]["SONGINFO"]["SONGID"] == "37928381"

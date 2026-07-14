@@ -1,12 +1,12 @@
 import httpx
 
-BASE_URL = "https://m.app.melon.com"
-HOURLY_CHART_ENDPOINT = "/chart/hourly/hourlyChartList.json"
+HOURLY_CHART_URL = "https://m.app.melon.com/chart/hourly/hourlyChartList.json"
+CHART_REPORT_URL = "https://m2.melon.com/m6/chart/song/chartReport.json"
 
 
 class MelonClient:
     def __init__(self, timeout: float = 10.0):
-        self.client = httpx.Client(base_url=BASE_URL, timeout=timeout)
+        self.client = httpx.Client(timeout=timeout)
 
     def get_hourly_chart(
         self,
@@ -29,7 +29,24 @@ class MelonClient:
             "isRecom": is_recom,
             "pageSize": page_size,
         }
-        response = self.client.get(HOURLY_CHART_ENDPOINT, params=params)
+        response = self.client.get(HOURLY_CHART_URL, params=params)
+        response.raise_for_status()
+        return response.json()
+
+    def get_chart_report(
+        self,
+        song_id: str,
+        cp_id: str = "AS40",
+        cp_key: str = "14LNC3",
+        app_ver: str = "6.2.0",
+    ) -> dict:
+        params = {
+            "cpId": cp_id,
+            "cpKey": cp_key,
+            "appVer": app_ver,
+            "songId": song_id,
+        }
+        response = self.client.get(CHART_REPORT_URL, params=params)
         response.raise_for_status()
         return response.json()
 
