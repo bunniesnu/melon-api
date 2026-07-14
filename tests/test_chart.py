@@ -3,7 +3,7 @@ import pytest
 import respx
 from typing import Any
 
-from melon.chart import TOP100_CHART_URL, MelonClient, HOURLY_CHART_URL, CHART_REPORT_URL
+from melon.chart import DAILY_CHART_URL, TOP100_CHART_URL, MelonClient, HOURLY_CHART_URL, CHART_REPORT_URL
 
 
 class TestMelonClientGetRealtimeChart:
@@ -180,7 +180,7 @@ class TestMelonClientGetTop100Chart:
     """Tests for MelonClient.get_top100_chart"""
 
     @respx.mock
-    def test_returns_parsed_top100_chart(self, melon_client, sample_top100_response):
+    def test_returns_parsed_top100_chart(self, melon_client: MelonClient, sample_top100_response):
         route = respx.get(TOP100_CHART_URL).mock(
             return_value=httpx.Response(200, json=sample_top100_response)
         )
@@ -193,7 +193,7 @@ class TestMelonClientGetTop100Chart:
         assert len(result.songs) == 1
 
     @respx.mock
-    def test_parses_top100_song_fields(self, melon_client, sample_top100_response):
+    def test_parses_top100_song_fields(self, melon_client: MelonClient, sample_top100_response):
         respx.get(TOP100_CHART_URL).mock(
             return_value=httpx.Response(200, json=sample_top100_response)
         )
@@ -207,7 +207,7 @@ class TestMelonClientGetTop100Chart:
         assert song.genres[0].genre_name == "댄스"
 
     @respx.mock
-    def test_sends_correct_default_params(self, melon_client, sample_top100_response):
+    def test_sends_correct_default_params(self, melon_client: MelonClient, sample_top100_response):
         route = respx.get(TOP100_CHART_URL).mock(
             return_value=httpx.Response(200, json=sample_top100_response)
         )
@@ -221,8 +221,59 @@ class TestMelonClientGetTop100Chart:
         assert params["appVer"] == "6.22.1"
 
     @respx.mock
-    def test_raises_on_http_error(self, melon_client):
+    def test_raises_on_http_error(self, melon_client: MelonClient):
         respx.get(TOP100_CHART_URL).mock(return_value=httpx.Response(500))
 
         with pytest.raises(httpx.HTTPStatusError):
             melon_client.get_top100_chart()
+
+
+class TestMelonClientGetDailyChart:
+    """Tests for MelonClient.get_daily_chart"""
+
+    @respx.mock
+    def test_returns_parsed_daily_chart(self, melon_client: MelonClient, sample_daily_response):
+        route = respx.get(DAILY_CHART_URL).mock(
+            return_value=httpx.Response(200, json=sample_daily_response)
+        )
+
+        result = melon_client.get_daily_chart()
+
+        assert route.called
+        assert result.status == "0"
+        assert len(result.songs) == 1
+
+    @respx.mock
+    def test_parses_daily_song_fields(self, melon_client: MelonClient, sample_daily_response):
+        respx.get(DAILY_CHART_URL).mock(
+            return_value=httpx.Response(200, json=sample_daily_response)
+        )
+
+        result = melon_client.get_daily_chart()
+        song = result.songs[0]
+
+        assert song.song_id == "37928381"
+        assert song.title == "LOVE ATTACK"
+        assert song.current_rank == 1
+        assert song.genres[0].genre_name == "댄스"
+
+    @respx.mock
+    def test_sends_correct_default_params(self, melon_client: MelonClient, sample_daily_response):
+        route = respx.get(DAILY_CHART_URL).mock(
+            return_value=httpx.Response(200, json=sample_daily_response)
+        )
+
+        melon_client.get_daily_chart()
+
+        request = route.calls[0].request
+        params = dict(httpx.QueryParams(request.url.query))
+        assert params["cpId"] == "IS40"
+        assert params["cpKey"] == "17LNM9"
+        assert params["appVer"] == "6.22.1"
+
+    @respx.mock
+    def test_raises_on_http_error(self, melon_client: MelonClient):
+        respx.get(DAILY_CHART_URL).mock(return_value=httpx.Response(500))
+
+        with pytest.raises(httpx.HTTPStatusError):
+            melon_client.get_daily_chart()

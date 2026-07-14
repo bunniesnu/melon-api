@@ -241,3 +241,70 @@ def sample_top100_response():
             },
         },
     }
+
+
+@pytest.fixture
+def sample_daily_response():
+    return {
+        "httpsDomain": "https://m2.melon.com",
+        "response": {
+            "CHARTINFO": {
+                "LINKURL": "https://m2.melon.com/m5/chart/chartDayInfo.htm",
+                "LINKTYPE": "ZA"
+            },
+            "STATUS": "0",
+            "RECOMMENDLIST": [],
+            "CHARTLIST": [
+                {
+                    "SONGID": "37928381",
+                    "SONGNAME": "LOVE ATTACK",
+                    "ALBUMID": "11575849",
+                    "ALBUMNAME": "SCENEDROME",
+                    "ARTISTLIST": [
+                    {
+                        "ARTISTID": "3709231",
+                        "ARTISTNAME": "RESCENE (리센느)"
+                    }
+                    ],
+                    "PLAYTIME": "182",
+                    "GENRELIST": [
+                    {
+                        "GENRECODE": "GN0200",
+                        "GENRENAME": "댄스"
+                    }
+                    ],
+                    "CURRANK": "1",
+                    "PASTRANK": "2",
+                    "RANKGAP": "1",
+                    "RANKTYPE": "UP",
+                    "ISMV": True,
+                    "ISADULT": False,
+                    "ISFREE": False,
+                    "ISHITSONG": False,
+                    "ISHOLDBACK": False,
+                    "ISTITLESONG": True,
+                    "ISSERVICE": True,
+                    "ISTRACKZERO": False,
+                    "ALBUMIMG": "https://cdnimg.melon.co.kr/cm2/album/images/115/75/849/11575849_20240826152240_500.jpg?da43be78cb2cc67e9ee423c739bc09b6/melon/resize/144/optimize/90",
+                    "ALBUMIMGPATH": "https://cdnimg.melon.co.kr/cm2/album/images/115/75/849/11575849_20240826152240_500.jpg?da43be78cb2cc67e9ee423c739bc09b6/melon/resize/144/optimize/90",
+                    "ALBUMIMGLARGE": "https://cdnimg.melon.co.kr/cm2/album/images/115/75/849/11575849_20240826152240_500.jpg?da43be78cb2cc67e9ee423c739bc09b6/melon/optimize/90",
+                    "ALBUMIMGSMALL": "https://cdnimg.melon.co.kr/cm2/album/images/115/75/849/11575849_20240826152240_500.jpg?da43be78cb2cc67e9ee423c739bc09b6/melon/resize/50/optimize/90",
+                    "ISSUEDATE": "2024.08.27",
+                    "CTYPE": "1",
+                    "CONTSTYPECODE": "N10001"
+                }
+            ],
+            "RANKDAY": None,
+            "HASMORE": False,
+            "SIZE": 100,
+            "MENUID": "1000002322",
+            "SECTION": "멜론차트",
+            "PAGE": "멜론차트_TOP100일간",
+            "TLOG": {
+            "MENUID": "1000002322",
+            "SECTION": "멜론차트",
+            "PAGE": "멜론차트_TOP100일간"
+            }
+        },
+        "httpDomain": "http://m2.melon.com"
+    }

@@ -100,6 +100,20 @@ class Top100Chart(BaseModel):
     tlog: ChartTLog = Field(alias="TLOG")
 
 
+class DailyChart(BaseModel):
+    status: str = Field(alias="STATUS")
+    recommend_list: list = Field(default_factory=list, alias="RECOMMENDLIST")
+    songs: list[Song] = Field(alias="CHARTLIST")
+    chart_info: ChartInfo = Field(alias="CHARTINFO")
+    rank_day: str | None = Field(alias="RANKDAY")
+    has_more: bool = Field(alias="HASMORE")
+    size: int = Field(alias="SIZE")
+    menu_id: str = Field(alias="MENUID")
+    section: str = Field(alias="SECTION")
+    page: str = Field(alias="PAGE")
+    tlog: ChartTLog = Field(alias="TLOG")
+
+
 # ---- Chart Report models ----
 
 
