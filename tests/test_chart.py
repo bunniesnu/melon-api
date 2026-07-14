@@ -3,7 +3,7 @@ import pytest
 import respx
 from typing import Any
 
-from melon.chart import DAILY_CHART_URL, TOP100_CHART_URL, MelonClient, HOURLY_CHART_URL, CHART_REPORT_URL
+from melon.chart import DAILY_CHART_URL, TOP100_CHART_URL, WEEKLY_CHART_URL, MelonClient, HOURLY_CHART_URL, CHART_REPORT_URL
 
 
 class TestMelonClientGetRealtimeChart:
@@ -277,3 +277,101 @@ class TestMelonClientGetDailyChart:
 
         with pytest.raises(httpx.HTTPStatusError):
             melon_client.get_daily_chart()
+
+
+class TestMelonClientGetWeeklyChart:
+    """Tests for MelonClient.get_weekly_chart"""
+
+    @respx.mock
+    def test_returns_parsed_weekly_chart(self, melon_client: MelonClient, sample_weekly_response):
+        route = respx.get(WEEKLY_CHART_URL).mock(
+            return_value=httpx.Response(200, json=sample_weekly_response)
+        )
+
+        result = melon_client.get_weekly_chart()
+
+        assert route.called
+        assert result.status == "0"
+        assert result.start_day == "20260706"
+        assert result.end_day == "20260712"
+        assert result.has_more is False
+        assert len(result.songs) == 3
+
+    @respx.mock
+    def test_parses_weekly_song_fields(self, melon_client: MelonClient, sample_weekly_response):
+        respx.get(WEEKLY_CHART_URL).mock(
+            return_value=httpx.Response(200, json=sample_weekly_response)
+        )
+
+        result = melon_client.get_weekly_chart()
+        song = result.songs[0]
+
+        assert song.song_id == "602024048"
+        assert song.title == "갑자기"
+        assert song.album_name == "I.O.I 3rd MINI ALBUM [I.O.I : LOOP]"
+        assert song.current_rank == 1
+        assert song.past_rank == 1
+        assert song.rank_gap == 0
+        assert song.rank_type == "NONE"
+        assert song.is_rising is False
+        assert song.is_mv is True
+        assert song.is_title_song is True
+
+    @respx.mock
+    def test_parses_music_award(self, melon_client: MelonClient, sample_weekly_response):
+        respx.get(WEEKLY_CHART_URL).mock(
+            return_value=httpx.Response(200, json=sample_weekly_response)
+        )
+
+        result = melon_client.get_weekly_chart()
+
+        award = result.music_award
+
+        assert award.title == "주간 인기상 투표"
+        assert award.award_year == 2026
+        assert award.award_month == 7
+        assert award.award_week == 2
+        assert award.week_status == "P"
+        assert len(award.week_rank_list) == 3
+
+    @respx.mock
+    def test_parses_weekly_award_entry(self, melon_client: MelonClient, sample_weekly_response):
+        respx.get(WEEKLY_CHART_URL).mock(
+            return_value=httpx.Response(200, json=sample_weekly_response)
+        )
+
+        result = melon_client.get_weekly_chart()
+
+        entry = result.music_award.week_rank_list[0]
+
+        assert entry.current_rank == 1
+        assert entry.song_name == "Pretty Girl"
+        assert entry.artist_id == "3709231"
+        assert entry.artist_name == "RESCENE (리센느)"
+        assert entry.vote_percent == 39
+        assert entry.start_month == 7
+        assert entry.start_week == 3
+
+    @respx.mock
+    def test_sends_correct_default_params(self, melon_client: MelonClient, sample_weekly_response):
+        route = respx.get(WEEKLY_CHART_URL).mock(
+            return_value=httpx.Response(200, json=sample_weekly_response)
+        )
+
+        melon_client.get_weekly_chart()
+
+        request = route.calls[0].request
+        params = dict(httpx.QueryParams(request.url.query))
+
+        assert params["cpId"] == "IS40"
+        assert params["cpKey"] == "17LNM9"
+        assert params["appVer"] == "6.22.1"
+
+    @respx.mock
+    def test_raises_on_http_error(self, melon_client: MelonClient):
+        respx.get(WEEKLY_CHART_URL).mock(
+            return_value=httpx.Response(500)
+        )
+
+        with pytest.raises(httpx.HTTPStatusError):
+            melon_client.get_weekly_chart()
