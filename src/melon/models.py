@@ -63,6 +63,11 @@ class ChartTLog(BaseModel):
     page: str = Field(alias="PAGE")
 
 
+class ChartInfo(BaseModel):
+    link_url: str = Field(alias="LINKURL")
+    link_type: str = Field(alias="LINKTYPE")
+
+
 class RealtimeChart(BaseModel):
     status: str = Field(alias="STATUS")
     recommend_list: list = Field(default_factory=list, alias="RECOMMENDLIST")
@@ -71,6 +76,24 @@ class RealtimeChart(BaseModel):
     rank_hour: str = Field(alias="RANKHOUR")
     has_more: bool = Field(alias="HASMORE")
     size: int = Field(alias="SIZE")
+    menu_id: str = Field(alias="MENUID")
+    section: str = Field(alias="SECTION")
+    page: str = Field(alias="PAGE")
+    tlog: ChartTLog = Field(alias="TLOG")
+
+
+class Top100StatsElements(BaseModel):
+    impression_id: str = Field(alias="IMPRESSIONID")
+    range_code: str = Field(alias="RANGECODE")
+
+
+class Top100Chart(BaseModel):
+    rank_day: str = Field(alias="RANKDAY")
+    rank_hour: str = Field(alias="RANKHOUR")
+    status: str = Field(alias="STATUS")
+    songs: list[Song] = Field(alias="SONGLIST")
+    chart_info: ChartInfo = Field(alias="CHARTINFO")
+    stats_elements: Top100StatsElements = Field(alias="STATSELEMENTS")
     menu_id: str = Field(alias="MENUID")
     section: str = Field(alias="SECTION")
     page: str = Field(alias="PAGE")
@@ -230,26 +253,3 @@ class ChartReport(BaseModel):
     section: str = Field(alias="SECTION")
     page: str = Field(alias="PAGE")
     tlog: TLog = Field(alias="TLOG")
-
-
-class ChartInfo(BaseModel):
-    link_url: str = Field(alias="LINKURL")
-    link_type: str = Field(alias="LINKTYPE")
-
-
-class Top100StatsElements(BaseModel):
-    impression_id: str = Field(alias="IMPRESSIONID")
-    range_code: str = Field(alias="RANGECODE")
-
-
-class Top100Chart(BaseModel):
-    rank_day: str = Field(alias="RANKDAY")
-    rank_hour: str = Field(alias="RANKHOUR")
-    status: str = Field(alias="STATUS")
-    songs: list[Song] = Field(alias="SONGLIST")
-    chart_info: ChartInfo = Field(alias="CHARTINFO")
-    stats_elements: Top100StatsElements = Field(alias="STATSELEMENTS")
-    menu_id: str = Field(alias="MENUID")
-    section: str = Field(alias="SECTION")
-    page: str = Field(alias="PAGE")
-    tlog: ChartTLog = Field(alias="TLOG")
