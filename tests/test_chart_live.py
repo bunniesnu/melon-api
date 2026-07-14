@@ -63,3 +63,18 @@ class TestMelonClientLive:
         assert chart.status == "0"
         assert len(chart.songs) > 0
         assert chart.songs[0].current_rank >= 1
+
+    def test_get_hot100_chart_returns_valid_response(self):
+        with MelonClient() as client:
+            chart = client.get_hot100_chart("D100")
+
+        assert chart.status == "0"
+        assert len(chart.songs) > 0
+        assert chart.songs[0].current_rank >= 1
+
+        with MelonClient() as client:
+            chart = client.get_hot100_chart("D30")
+
+        assert chart.status == "0"
+        assert len(chart.songs) > 0
+        assert chart.songs[0].current_rank >= 1

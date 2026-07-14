@@ -3,7 +3,7 @@ import pytest
 import respx
 from typing import Any
 
-from melon.chart import DAILY_CHART_URL, TOP100_CHART_URL, WEEKLY_CHART_URL, MelonClient, HOURLY_CHART_URL, CHART_REPORT_URL
+from melon.chart import DAILY_CHART_URL, HOT100_CHART_URL, TOP100_CHART_URL, WEEKLY_CHART_URL, MelonClient, HOURLY_CHART_URL, CHART_REPORT_URL
 
 
 class TestMelonClientGetRealtimeChart:
@@ -375,3 +375,94 @@ class TestMelonClientGetWeeklyChart:
 
         with pytest.raises(httpx.HTTPStatusError):
             melon_client.get_weekly_chart()
+
+
+class TestMelonClientGetHot100Chart:
+    """Tests for MelonClient.get_hot100_chart"""
+
+    @respx.mock
+    def test_returns_parsed_hot100_chart(self, melon_client: MelonClient, sample_hot100_response):
+        route = respx.get(HOT100_CHART_URL).mock(
+            return_value=httpx.Response(200, json=sample_hot100_response)
+        )
+
+        result = melon_client.get_hot100_chart()
+
+        assert route.called
+        assert result.status == "0"
+        assert result.rank_day == "2026.07.14"
+        assert result.rank_hour == "14:00"
+        assert len(result.songs) == 1
+
+    @respx.mock
+    def test_parses_hot100_song_fields(self, melon_client: MelonClient, sample_hot100_response):
+        respx.get(HOT100_CHART_URL).mock(
+            return_value=httpx.Response(200, json=sample_hot100_response)
+        )
+
+        result = melon_client.get_hot100_chart()
+        song = result.songs[0]
+
+        assert song.song_id == "602024048"
+        assert song.title == "갑자기"
+        assert song.album_name == "I.O.I 3rd MINI ALBUM [I.O.I : LOOP]"
+        assert song.current_rank == 1
+        assert song.past_rank == 1
+        assert song.rank_gap == 0
+        assert song.rank_type == "NONE"
+        assert song.is_rising is False
+        assert song.is_mv is True
+        assert song.is_title_song is True
+
+    @respx.mock
+    def test_parses_artist_and_genre_lists(self, melon_client: MelonClient, sample_hot100_response):
+        respx.get(HOT100_CHART_URL).mock(
+            return_value=httpx.Response(200, json=sample_hot100_response)
+        )
+
+        result = melon_client.get_hot100_chart()
+        song = result.songs[0]
+
+        assert song.artists[0].artist_id == "960251"
+        assert song.artists[0].name == "아이오아이 (I.O.I)"
+
+        assert len(song.genres) == 2
+        assert song.genres[0].genre_name == "댄스"
+        assert song.genres[1].genre_name == "아이돌"
+
+    @respx.mock
+    def test_parses_chart_metadata(self, melon_client: MelonClient, sample_hot100_response):
+        respx.get(HOT100_CHART_URL).mock(
+            return_value=httpx.Response(200, json=sample_hot100_response)
+        )
+
+        result = melon_client.get_hot100_chart()
+
+        assert result.chart_info.link_type == "ZA"
+        assert result.chart_info.link_url.endswith("hot100ChartInfo.htm")
+        assert result.menu_id == "1000003084"
+        assert result.page == "멜론차트_HOT100"
+
+    @respx.mock
+    def test_sends_correct_default_params(self, melon_client: MelonClient, sample_hot100_response):
+        route = respx.get(HOT100_CHART_URL).mock(
+            return_value=httpx.Response(200, json=sample_hot100_response)
+        )
+
+        melon_client.get_hot100_chart()
+
+        request = route.calls[0].request
+        params = dict(httpx.QueryParams(request.url.query))
+
+        assert params["cpId"] == "IS40"
+        assert params["cpKey"] == "17LNM9"
+        assert params["appVer"] == "6.22.1"
+
+    @respx.mock
+    def test_raises_on_http_error(self, melon_client: MelonClient):
+        respx.get(HOT100_CHART_URL).mock(
+            return_value=httpx.Response(500)
+        )
+
+        with pytest.raises(httpx.HTTPStatusError):
+            melon_client.get_hot100_chart()

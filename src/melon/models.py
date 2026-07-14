@@ -155,6 +155,18 @@ class WeeklyChart(BaseModel):
     tlog: ChartTLog = Field(alias="TLOG")
 
 
+class Hot100Chart(BaseModel):
+    rank_day: str = Field(alias="RANKDAY")
+    rank_hour: str = Field(alias="RANKHOUR")
+    status: str = Field(alias="STATUS")
+    songs: list[Song] = Field(alias="SONGLIST")
+    chart_info: ChartInfo = Field(alias="CHARTINFO")
+    menu_id: str = Field(alias="MENUID")
+    section: str = Field(alias="SECTION")
+    page: str = Field(alias="PAGE")
+    tlog: ChartTLog = Field(alias="TLOG")
+
+
 # ---- Chart Report models ----
 
 
