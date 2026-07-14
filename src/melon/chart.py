@@ -1,8 +1,9 @@
 import httpx
-from melon.models import RealtimeChart, ChartReport
+from melon.models import RealtimeChart, ChartReport, Top100Chart
 
 HOURLY_CHART_URL = "https://m.app.melon.com/chart/hourly/hourlyChartList.json"
 CHART_REPORT_URL = "https://m2.melon.com/m6/chart/song/chartReport.json"
+TOP100_CHART_URL = "https://m2.melon.com/m6/chart/ent/songChartList.json"
 
 
 class MelonClient:
@@ -52,6 +53,22 @@ class MelonClient:
         response.raise_for_status()
         raw = response.json()
         return ChartReport.model_validate(raw["response"])
+    
+    def get_top100_chart(
+        self,
+        cp_id: str = "IS40",
+        cp_key: str = "17LNM9",
+        app_ver: str = "6.22.1",
+    ) -> Top100Chart:
+        params = {
+            "cpId": cp_id,
+            "cpKey": cp_key,
+            "appVer": app_ver,
+        }
+        response = self.client.get(TOP100_CHART_URL, params=params)
+        response.raise_for_status()
+        raw = response.json()
+        return Top100Chart.model_validate(raw["response"])
 
     def close(self):
         self.client.close()

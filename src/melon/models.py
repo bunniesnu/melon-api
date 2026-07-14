@@ -9,7 +9,7 @@ class Artist(BaseModel):
     name: str = Field(alias="ARTISTNAME")
 
 
-# ---- Hourly Chart models ----
+# ---- Realtime Chart models ----
 
 
 class Genre(BaseModel):
@@ -230,3 +230,77 @@ class ChartReport(BaseModel):
     section: str = Field(alias="SECTION")
     page: str = Field(alias="PAGE")
     tlog: TLog = Field(alias="TLOG")
+
+
+class Top100Genre(BaseModel):
+    genre_code: str = Field(alias="GENRECODE")
+    genre_name: str = Field(alias="GENRENAME")
+
+
+class Top100Song(BaseModel):
+    song_id: str = Field(alias="SONGID")
+    title: str = Field(alias="SONGNAME")
+    album_id: str = Field(alias="ALBUMID")
+    album_name: str = Field(alias="ALBUMNAME")
+    artists: list[Artist] = Field(alias="ARTISTLIST")
+    play_time: int = Field(alias="PLAYTIME")
+    genres: list[Top100Genre] = Field(alias="GENRELIST")
+    current_rank: int = Field(alias="CURRANK")
+    past_rank: int = Field(alias="PASTRANK")
+    rank_gap: int = Field(alias="RANKGAP")
+    rank_type: str = Field(alias="RANKTYPE")
+    is_mv: bool = Field(alias="ISMV")
+    is_adult: bool = Field(alias="ISADULT")
+    is_free: bool = Field(alias="ISFREE")
+    is_hit_song: bool = Field(alias="ISHITSONG")
+    is_holdback: bool = Field(alias="ISHOLDBACK")
+    is_title_song: bool = Field(alias="ISTITLESONG")
+    is_service: bool = Field(alias="ISSERVICE")
+    is_track_zero: bool = Field(alias="ISTRACKZERO")
+    album_img: str | None = Field(default=None, alias="ALBUMIMG")
+    album_img_path: str | None = Field(default=None, alias="ALBUMIMGPATH")
+    album_img_large: str | None = Field(default=None, alias="ALBUMIMGLARGE")
+    album_img_small: str | None = Field(default=None, alias="ALBUMIMGSMALL")
+    issue_date: str = Field(alias="ISSUEDATE")
+    content_type: str = Field(alias="CTYPE")
+    content_type_code: str = Field(alias="CONTSTYPECODE")
+
+    @field_validator("current_rank", "past_rank", "rank_gap", "play_time", mode="before")
+    @classmethod
+    def empty_string_to_zero(cls, value):
+        if value == "":
+            return 0
+        return value
+
+    @property
+    def is_rising(self) -> bool:
+        return self.rank_type == "UP"
+
+
+class Top100ChartInfo(BaseModel):
+    link_url: str = Field(alias="LINKURL")
+    link_type: str = Field(alias="LINKTYPE")
+
+
+class Top100StatsElements(BaseModel):
+    impression_id: str = Field(alias="IMPRESSIONID")
+    range_code: str = Field(alias="RANGECODE")
+
+
+class Top100TLog(BaseModel):
+    menu_id: str = Field(alias="MENUID")
+    section: str = Field(alias="SECTION")
+    page: str = Field(alias="PAGE")
+
+
+class Top100Chart(BaseModel):
+    rank_day: str = Field(alias="RANKDAY")
+    rank_hour: str = Field(alias="RANKHOUR")
+    status: str = Field(alias="STATUS")
+    songs: list[Top100Song] = Field(alias="SONGLIST")
+    chart_info: Top100ChartInfo = Field(alias="CHARTINFO")
+    stats_elements: Top100StatsElements = Field(alias="STATSELEMENTS")
+    menu_id: str = Field(alias="MENUID")
+    section: str = Field(alias="SECTION")
+    page: str = Field(alias="PAGE")
+    tlog: Top100TLog = Field(alias="TLOG")

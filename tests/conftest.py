@@ -186,3 +186,58 @@ def sample_report_response():
             },
         },
     }
+
+
+@pytest.fixture
+def sample_top100_response():
+    return {
+        "httpsDomain": "https://m2.melon.com",
+        "response": {
+            "RANKDAY": "2026.07.14",
+            "RANKHOUR": "13:00",
+            "STATUS": "0",
+            "SONGLIST": [
+                {
+                    "SONGID": "37928381",
+                    "SONGNAME": "LOVE ATTACK",
+                    "ALBUMID": "11575849",
+                    "ALBUMNAME": "SCENEDROME",
+                    "ARTISTLIST": [{"ARTISTID": "3709231", "ARTISTNAME": "RESCENE (리센느)"}],
+                    "PLAYTIME": "182",
+                    "GENRELIST": [{"GENRECODE": "GN0200", "GENRENAME": "댄스"}],
+                    "CURRANK": "1",
+                    "PASTRANK": "1",
+                    "RANKGAP": "0",
+                    "RANKTYPE": "NONE",
+                    "ISMV": True,
+                    "ISADULT": False,
+                    "ISFREE": False,
+                    "ISHITSONG": False,
+                    "ISHOLDBACK": False,
+                    "ISTITLESONG": True,
+                    "ISSERVICE": True,
+                    "ISTRACKZERO": False,
+                    "ALBUMIMG": "https://cdnimg.melon.co.kr/example.jpg",
+                    "ALBUMIMGPATH": "https://cdnimg.melon.co.kr/example.jpg",
+                    "ALBUMIMGLARGE": "https://cdnimg.melon.co.kr/example.jpg",
+                    "ALBUMIMGSMALL": "https://cdnimg.melon.co.kr/example.jpg",
+                    "ISSUEDATE": "2024.08.27",
+                    "CTYPE": "1",
+                    "CONTSTYPECODE": "N10001",
+                },
+            ],
+            "CHARTINFO": {
+                "LINKURL": "https://m2.melon.com/m6/chart/chartEntInfo.htm?cpId=IS40&appVer=6.22.1",
+                "LINKTYPE": "ZA",
+            },
+            "STATSELEMENTS": {"IMPRESSIONID": "", "RANGECODE": "1000002737"},
+            "MENUID": "1000002721",
+            "SECTION": "멜론차트",
+            "PAGE": "멜론차트_TOP100NOW",
+            "TLOG": {
+                "MENUID": "1000002721",
+                "SECTION": "멜론차트",
+                "PAGE": "멜론차트_TOP100NOW",
+            },
+        },
+    }

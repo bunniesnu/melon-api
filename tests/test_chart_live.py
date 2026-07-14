@@ -39,3 +39,11 @@ class TestMelonClientLive:
 
         assert report.song_info.song_id == top_song_id
         assert report.song_info.title
+
+    def test_get_top100_chart_returns_valid_response(self):
+        with MelonClient() as client:
+            chart = client.get_top100_chart()
+
+        assert chart.status == "0"
+        assert len(chart.songs) > 0
+        assert chart.songs[0].current_rank >= 1
