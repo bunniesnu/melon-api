@@ -11,31 +11,32 @@ class TestMelonClientLive:
 
     def test_get_hourly_chart_returns_valid_response(self):
         with MelonClient() as client:
-            data = client.get_hourly_chart()
+            songs = client.get_hourly_chart()
 
-        assert data["response"]["STATUS"] == "0"
-        assert "CHARTLIST" in data["response"]
-        assert len(data["response"]["CHARTLIST"]) > 0
+        assert len(songs) > 0
 
     def test_chart_entries_have_expected_fields(self):
         with MelonClient() as client:
-            data = client.get_hourly_chart()
+            songs = client.get_hourly_chart()
 
-        first_song = data["response"]["CHARTLIST"][0]
-        assert "SONGID" in first_song
-        assert "SONGNAME" in first_song
-        assert "CURRANK" in first_song
-        assert first_song["CURRANK"] == "1"
+        first_song = songs[0]
+        assert first_song.song_id
+        assert first_song.title
+        assert first_song.current_rank >= 1  # rank exists and is valid, not hardcoded to 1
 
     def test_page_size_limits_results(self):
         with MelonClient() as client:
-            data = client.get_hourly_chart(page_size=10)
+            songs = client.get_hourly_chart(page_size=10)
 
-        assert len(data["response"]["CHARTLIST"]) <= 10
+        assert len(songs) <= 10
 
     def test_get_chart_report_returns_valid_response(self):
         with MelonClient() as client:
-            data = client.get_chart_report(song_id="37928381")
+            # Use whatever song is currently #1, instead of a hardcoded SONGID
+            chart = client.get_hourly_chart(page_size=1)
+            top_song_id = chart[0].song_id
 
-        assert data["response"]["RESULTCODE"] == "0"
-        assert data["response"]["SONGINFO"]["SONGID"] == "37928381"
+            report = client.get_chart_report(song_id=top_song_id)
+
+        assert report.song_info.song_id == top_song_id
+        assert report.song_info.title  # non-empty

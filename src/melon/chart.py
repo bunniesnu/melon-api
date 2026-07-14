@@ -1,4 +1,5 @@
 import httpx
+from melon.models import ChartSong, ChartReport
 
 HOURLY_CHART_URL = "https://m.app.melon.com/chart/hourly/hourlyChartList.json"
 CHART_REPORT_URL = "https://m2.melon.com/m6/chart/song/chartReport.json"
@@ -18,7 +19,7 @@ class MelonClient:
         os_version: str = "11",
         is_recom: str = "N",
         page_size: int = 100,
-    ) -> dict:
+    ) -> list[ChartSong]:
         params = {
             "cpId": cp_id,
             "cpKey": cp_key,
@@ -31,7 +32,8 @@ class MelonClient:
         }
         response = self.client.get(HOURLY_CHART_URL, params=params)
         response.raise_for_status()
-        return response.json()
+        raw = response.json()
+        return [ChartSong.model_validate(s) for s in raw["response"]["CHARTLIST"]]
 
     def get_chart_report(
         self,
@@ -39,7 +41,7 @@ class MelonClient:
         cp_id: str = "AS40",
         cp_key: str = "14LNC3",
         app_ver: str = "6.2.0",
-    ) -> dict:
+    ) -> ChartReport:
         params = {
             "cpId": cp_id,
             "cpKey": cp_key,
@@ -48,7 +50,8 @@ class MelonClient:
         }
         response = self.client.get(CHART_REPORT_URL, params=params)
         response.raise_for_status()
-        return response.json()
+        raw = response.json()
+        return ChartReport.model_validate(raw["response"])
 
     def close(self):
         self.client.close()
