@@ -6,7 +6,7 @@ from typing import Any
 from melon.chart import MelonClient, HOURLY_CHART_URL, CHART_REPORT_URL
 
 
-class TestMelonClientGetHourlyChart:
+class TestMelonClientGetRealtimeChart:
     """Tests for MelonClient.get_hourly_chart"""
 
     @respx.mock
@@ -15,7 +15,7 @@ class TestMelonClientGetHourlyChart:
             return_value=httpx.Response(200, json=sample_chart_response)
         )
 
-        result = melon_client.get_hourly_chart()
+        result = melon_client.get_realtime_chart()
 
         assert route.called
         assert result.status == "0"
@@ -29,7 +29,7 @@ class TestMelonClientGetHourlyChart:
             return_value=httpx.Response(200, json=sample_chart_response)
         )
 
-        result = melon_client.get_hourly_chart()
+        result = melon_client.get_realtime_chart()
         song = result.songs[0]
 
         assert song.song_id == "37928381"
@@ -49,7 +49,7 @@ class TestMelonClientGetHourlyChart:
             return_value=httpx.Response(200, json=sample_chart_response)
         )
 
-        result = melon_client.get_hourly_chart()
+        result = melon_client.get_realtime_chart()
         song = result.songs[0]
 
         assert song.artists[0].artist_id == "3709231"
@@ -62,7 +62,7 @@ class TestMelonClientGetHourlyChart:
             return_value=httpx.Response(200, json=sample_chart_response)
         )
 
-        melon_client.get_hourly_chart()
+        melon_client.get_realtime_chart()
 
         request = route.calls[0].request
         params = dict(httpx.QueryParams(request.url.query))
@@ -76,7 +76,7 @@ class TestMelonClientGetHourlyChart:
             return_value=httpx.Response(200, json=sample_chart_response)
         )
 
-        melon_client.get_hourly_chart(page_size=50, resolution=1)
+        melon_client.get_realtime_chart(page_size=50, resolution=1)
 
         request = route.calls[0].request
         params = dict(httpx.QueryParams(request.url.query))
@@ -88,7 +88,7 @@ class TestMelonClientGetHourlyChart:
         respx.get(HOURLY_CHART_URL).mock(return_value=httpx.Response(500))
 
         with pytest.raises(httpx.HTTPStatusError):
-            melon_client.get_hourly_chart()
+            melon_client.get_realtime_chart()
 
 
 class TestMelonClientGetChartReport:

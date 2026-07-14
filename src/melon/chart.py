@@ -1,5 +1,5 @@
 import httpx
-from melon.models import HourlyChart, ChartReport
+from melon.models import RealtimeChart, ChartReport
 
 HOURLY_CHART_URL = "https://m.app.melon.com/chart/hourly/hourlyChartList.json"
 CHART_REPORT_URL = "https://m2.melon.com/m6/chart/song/chartReport.json"
@@ -9,7 +9,7 @@ class MelonClient:
     def __init__(self, timeout: float = 10.0):
         self.client = httpx.Client(timeout=timeout)
 
-    def get_hourly_chart(
+    def get_realtime_chart(
         self,
         cp_id: str = "AS40",
         cp_key: str = "14LNM3",
@@ -19,7 +19,7 @@ class MelonClient:
         os_version: str = "11",
         is_recom: str = "N",
         page_size: int = 100,
-    ) -> HourlyChart:
+    ) -> RealtimeChart:
         params = {
             "cpId": cp_id,
             "cpKey": cp_key,
@@ -33,7 +33,7 @@ class MelonClient:
         response = self.client.get(HOURLY_CHART_URL, params=params)
         response.raise_for_status()
         raw = response.json()
-        return HourlyChart.model_validate(raw["response"])
+        return RealtimeChart.model_validate(raw["response"])
 
     def get_chart_report(
         self,

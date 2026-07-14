@@ -63,7 +63,7 @@ class ChartTLog(BaseModel):
     page: str = Field(alias="PAGE")
 
 
-class HourlyChart(BaseModel):
+class RealtimeChart(BaseModel):
     status: str = Field(alias="STATUS")
     recommend_list: list = Field(default_factory=list, alias="RECOMMENDLIST")
     songs: list[ChartSong] = Field(alias="CHARTLIST")
