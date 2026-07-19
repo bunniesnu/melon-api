@@ -87,3 +87,15 @@ class TestMelonClientLive:
         assert len(graph.graph_data_list) > 0
         assert graph.graph_data_list[0].graph_rank >= 1
         assert graph.graph_data_list[0].graph_chart_info.current_rank >= 1
+
+    def test_get_artist_chart_returns_valid_response(self):
+        with MelonClient() as client:
+            chart = client.get_artist_chart()
+
+        assert chart.status == "0"
+        assert len(chart.artists) > 0
+        assert chart.artists[0].current_rank >= 1
+        first_artist = chart.artists[0]
+        assert first_artist.artist_id
+        assert first_artist.name
+        assert first_artist.total_fan_count >= 0

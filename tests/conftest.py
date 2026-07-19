@@ -694,3 +694,87 @@ def sample_hot100_graph_hour_response():
             },
         },
     }
+
+@pytest.fixture
+def sample_artist_chart_response():
+    return {
+        "httpsDomain": "https://m2.melon.com",
+        "response": {
+            "STATUS": "0",
+            "SEARCHTYPELIST": [
+                {
+                    "TYPECODE": "DP0000",
+                    "TYPECODENAME": "전체"
+                },
+                {
+                    "TYPECODE": "MG0000",
+                    "TYPECODENAME": "남자그룹"
+                },
+                {
+                    "TYPECODE": "FG0000",
+                    "TYPECODENAME": "여자그룹"
+                },
+                {
+                    "TYPECODE": "MS0000",
+                    "TYPECODENAME": "남자솔로"
+                },
+                {
+                    "TYPECODE": "FS0000",
+                    "TYPECODENAME": "여자솔로"
+                },
+                {
+                    "TYPECODE": "AB0000",
+                    "TYPECODENAME": "해외"
+                },
+                {
+                    "TYPECODE": "DP1800",
+                    "TYPECODENAME": "인디"
+                }
+            ],
+            "CHARTLIST": [
+                {
+                    "ARTISTID": "3709231",
+                    "ARTISTNAME": "RESCENE (리센느)",
+                    "ACTTYPENAME": "그룹",
+                    "DEBUTDAY": None,
+                    "BIRTHDAY": None,
+                    "ARTISTIMG": "https://cdnimg.melon.co.kr/cm2/artistcrop/images/037/09/231/3709231_20260701101738.jpg?78297ceffb4a156b74f31cc249aa2b51/melon/optimize/90",
+                    "CURRANK": "1",
+                    "PASTRANK": "1",
+                    "RANKGAP": "0",
+                    "RANKTYPE": "NONE",
+                    "AREATYPE": "FG0000",
+                    "TOTFANCNT": 31226,
+                    "INCREMFANCNT": 541,
+                    "INCREMTYPE": "UP",
+                    "SONGIDX": "10",
+                    "MVIDX": "10",
+                    "PHOTOIDX": "10",
+                    "FANIDX": "10",
+                    "LIKEIDX": "10",
+                    "TOCIDX": "10",
+                    "CHNLSEQ": "0",
+                    "TOPRANK": "1",
+                    "PASTWEEKRANK": "1",
+                    "IMAGETYPE": "S",
+                    "CONTSTYPECODE": "N10006"
+                }
+            ],
+            "RANKDAY": "2026.07.18",
+            "HASMORE": False,
+            "SIZE": 1,
+            "CHARTINFO": {
+                "OPENLINK": "https://m2.melon.com/chart/chartInfo.htm",
+                "OPENTYPE": "ZA"
+            },
+            "MENUID": "1000000034",
+            "SECTION": "멜론차트",
+            "PAGE": "멜론차트_아티스트",
+            "TLOG": {
+                "MENUID": "1000000034",
+                "SECTION": "멜론차트",
+                "PAGE": "멜론차트_아티스트"
+            }
+        },
+        "httpDomain": "http://m2.melon.com"
+    }
