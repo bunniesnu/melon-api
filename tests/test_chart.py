@@ -3,7 +3,7 @@ import pytest
 import respx
 from typing import Any
 
-from melon.chart import DAILY_CHART_URL, HOT100_CHART_URL, TOP100_CHART_URL, WEEKLY_CHART_URL, MelonClient, HOURLY_CHART_URL, CHART_REPORT_URL
+from melon.chart import DAILY_CHART_URL, HOT100_CHART_URL, HOT100_GRAPH_HOUR_URL, TOP100_CHART_URL, WEEKLY_CHART_URL, MelonClient, HOURLY_CHART_URL, CHART_REPORT_URL
 
 
 class TestMelonClientGetRealtimeChart:
@@ -466,3 +466,59 @@ class TestMelonClientGetHot100Chart:
 
         with pytest.raises(httpx.HTTPStatusError):
             melon_client.get_hot100_chart()
+
+
+class TestMelonClientGetHot100GraphHour:
+    """Tests for MelonClient.get_hot100_graph"""
+
+    @respx.mock
+    def test_returns_parsed_hot100_graph(self, melon_client: MelonClient, sample_hot100_graph_hour_response):
+        route = respx.get(HOT100_GRAPH_HOUR_URL).mock(
+            return_value=httpx.Response(200, json=sample_hot100_graph_hour_response)
+        )
+
+        result = melon_client.get_hot100_graph_hour()
+
+        assert route.called
+        assert result.status == "0"
+        assert len(result.graph_data_list) == 1
+
+    @respx.mock
+    def test_parses_graph_entries(self, melon_client: MelonClient, sample_hot100_graph_hour_response):
+        respx.get(HOT100_GRAPH_HOUR_URL).mock(
+            return_value=httpx.Response(200, json=sample_hot100_graph_hour_response)
+        )
+
+        result = melon_client.get_hot100_graph_hour()
+
+        entry = result.graph_data_list[0]
+        point = entry.graph_data[0]
+
+        assert entry.song_id == "602450078"
+        assert entry.graph_rank == 1
+        assert point.x == 0
+        assert point.value == 4.607
+
+    @respx.mock
+    def test_sends_correct_params(self, melon_client: MelonClient, sample_hot100_graph_hour_response):
+        route = respx.get(HOT100_GRAPH_HOUR_URL).mock(
+            return_value=httpx.Response(200, json=sample_hot100_graph_hour_response)
+        )
+
+        melon_client.get_hot100_graph_hour()
+
+        request = route.calls[0].request
+        params = dict(httpx.QueryParams(request.url.query))
+
+        assert params["v"] == "4.0"
+        assert params["cpId"] == "IS40"
+        assert params["cpKey"] == "17LNM9"
+
+    @respx.mock
+    def test_raises_on_http_error(self, melon_client: MelonClient):
+        respx.get(HOT100_GRAPH_HOUR_URL).mock(
+            return_value=httpx.Response(500)
+        )
+
+        with pytest.raises(httpx.HTTPStatusError):
+            melon_client.get_hot100_graph_hour()

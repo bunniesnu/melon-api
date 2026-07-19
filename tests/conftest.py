@@ -577,3 +577,120 @@ def sample_hot100_response():
         },
         "httpDomain": "http://m2.melon.com"
     }
+
+
+@pytest.fixture
+def sample_hot100_graph_hour_response():
+    return {
+        "httpsDomain": "https://m2.melon.com",
+        "httpDomain": "http://m2.melon.com",
+        "response": {
+            "STATUS": "0",
+            "RANKDAY": "2026.07.14",
+            "RANKHOUR": "17:15",
+            "STANDARD": "6.0",
+            "XCATE": ["15시", "16시", "17시"],
+            "ENTCHARTXCATE": ["15시", "16시", "17시"],
+            "FIVECHARTFLAG": "Y",
+            "ALLRANK": "N",
+            "COMPRANK": "N",
+            "GRAPHDATALIST": [
+                {
+                    "GRAPHRANK": 1,
+                    "SONGID": "602450078",
+                    "PEEKTIME": "14일 08시",
+                    "FIRSTRANKSERIALCOUNT": "2",
+                    "FIRSTRANKCOUNT": "0",
+                    "GRAPHTOP7": 0,
+                    "GRAPHTOPRANK": 1,
+                    "GRAPHENTCHART": "6",
+                    "GRAPHNEWRANK": "N",
+                    "SHAREVALUE": "17",
+                    "GRAPHDATA": [
+                        {
+                            "X": "0",
+                            "VAL": "4.607",
+                            "TOPCNTTIC": 0,
+                            "TOPCNTYN": "N",
+                            "IMMTOPTIC": False,
+                            "FSTTOPTIC": False,
+                            "NEWRANKTIC": False,
+                        },
+                        {
+                            "X": "1",
+                            "VAL": "4.515",
+                            "TOPCNTTIC": 0,
+                            "TOPCNTYN": "N",
+                            "IMMTOPTIC": False,
+                            "FSTTOPTIC": False,
+                            "NEWRANKTIC": False,
+                        },
+                        {
+                            "X": "2",
+                            "VAL": "4.681",
+                            "TOPCNTTIC": 0,
+                            "TOPCNTYN": "N",
+                            "IMMTOPTIC": False,
+                            "FSTTOPTIC": False,
+                            "NEWRANKTIC": False,
+                        },
+                    ],
+                    "ENTGRAPHDATA": [
+                        {"X": "0", "RANK": "6"},
+                        {"X": "1", "RANK": "6"},
+                        {"X": "2", "RANK": "6"},
+                    ],
+                    "GRAPHCHARTINFO": {
+                        "SONGID": "602450078",
+                        "SONGNAME": "Pretty Girl",
+                        "ALBUMID": "13788545",
+                        "ALBUMNAME": "Pretty Girl - Special Single",
+                        "ARTISTLIST": [
+                            {
+                                "ARTISTID": "3709231",
+                                "ARTISTNAME": "RESCENE (리센느)",
+                            }
+                        ],
+                        "PLAYTIME": "210",
+                        "GENRELIST": [
+                            {
+                                "GENRECODE": "GN0200",
+                                "GENRENAME": "댄스",
+                            }
+                        ],
+                        "CURRANK": "5",
+                        "PASTRANK": "5",
+                        "RANKGAP": "0",
+                        "RANKTYPE": "NONE",
+                        "ISMV": True,
+                        "ISADULT": False,
+                        "ISFREE": False,
+                        "ISHITSONG": False,
+                        "ISHOLDBACK": False,
+                        "ISTITLESONG": True,
+                        "ISSERVICE": True,
+                        "ISTRACKZERO": False,
+                        "ALBUMIMG": "https://example.com/album.jpg",
+                        "ALBUMIMGPATH": "https://example.com/album.jpg",
+                        "ALBUMIMGLARGE": "https://example.com/album_large.jpg",
+                        "ALBUMIMGSMALL": "https://example.com/album_small.jpg",
+                        "ISSUEDATE": "2026.07.08",
+                        "CTYPE": "1",
+                        "CONTSTYPECODE": "N10001",
+                    },
+                }
+            ],
+            "CHARTINFO": {
+                "LINKURL": "https://m2.melon.com/m6/chart/chartGraphInfo.htm",
+                "LINKTYPE": "ZA",
+            },
+            "MENUID": "1000003037",
+            "SECTION": "멜론차트",
+            "PAGE": "멜론차트_HOT100그래프시간",
+            "TLOG": {
+                "MENUID": "1000003037",
+                "SECTION": "멜론차트",
+                "PAGE": "멜론차트_HOT100그래프시간",
+            },
+        },
+    }

@@ -1,6 +1,6 @@
 import httpx
 from typing import Literal
-from melon.models import DailyChart, Hot100Chart, RealtimeChart, ChartReport, Top100Chart, WeeklyChart
+from melon.models import ChartGraph, DailyChart, Hot100Chart, RealtimeChart, ChartReport, Top100Chart, WeeklyChart
 
 HOURLY_CHART_URL = "https://m.app.melon.com/chart/hourly/hourlyChartList.json"
 CHART_REPORT_URL = "https://m2.melon.com/m6/chart/song/chartReport.json"
@@ -8,6 +8,7 @@ TOP100_CHART_URL = "https://m2.melon.com/m6/chart/ent/songChartList.json"
 DAILY_CHART_URL = "https://m2.melon.com/m5/chart/top/daily/songChartList.json"
 WEEKLY_CHART_URL = "https://m2.melon.com/m5/chart/top/weekly/songChartList.json"
 HOT100_CHART_URL = "https://m2.melon.com/m6/chart/hot100/list.json"
+HOT100_GRAPH_HOUR_URL = "https://m2.melon.com/m6/chart/hour/graph.json"
 
 
 class MelonClient:
@@ -123,6 +124,22 @@ class MelonClient:
         response.raise_for_status()
         raw = response.json()
         return Hot100Chart.model_validate(raw["response"])
+
+    def get_hot100_graph_hour(
+        self,
+        v: str = "4.0",
+        cp_id: str = "IS40",
+        cp_key: str = "17LNM9",
+    ) -> ChartGraph:
+        params = {
+            "v": v,
+            "cpId": cp_id,
+            "cpKey": cp_key,
+        }
+        response = self.client.get(HOT100_GRAPH_HOUR_URL, params=params)
+        response.raise_for_status()
+        raw = response.json()
+        return ChartGraph.model_validate(raw["response"])
 
     def close(self):
         self.client.close()

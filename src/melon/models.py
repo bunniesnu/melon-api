@@ -320,3 +320,59 @@ class ChartReport(BaseModel):
     section: str = Field(alias="SECTION")
     page: str = Field(alias="PAGE")
     tlog: TLog = Field(alias="TLOG")
+
+
+# ---- Chart Graph models ----
+
+
+class GraphDataPoint(BaseModel):
+    x: int = Field(alias="X")
+    value: float = Field(alias="VAL")
+    top_count_tick: int = Field(alias="TOPCNTTIC")
+    top_count_yn: str = Field(alias="TOPCNTYN")
+    immediate_top_tick: bool = Field(alias="IMMTOPTIC")
+    first_top_tick: bool = Field(alias="FSTTOPTIC")
+    new_rank_tick: bool = Field(alias="NEWRANKTIC")
+
+
+class EntGraphDataPoint(BaseModel):
+    x: int = Field(alias="X")
+    rank: int = Field(alias="RANK")
+
+
+class GraphChartInfo(Song):
+    pass
+
+
+class GraphDataList(BaseModel):
+    graph_rank: int = Field(alias="GRAPHRANK")
+    song_id: str = Field(alias="SONGID")
+    peek_time: str = Field(alias="PEEKTIME")
+    first_rank_serial_count: int = Field(alias="FIRSTRANKSERIALCOUNT")
+    graph_data: list[GraphDataPoint] = Field(alias="GRAPHDATA")
+    first_rank_count: int = Field(alias="FIRSTRANKCOUNT")
+    ent_graph_data: list[EntGraphDataPoint] = Field(alias="ENTGRAPHDATA")
+    graph_ent_chart: int = Field(alias="GRAPHENTCHART")
+    graph_top7: int = Field(alias="GRAPHTOP7")
+    graph_top_rank: int = Field(alias="GRAPHTOPRANK")
+    graph_new_rank: str = Field(alias="GRAPHNEWRANK")
+    graph_chart_info: GraphChartInfo = Field(alias="GRAPHCHARTINFO")
+    share_value: int = Field(alias="SHAREVALUE")
+
+
+class ChartGraph(BaseModel):
+    x_categories: list[str] = Field(alias="XCATE")
+    ent_chart_x_categories: list[str] = Field(alias="ENTCHARTXCATE")
+    standard: str = Field(alias="STANDARD")
+    graph_data_list: list[GraphDataList] = Field(alias="GRAPHDATALIST")
+    five_chart_flag: str = Field(alias="FIVECHARTFLAG")
+    rank_day: str = Field(alias="RANKDAY")
+    rank_hour: str = Field(alias="RANKHOUR")
+    all_rank: str = Field(alias="ALLRANK")
+    comp_rank: str = Field(alias="COMPRANK")
+    chart_info: ChartInfo = Field(alias="CHARTINFO")
+    status: str = Field(alias="STATUS")
+    menu_id: str = Field(alias="MENUID")
+    section: str = Field(alias="SECTION")
+    page: str = Field(alias="PAGE")
+    tlog: ChartTLog = Field(alias="TLOG")

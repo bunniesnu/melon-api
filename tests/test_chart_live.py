@@ -78,3 +78,12 @@ class TestMelonClientLive:
         assert chart.status == "0"
         assert len(chart.songs) > 0
         assert chart.songs[0].current_rank >= 1
+
+    def test_get_hot100_graph_hour_returns_valid_response(self):
+        with MelonClient() as client:
+            graph = client.get_hot100_graph_hour()
+
+        assert graph.status == "0"
+        assert len(graph.graph_data_list) > 0
+        assert graph.graph_data_list[0].graph_rank >= 1
+        assert graph.graph_data_list[0].graph_chart_info.current_rank >= 1
