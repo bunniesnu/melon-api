@@ -376,3 +376,34 @@ class ChartGraph(BaseModel):
     section: str = Field(alias="SECTION")
     page: str = Field(alias="PAGE")
     tlog: ChartTLog = Field(alias="TLOG")
+
+
+# ---- Hot100 Chart Graph models ----
+
+
+class FiveGraphDataPoint(BaseModel):
+    x: int = Field(alias="X")
+    value: float = Field(alias="VAL")
+
+
+class FiveGraphDataList(BaseModel):
+    song_id: str = Field(alias="SONGID")
+    last_group_current_score: float = Field(alias="LSTGRPCURSCORE")
+    graph_data: list[FiveGraphDataPoint] = Field(alias="GRAPHDATA")
+    graph_chart_info: GraphChartInfo = Field(alias="GRAPHCHARTINFO")
+    graph_rank: int = Field(alias="GRAPHRANK")
+    share_value: int = Field(alias="SHAREVALUE")
+
+
+class FiveGraph(BaseModel):
+    graph_data_list: list[FiveGraphDataList] = Field(alias="GRAPHDATALIST")
+    x_categories: list[str] = Field(alias="XCATE")
+    five_time: str = Field(alias="FIVETIME")
+    rank_day: str = Field(alias="RANKDAY")
+    rank_hour: str = Field(alias="RANKHOUR")
+    five_error_flag: bool = Field(alias="FIVEERRORFLAG")
+    status: str = Field(alias="STATUS")
+    menu_id: str = Field(alias="MENUID")
+    section: str = Field(alias="SECTION")
+    page: str = Field(alias="PAGE")
+    tlog: ChartTLog = Field(alias="TLOG")
