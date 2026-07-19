@@ -1,8 +1,12 @@
 [project]
 name = "melon-chart"
 version = "0.1.0"
-description = "Add your description here"
+description = "An unofficial API SDK for melon charts"
 readme = "README.md"
+authors = [
+    { name = "Bunniesnu", email = "bunniesnu@gmail.com" }
+]
+license = { text = "MIT" }
 requires-python = ">=3.10"
 dependencies = [
     "httpx>=0.28.1",
@@ -26,3 +30,7 @@ dev = [
 markers = [
     "live: marks tests that hit real external APIs (deselect with '-m \"not live\"')",
 ]
+
+[project.urls]
+Homepage = "https://github.com/bunniesnu/melon-chart"
+Repository = "https://github.com/bunniesnu/melon-chart"
