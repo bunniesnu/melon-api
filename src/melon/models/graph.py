@@ -1,9 +1,10 @@
-from pydantic import BaseModel, Field
+from pydantic import Field
 
+from .base import MelonModel
 from .common import ChartInfo, ChartTLog
 from .song import GraphChartInfo
 
-class GraphDataPoint(BaseModel):
+class GraphDataPoint(MelonModel):
     """An hourly Hot 100 graph point with score and rank-event flags."""
     x: int = Field(alias="X")
     value: float = Field(alias="VAL")
@@ -13,12 +14,12 @@ class GraphDataPoint(BaseModel):
     first_top_tick: bool = Field(alias="FSTTOPTIC")
     new_rank_tick: bool = Field(alias="NEWRANKTIC")
 
-class EntGraphDataPoint(BaseModel):
+class EntGraphDataPoint(MelonModel):
     """An entertainment-chart rank point aligned to the hourly graph x-axis."""
     x: int = Field(alias="X")
     rank: int = Field(alias="RANK")
 
-class GraphDataList(BaseModel):
+class GraphDataList(MelonModel):
     """One song's hourly Hot 100 series and ranking summary."""
     graph_rank: int = Field(alias="GRAPHRANK")
     song_id: str = Field(alias="SONGID")
@@ -34,7 +35,7 @@ class GraphDataList(BaseModel):
     graph_chart_info: GraphChartInfo = Field(alias="GRAPHCHARTINFO")
     share_value: int = Field(alias="SHAREVALUE")
 
-class ChartGraph(BaseModel):
+class ChartGraph(MelonModel):
     """Hourly Hot 100 graph response with shared categories and per-song series."""
     x_categories: list[str] = Field(alias="XCATE")
     ent_chart_x_categories: list[str] = Field(alias="ENTCHARTXCATE")
@@ -52,12 +53,12 @@ class ChartGraph(BaseModel):
     page: str = Field(alias="PAGE")
     tlog: ChartTLog = Field(alias="TLOG")
 
-class FiveGraphDataPoint(BaseModel):
+class FiveGraphDataPoint(MelonModel):
     """A five-minute Hot 100 graph score point."""
     x: int = Field(alias="X")
     value: float = Field(alias="VAL")
 
-class FiveGraphDataList(BaseModel):
+class FiveGraphDataList(MelonModel):
     """One song's five-minute graph series and current score summary."""
     song_id: str = Field(alias="SONGID")
     last_group_current_score: float = Field(alias="LSTGRPCURSCORE")
@@ -66,7 +67,7 @@ class FiveGraphDataList(BaseModel):
     graph_rank: int = Field(alias="GRAPHRANK")
     share_value: int = Field(alias="SHAREVALUE")
 
-class FiveGraph(BaseModel):
+class FiveGraph(MelonModel):
     """Five-minute Hot 100 graph response returned by the graph endpoint."""
     graph_data_list: list[FiveGraphDataList] = Field(alias="GRAPHDATALIST")
     x_categories: list[str] = Field(alias="XCATE")

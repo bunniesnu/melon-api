@@ -1,8 +1,9 @@
-from pydantic import BaseModel, Field
+from pydantic import Field
 
+from .base import MelonModel
 from .common import ArtistInfo, Genre, TLog
 
-class Album(BaseModel):
+class Album(MelonModel):
     """Core album metadata returned in an album-detail response."""
     is_service: bool = Field(alias="ISSERVICE")
     album_id: str = Field(alias="ALBUMID")
@@ -16,19 +17,19 @@ class Album(BaseModel):
     content_type_code: str = Field(alias="CONTSTYPECODE")
     artist_list: list[ArtistInfo] = Field(alias="ARTISTLIST")
 
-class TotalAverageScoreInfo(BaseModel):
+class TotalAverageScoreInfo(MelonModel):
     """Rating availability copy and aggregate album rating."""
     title: str = Field(alias="TITLE")
     text: str = Field(alias="TEXT")
     score: float = Field(alias="TOTAVRGSCORE")
     participant_count: int = Field(alias="PTCPNMPRCO")
 
-class TitleSongInfo(BaseModel):
+class TitleSongInfo(MelonModel):
     """The album's designated title song."""
     song_id: str = Field(alias="SONGID")
     title: str = Field(alias="SONGNAME")
 
-class ArtistNoteInfo(BaseModel):
+class ArtistNoteInfo(MelonModel):
     """An artist note associated with an album release."""
     album_id: str = Field(alias="ALBUMID")
     artist_id: str = Field(alias="ARTISTID")
@@ -37,12 +38,12 @@ class ArtistNoteInfo(BaseModel):
     artist_img: str | None = Field(default=None, alias="ARTISTIMG")
     issue_date: str = Field(alias="ISSUEDATE")
 
-class MillionsLink(BaseModel):
+class MillionsLink(MelonModel):
     """Navigation target attached to an album's cumulative-listening milestone."""
     link_type: str = Field(alias="LINKTYPE")
     link_url: str = Field(alias="LINKURL")
 
-class MillionsInfo(BaseModel):
+class MillionsInfo(MelonModel):
     """Cumulative-listening milestone information for the album."""
     history_data: int = Field(alias="HISTDATA")
     issue_date: str = Field(alias="ISSUEDATE")
@@ -53,7 +54,7 @@ class MillionsInfo(BaseModel):
     accumulated_data: int = Field(alias="ACCUMDATA")
     link: MillionsLink = Field(alias="LINK")
 
-class AlbumInfo(BaseModel):
+class AlbumInfo(MelonModel):
     """Full album-detail response returned by Melon's album information endpoint."""
     result_code: str = Field(alias="RESULTCODE")
     response_type: str = Field(alias="RESPONSE")

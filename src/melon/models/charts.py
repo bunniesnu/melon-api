@@ -1,14 +1,15 @@
-from pydantic import BaseModel, Field
+from pydantic import Field
 
+from .base import MelonModel
 from .common import ChartInfo, ChartTLog
 from .song import Song
 
-class Top100StatsElements(BaseModel):
+class Top100StatsElements(MelonModel):
     """Top 100 analytics identifiers returned in ``STATSELEMENTS``."""
     impression_id: str = Field(alias="IMPRESSIONID")
     range_code: str = Field(alias="RANGECODE")
 
-class RealtimeChart(BaseModel):
+class RealtimeChart(MelonModel):
     """Hourly chart response: ``CHARTLIST`` songs and the ``RANKDAY``/``RANKHOUR`` snapshot."""
     status: str = Field(alias="STATUS")
     recommend_list: list = Field(default_factory=list, alias="RECOMMENDLIST")
@@ -22,7 +23,7 @@ class RealtimeChart(BaseModel):
     page: str = Field(alias="PAGE")
     tlog: ChartTLog = Field(alias="TLOG")
 
-class Top100Chart(BaseModel):
+class Top100Chart(MelonModel):
     """Current Top 100 response, whose songs are returned as ``SONGLIST``."""
     rank_day: str = Field(alias="RANKDAY")
     rank_hour: str = Field(alias="RANKHOUR")
@@ -35,7 +36,7 @@ class Top100Chart(BaseModel):
     page: str = Field(alias="PAGE")
     tlog: ChartTLog = Field(alias="TLOG")
 
-class DailyChart(BaseModel):
+class DailyChart(MelonModel):
     """Daily Top 100 response; ``RANKDAY`` can be null in the fixture payload."""
     status: str = Field(alias="STATUS")
     recommend_list: list = Field(default_factory=list, alias="RECOMMENDLIST")
@@ -49,7 +50,7 @@ class DailyChart(BaseModel):
     page: str = Field(alias="PAGE")
     tlog: ChartTLog = Field(alias="TLOG")
 
-class WeeklyAwardEntry(BaseModel):
+class WeeklyAwardEntry(MelonModel):
     """One ranked candidate in the weekly popularity award's ``WEEKRANKLIST``."""
     current_rank: int = Field(alias="CURRANK")
     song_name: str = Field(alias="SONGNAME")
@@ -62,7 +63,7 @@ class WeeklyAwardEntry(BaseModel):
     start_month: int = Field(alias="STARTMONTH")
     start_week: int = Field(alias="STARTWEEK")
 
-class MusicAward(BaseModel):
+class MusicAward(MelonModel):
     """Weekly popularity-award metadata and its ranked vote entries."""
     title: str = Field(alias="TITLE")
     award_month: int = Field(alias="AWARDMONTH")
@@ -73,7 +74,7 @@ class MusicAward(BaseModel):
     week_status: str = Field(alias="WEEKSTATUS")
     week_rank_list: list[WeeklyAwardEntry] = Field(alias="WEEKRANKLIST")
 
-class WeeklyChart(BaseModel):
+class WeeklyChart(MelonModel):
     """Weekly Top 100 response, including its chart date range and music award."""
     music_award: MusicAward = Field(alias="MUSICAWARD")
     status: str = Field(alias="STATUS")
@@ -90,7 +91,7 @@ class WeeklyChart(BaseModel):
     page: str = Field(alias="PAGE")
     tlog: ChartTLog = Field(alias="TLOG")
 
-class Hot100Chart(BaseModel):
+class Hot100Chart(MelonModel):
     """Hot 100 chart snapshot, with songs returned under ``SONGLIST``."""
     rank_day: str = Field(alias="RANKDAY")
     rank_hour: str = Field(alias="RANKHOUR")

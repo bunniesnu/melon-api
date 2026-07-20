@@ -1,8 +1,9 @@
-from pydantic import BaseModel, Field, field_validator
+from pydantic import Field, field_validator
 
+from .base import MelonModel
 from .common import Artist, ArtistInfo, Genre
 
-class Song(BaseModel):
+class Song(MelonModel):
     """A chart song entry shared by realtime, Top 100, daily, weekly, and Hot 100.
 
     Fixture responses encode duration and ranks as strings; Pydantic coerces them
@@ -39,17 +40,14 @@ class Song(BaseModel):
     @field_validator("current_rank", "past_rank", "rank_gap", "play_time", mode="before")
     @classmethod
     def empty_string_to_zero(cls, value):
-        """Convert Melon's blank rank/duration value to the numeric sentinel ``0``."""
-        if value == "":
-            return 0
-        return value
+        return cls.blank_to_zero(value)
 
     @property
     def is_rising(self) -> bool:
         """Whether Melon reports an upward rank movement (``RANKTYPE == 'UP'``)."""
         return self.rank_type == "UP"
 
-class ReportSongInfo(BaseModel):
+class ReportSongInfo(MelonModel):
     """Song metadata and current ranking at the top of a chart report."""
     song_id: str = Field(alias="SONGID")
     title: str = Field(alias="SONGNAME")
@@ -68,10 +66,7 @@ class ReportSongInfo(BaseModel):
     @field_validator("current_rank", "past_rank", "rank_gap", mode="before")
     @classmethod
     def empty_string_to_zero(cls, value):
-        """Convert a blank report rank from the API into ``0``."""
-        if value == "":
-            return 0
-        return value
+        return cls.blank_to_zero(value)
 
 class GraphChartInfo(Song):
     """Song metadata embedded with an hourly graph series."""

@@ -1,27 +1,28 @@
-from pydantic import BaseModel, Field
+from pydantic import Field
 
+from .base import MelonModel
 from .common import TLog
 from .song import ReportSongInfo
 
-class ListenerChartTitle(BaseModel):
+class ListenerChartTitle(MelonModel):
     """Templated listener-chart title; ``value`` replaces ``value_placeholder``."""
     value_placeholder: str = Field(alias="VALUEPLACEHOLDER")
     text: str = Field(alias="TEXT")
     value: str = Field(alias="VALUE")
 
-class InfoListItem(BaseModel):
+class InfoListItem(MelonModel):
     """A title/text explanatory item shown with a chart report graph."""
     title: str = Field(alias="TITLE")
     text: str = Field(alias="TEXT")
 
-class ListenerChartInfo(BaseModel):
+class ListenerChartInfo(MelonModel):
     """Descriptive copy and update notes for the listener chart."""
     title: str = Field(alias="TITLE")
     desc: str = Field(alias="DESC")
     info_list: list[InfoListItem] = Field(alias="INFOLIST")
     foot: str | None = Field(default=None, alias="FOOT")
 
-class ListenerChart(BaseModel):
+class ListenerChart(MelonModel):
     """Recent-listener graph, including axis bounds, observations, and display copy."""
     x_labels: list = Field(default_factory=list, alias="XLABELS")
     y_minimum: int = Field(alias="YMINIMUM")
@@ -30,36 +31,36 @@ class ListenerChart(BaseModel):
     title: ListenerChartTitle = Field(alias="TITLE")
     info: ListenerChartInfo = Field(alias="INFO")
 
-class ListenerData(BaseModel):
+class ListenerData(MelonModel):
     """Current one-hour and one-day listener values; unavailable values are ``'-'``."""
     one_hour: str = Field(alias="ONEHOUR")
     one_day: str = Field(alias="ONEDAY")
 
-class RankChartXLabel(BaseModel):
+class RankChartXLabel(MelonModel):
     """A rank-chart x-axis label, optionally highlighted for current/predicted time."""
     x_label: str = Field(alias="XLABEL")
     highlighting: bool = Field(alias="HIGHLIGHTING")
 
-class RankChartDataPoint(BaseModel):
+class RankChartDataPoint(MelonModel):
     """One actual or predicted rank observation in the chart report."""
     x_index: int = Field(alias="XINDEX")
     value: int = Field(alias="VALUE")
     label: str = Field(alias="LABEL")
     highlighting: bool = Field(alias="HIGHLIGHTING")
 
-class RankChartTitle(BaseModel):
+class RankChartTitle(MelonModel):
     """Templated title for the rank trend and prediction graph."""
     value_placeholder: str = Field(alias="VALUEPLACEHOLDER")
     text: str = Field(alias="TEXT")
     value: str = Field(alias="VALUE")
 
-class RankChartInfo(BaseModel):
+class RankChartInfo(MelonModel):
     """Descriptive copy and update notes for the rank trend graph."""
     title: str = Field(alias="TITLE")
     desc: str = Field(alias="DESC")
     info_list: list[InfoListItem] = Field(alias="INFOLIST")
 
-class RankChart(BaseModel):
+class RankChart(MelonModel):
     """Rank history and optional predicted points from a song chart report."""
     x_labels: list[RankChartXLabel] = Field(alias="XLABELS")
     y_minimum: int = Field(alias="YMINIMUM")
@@ -69,13 +70,13 @@ class RankChart(BaseModel):
     title: RankChartTitle = Field(alias="TITLE")
     info: RankChartInfo = Field(alias="INFO")
 
-class YesterChartInfoTitle(BaseModel):
+class YesterChartInfoTitle(MelonModel):
     """Templated title describing the previous day's chart placement."""
     value_placeholder: str = Field(alias="VALUEPLACEHOLDER")
     text: str = Field(alias="TEXT")
     value: str = Field(alias="VALUE")
 
-class YesterChartInfo(BaseModel):
+class YesterChartInfo(MelonModel):
     """Previous-day rank, best-record summaries, and daily-record metadata."""
     title: YesterChartInfoTitle = Field(alias="TITLE")
     first_info_label: str = Field(alias="FIRSTINFOLABEL")
@@ -85,16 +86,16 @@ class YesterChartInfo(BaseModel):
     record_list: list = Field(default_factory=list, alias="RECORDLIST")
     info: RankChartInfo = Field(alias="INFO")
 
-class NextButton(BaseModel):
+class NextButton(MelonModel):
     """The next-song target exposed by the chart report footer."""
     song_id: str = Field(alias="SONGID")
     label: str = Field(alias="LABEL")
 
-class FootButton(BaseModel):
+class FootButton(MelonModel):
     """Footer navigation container for a chart report."""
     next_button: NextButton = Field(alias="NEXTBUTTON")
 
-class ChartReport(BaseModel):
+class ChartReport(MelonModel):
     """Full per-song report: listener metrics, rank history, prediction, and daily record."""
     result_code: str = Field(alias="RESULTCODE")
     response_type: str = Field(alias="RESPONSE")

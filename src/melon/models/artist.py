@@ -1,18 +1,19 @@
-from pydantic import BaseModel, Field, field_validator
+from pydantic import Field, field_validator
 
+from .base import MelonModel
 from .common import ChartTLog
 
-class SearchTypeItem(BaseModel):
+class SearchTypeItem(MelonModel):
     """An artist-chart category option from ``SEARCHTYPELIST``."""
     type_code: str = Field(alias="TYPECODE")
     type_code_name: str = Field(alias="TYPECODENAME")
 
-class ArtistChartInfo(BaseModel):
+class ArtistChartInfo(MelonModel):
     """Link metadata that accompanies the artist chart."""
     open_link: str = Field(alias="OPENLINK")
     open_type: str = Field(alias="OPENTYPE")
 
-class ArtistChartEntry(BaseModel):
+class ArtistChartEntry(MelonModel):
     """One artist-chart ranking with fan counts and the component score indices."""
     artist_id: str = Field(alias="ARTISTID")
     name: str = Field(alias="ARTISTNAME")
@@ -43,12 +44,9 @@ class ArtistChartEntry(BaseModel):
     @field_validator("current_rank", "past_rank", "rank_gap", mode="before")
     @classmethod
     def empty_string_to_zero(cls, value):
-        """Convert a blank artist-chart rank from the API into ``0``."""
-        if value == "":
-            return 0
-        return value
+        return cls.blank_to_zero(value)
 
-class ArtistChart(BaseModel):
+class ArtistChart(MelonModel):
     """Artist chart response, including category choices and ranked artist entries."""
     status: str = Field(alias="STATUS")
     search_type_list: list[SearchTypeItem] = Field(alias="SEARCHTYPELIST")

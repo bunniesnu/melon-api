@@ -1,11 +1,13 @@
-from pydantic import BaseModel, Field
+from pydantic import Field
 
-class Artist(BaseModel):
+from .base import MelonModel
+
+class Artist(MelonModel):
     """A credited artist from a chart song's ``ARTISTLIST``."""
     artist_id: str = Field(alias="ARTISTID")
     name: str = Field(alias="ARTISTNAME")
 
-class ArtistInfo(BaseModel):
+class ArtistInfo(MelonModel):
     """Artist details embedded in a chart-report song, including optional profile data."""
     artist_id: str = Field(alias="ARTISTID")
     name: str = Field(alias="ARTISTNAME")
@@ -16,23 +18,23 @@ class ArtistInfo(BaseModel):
     image_type: str | None = Field(default=None, alias="IMAGETYPE")
     content_type_code: str | None = Field(default=None, alias="CONTSTYPECODE")
 
-class Genre(BaseModel):
+class Genre(MelonModel):
     """A genre code and display name from a song's ``GENRELIST``."""
     genre_code: str = Field(alias="GENRECODE")
     genre_name: str = Field(alias="GENRENAME")
 
-class ChartTLog(BaseModel):
+class ChartTLog(MelonModel):
     """Chart page metadata included in standard chart responses under ``TLOG``."""
     menu_id: str = Field(alias="MENUID")
     section: str = Field(alias="SECTION")
     page: str = Field(alias="PAGE")
 
-class ChartInfo(BaseModel):
+class ChartInfo(MelonModel):
     """The informational link supplied with Top 100, daily, weekly, and Hot 100."""
     link_url: str = Field(alias="LINKURL")
     link_type: str = Field(alias="LINKTYPE")
 
-class TLog(BaseModel):
+class TLog(MelonModel):
     """Expanded chart-report tracking metadata, including the reported song identity."""
     menu_id: str = Field(alias="MENUID")
     section: str = Field(alias="SECTION")
