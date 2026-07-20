@@ -25,7 +25,7 @@ from .graph import (
     FiveGraph
 )
 from .song import (
-    Song
+    ChartSong
 )
 from .common import (
     Artist,
@@ -35,7 +35,7 @@ from .common import (
 __all__ = [
     "Artist",
     "Genre",
-    "Song",
+    "ChartSong",
     "RealtimeChart",
     "Top100Chart",
     "DailyChart",

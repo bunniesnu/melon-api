@@ -118,6 +118,7 @@ class TestMelonClientGetChartReport:
 
         result = melon_client.get_chart_report(song_id="37928381")
 
+        assert result.listener_data
         assert result.listener_data.one_hour == "-"
         assert result.rank_chart.y_maximum == 61
         assert result.yester_chart_info.first_info_value == "2위"

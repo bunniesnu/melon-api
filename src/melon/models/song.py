@@ -3,13 +3,8 @@ from pydantic import Field, field_validator
 from melon.models.base import MelonModel
 from melon.models.common import Artist, ArtistInfo, Genre
 
-class Song(MelonModel):
-    """A chart song entry shared by realtime, Top 100, daily, weekly, and Hot 100.
-
-    Fixture responses encode duration and ranks as strings; Pydantic coerces them
-    to integers. Image URLs may be omitted, so the album-image variants are
-    optional.
-    """
+class BaseSong(MelonModel):
+    """Base song metadata shared by chart and report responses."""
     song_id: str = Field(alias="SONGID")
     title: str = Field(alias="SONGNAME")
     album_id: str = Field(alias="ALBUMID")
@@ -17,10 +12,6 @@ class Song(MelonModel):
     artists: list[Artist] = Field(alias="ARTISTLIST")
     play_time: int = Field(alias="PLAYTIME")
     genres: list[Genre] = Field(alias="GENRELIST")
-    current_rank: int = Field(alias="CURRANK")
-    past_rank: int = Field(alias="PASTRANK")
-    rank_gap: int = Field(alias="RANKGAP")
-    rank_type: str = Field(alias="RANKTYPE")
     is_mv: bool = Field(alias="ISMV")
     is_adult: bool = Field(alias="ISADULT")
     is_free: bool = Field(alias="ISFREE")
@@ -37,7 +28,24 @@ class Song(MelonModel):
     content_type: str = Field(alias="CTYPE")
     content_type_code: str = Field(alias="CONTSTYPECODE")
 
-    @field_validator("current_rank", "past_rank", "rank_gap", "play_time", mode="before")
+    @field_validator("play_time", mode="before")
+    @classmethod
+    def empty_string_to_zero(cls, value):
+        return cls.blank_to_zero(value)
+
+class ChartSong(BaseSong):
+    """A chart song entry shared by realtime, Top 100, daily, weekly, and Hot 100.
+
+    Fixture responses encode duration and ranks as strings; Pydantic coerces them
+    to integers. Image URLs may be omitted, so the album-image variants are
+    optional.
+    """
+    current_rank: int = Field(alias="CURRANK")
+    past_rank: int = Field(alias="PASTRANK")
+    rank_gap: int = Field(alias="RANKGAP")
+    rank_type: str = Field(alias="RANKTYPE")
+
+    @field_validator("current_rank", "past_rank", "rank_gap", mode="before")
     @classmethod
     def empty_string_to_zero(cls, value):
         return cls.blank_to_zero(value)
@@ -68,5 +76,5 @@ class ReportSongInfo(MelonModel):
     def empty_string_to_zero(cls, value):
         return cls.blank_to_zero(value)
 
-class GraphChartInfo(Song):
+class GraphChartInfo(ChartSong):
     """Song metadata embedded with an hourly graph series."""

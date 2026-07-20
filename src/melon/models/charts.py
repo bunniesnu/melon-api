@@ -2,7 +2,7 @@ from pydantic import Field
 
 from melon.models.base import MelonModel
 from melon.models.common import ChartInfo, ChartTLog
-from melon.models.song import Song
+from melon.models.song import ChartSong
 
 class Top100StatsElements(MelonModel):
     """Top 100 analytics identifiers returned in ``STATSELEMENTS``."""
@@ -13,7 +13,7 @@ class RealtimeChart(MelonModel):
     """Hourly chart response: ``CHARTLIST`` songs and the ``RANKDAY``/``RANKHOUR`` snapshot."""
     status: str = Field(alias="STATUS")
     recommend_list: list = Field(default_factory=list, alias="RECOMMENDLIST")
-    songs: list[Song] = Field(alias="CHARTLIST")
+    songs: list[ChartSong] = Field(alias="CHARTLIST")
     rank_day: str = Field(alias="RANKDAY")
     rank_hour: str = Field(alias="RANKHOUR")
     has_more: bool = Field(alias="HASMORE")
@@ -28,7 +28,7 @@ class Top100Chart(MelonModel):
     rank_day: str = Field(alias="RANKDAY")
     rank_hour: str = Field(alias="RANKHOUR")
     status: str = Field(alias="STATUS")
-    songs: list[Song] = Field(alias="SONGLIST")
+    songs: list[ChartSong] = Field(alias="SONGLIST")
     chart_info: ChartInfo = Field(alias="CHARTINFO")
     stats_elements: Top100StatsElements = Field(alias="STATSELEMENTS")
     menu_id: str = Field(alias="MENUID")
@@ -40,7 +40,7 @@ class DailyChart(MelonModel):
     """Daily Top 100 response; ``RANKDAY`` can be null in the fixture payload."""
     status: str = Field(alias="STATUS")
     recommend_list: list = Field(default_factory=list, alias="RECOMMENDLIST")
-    songs: list[Song] = Field(alias="CHARTLIST")
+    songs: list[ChartSong] = Field(alias="CHARTLIST")
     chart_info: ChartInfo = Field(alias="CHARTINFO")
     rank_day: str | None = Field(alias="RANKDAY")
     has_more: bool = Field(alias="HASMORE")
@@ -80,7 +80,7 @@ class WeeklyChart(MelonModel):
     status: str = Field(alias="STATUS")
     review: dict | None = Field(default=None, alias="REVIEW")
     recommend_list: list = Field(default_factory=list, alias="RECOMMENDLIST")
-    songs: list[Song] = Field(alias="CHARTLIST")
+    songs: list[ChartSong] = Field(alias="CHARTLIST")
     start_day: str = Field(alias="STARTDAY")
     end_day: str = Field(alias="ENDDAY")
     has_more: bool = Field(alias="HASMORE")
@@ -96,7 +96,7 @@ class Hot100Chart(MelonModel):
     rank_day: str = Field(alias="RANKDAY")
     rank_hour: str = Field(alias="RANKHOUR")
     status: str = Field(alias="STATUS")
-    songs: list[Song] = Field(alias="SONGLIST")
+    songs: list[ChartSong] = Field(alias="SONGLIST")
     chart_info: ChartInfo = Field(alias="CHARTINFO")
     menu_id: str = Field(alias="MENUID")
     section: str = Field(alias="SECTION")
