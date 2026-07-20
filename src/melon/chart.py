@@ -1,13 +1,8 @@
-"""Synchronous client for Melon's chart endpoints.
 
-Every endpoint returns an envelope whose parsed payload is in ``response``.
-The methods in :class:`MelonClient` unwrap that envelope and validate it with
-the matching model.
-"""
 
-import httpx
 from typing import Literal
-from melon.models import AlbumInfo, ArtistChart, ChartGraph, DailyChart, FiveGraph, Hot100Chart, RealtimeChart, ChartReport, Top100Chart, WeeklyChart
+from melon.base import BaseClient
+from melon.models import ArtistChart, ChartGraph, DailyChart, FiveGraph, Hot100Chart, RealtimeChart, ChartReport, Top100Chart, WeeklyChart
 
 HOURLY_CHART_URL = "https://m.app.melon.com/chart/hourly/hourlyChartList.json"
 CHART_REPORT_URL = "https://m2.melon.com/m6/chart/song/chartReport.json"
@@ -18,16 +13,8 @@ HOT100_CHART_URL = "https://m2.melon.com/m6/chart/hot100/list.json"
 HOT100_GRAPH_HOUR_URL = "https://m2.melon.com/m6/chart/hour/graph.json"
 HOT100_GRAPH_5MIN_URL = "https://m2.melon.com/m6/chart/hour/five/graph.json"
 ARTIST_CHART_URL = "https://m2.melon.com/chart/artist/artistChartList.json"
-ALBUM_INFO_URL = "https://m2.melon.com/m6/v3/album/info.json"
 
-
-class MelonClient:
-    """Reusable synchronous HTTP client for Melon chart and chart-graph APIs."""
-
-    def __init__(self, timeout: float = 10.0):
-        """Create the underlying HTTP client with the timeout in seconds."""
-        self.client = httpx.Client(timeout=timeout)
-
+class ChartClient(BaseClient):
     def get_realtime_chart(
         self,
         cp_id: str = "AS40",
@@ -206,34 +193,3 @@ class MelonClient:
         response.raise_for_status()
         raw = response.json()
         return ArtistChart.model_validate(raw["response"])
-
-    def get_album_info(
-        self,
-        album_id: str,
-        cp_id: str = "AS40",
-        cp_key: str = "14LNC3",
-        app_ver: str = "6.2.0",
-    ) -> AlbumInfo:
-        """Fetch metadata, credits, ratings, and notes for ``album_id``."""
-        params = {
-            "albumId": album_id,
-            "cpId": cp_id,
-            "cpKey": cp_key,
-            "appVer": app_ver,
-        }
-        response = self.client.get(ALBUM_INFO_URL, params=params)
-        response.raise_for_status()
-        raw = response.json()
-        return AlbumInfo.model_validate(raw["response"])
-
-    def close(self):
-        """Close the underlying :class:`httpx.Client`."""
-        self.client.close()
-
-    def __enter__(self):
-        """Return this client for use in a ``with MelonClient()`` block."""
-        return self
-
-    def __exit__(self, *args):
-        """Close the HTTP client when the context-manager block exits."""
-        self.close()

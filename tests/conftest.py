@@ -1,5 +1,5 @@
 import pytest
-from melon.chart import MelonClient
+from melon import MelonClient
 
 
 @pytest.fixture

@@ -3,7 +3,9 @@ import pytest
 import respx
 from typing import Any
 
-from melon.chart import ALBUM_INFO_URL, ARTIST_CHART_URL, DAILY_CHART_URL, HOT100_CHART_URL, HOT100_GRAPH_HOUR_URL, TOP100_CHART_URL, WEEKLY_CHART_URL, MelonClient, HOURLY_CHART_URL, CHART_REPORT_URL
+from melon import MelonClient
+from melon.album import ALBUM_INFO_URL
+from melon.chart import ARTIST_CHART_URL, DAILY_CHART_URL, HOT100_CHART_URL, HOT100_GRAPH_HOUR_URL, TOP100_CHART_URL, WEEKLY_CHART_URL, HOURLY_CHART_URL, CHART_REPORT_URL
 
 
 class TestMelonClientGetRealtimeChart:

@@ -21,13 +21,15 @@ from .report import (
     ChartReport
 )
 from .graph import (
-    ChartGraph, FiveGraph
+    ChartGraph,
+    FiveGraph
 )
 from .song import (
     Song
 )
 from .common import (
-    Artist, Genre
+    Artist,
+    Genre
 )
 
 __all__ = [
