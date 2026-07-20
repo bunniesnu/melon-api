@@ -1,7 +1,7 @@
 from pydantic import Field, field_validator
 
-from .base import MelonModel
-from .common import Artist, ArtistInfo, Genre
+from melon.models.base import MelonModel
+from melon.models.common import Artist, ArtistInfo, Genre
 
 class Song(MelonModel):
     """A chart song entry shared by realtime, Top 100, daily, weekly, and Hot 100.

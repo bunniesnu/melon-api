@@ -1,8 +1,8 @@
 from pydantic import Field
 
-from .base import MelonModel
-from .common import ChartInfo, ChartTLog
-from .song import GraphChartInfo
+from melon.models.base import MelonModel
+from melon.models.common import ChartInfo, ChartTLog
+from melon.models.song import GraphChartInfo
 
 class GraphDataPoint(MelonModel):
     """An hourly Hot 100 graph point with score and rank-event flags."""

@@ -1,8 +1,8 @@
 from pydantic import Field
 
-from .base import MelonModel
-from .common import ChartInfo, ChartTLog
-from .song import Song
+from melon.models.base import MelonModel
+from melon.models.common import ChartInfo, ChartTLog
+from melon.models.song import Song
 
 class Top100StatsElements(MelonModel):
     """Top 100 analytics identifiers returned in ``STATSELEMENTS``."""

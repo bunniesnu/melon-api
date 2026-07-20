@@ -1,7 +1,7 @@
 from pydantic import Field
 
-from .base import MelonModel
-from .common import ArtistInfo, Genre, TLog
+from melon.models.base import MelonModel
+from melon.models.common import ArtistInfo, Genre, TLog
 
 class Album(MelonModel):
     """Core album metadata returned in an album-detail response."""

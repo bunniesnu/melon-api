@@ -1,6 +1,6 @@
 from pydantic import Field
 
-from .base import MelonModel
+from melon.models.base import MelonModel
 
 class Artist(MelonModel):
     """A credited artist from a chart song's ``ARTISTLIST``."""

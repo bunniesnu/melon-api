@@ -1,8 +1,8 @@
 from pydantic import Field
 
-from .base import MelonModel
-from .common import TLog
-from .song import ReportSongInfo
+from melon.models.base import MelonModel
+from melon.models.common import TLog
+from melon.models.song import ReportSongInfo
 
 class ListenerChartTitle(MelonModel):
     """Templated listener-chart title; ``value`` replaces ``value_placeholder``."""

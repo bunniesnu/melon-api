@@ -1,7 +1,7 @@
 from pydantic import Field, field_validator
 
-from .base import MelonModel
-from .common import ChartTLog
+from melon.models.base import MelonModel
+from melon.models.common import ChartTLog
 
 class SearchTypeItem(MelonModel):
     """An artist-chart category option from ``SEARCHTYPELIST``."""
