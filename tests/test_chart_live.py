@@ -1,5 +1,5 @@
 import pytest
-from melon.chart import MelonClient
+from melon import MelonClient
 
 
 @pytest.mark.live
@@ -99,3 +99,31 @@ class TestMelonClientLive:
         assert first_artist.artist_id
         assert first_artist.name
         assert first_artist.total_fan_count >= 0
+
+    def test_get_album_info_returns_valid_response(self):
+        with MelonClient() as client:
+            album_info = client.get_album_info("13788545")
+
+        assert album_info.result_code == "0"
+        assert album_info.album.album_id == "13788545"
+        assert album_info.album.name
+        assert len(album_info.album.artist_list) > 0
+        assert album_info.album.artist_list[0].artist_id
+
+    def test_get_album_songs_returns_valid_response(self):
+        with MelonClient() as client:
+            album_songs = client.get_album_songs("13788545")
+
+        assert album_songs.result_code == "0"
+        assert album_songs.total_song_count > 0
+        assert len(album_songs.discs) > 0
+
+        disc = album_songs.discs[0]
+        assert len(disc.songs) > 0
+
+        song = disc.songs[0]
+        assert song.song_id
+        assert song.title
+        assert song.album_id == "13788545"
+        assert song.artists
+        assert song.artists[0].artist_id

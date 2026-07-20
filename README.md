@@ -38,7 +38,7 @@ Each response is saved as a timestamped JSON file (UTC) in the `data/` directory
 ### As a library
 
 ```python
-from melon.chart import MelonClient
+from melon import MelonClient
 with MelonClient() as client:
     chart = client.get_top100_chart()
 ```
