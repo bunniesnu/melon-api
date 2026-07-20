@@ -1,3 +1,9 @@
+"""Pydantic models for the Melon chart JSON payloads used in the test fixtures.
+
+Melon's API uses uppercase keys and represents many numeric values as strings.
+Each field alias below maps one of those wire-format keys to a Pythonic attribute.
+"""
+
 from pydantic import BaseModel, Field, field_validator
 
 
@@ -5,6 +11,7 @@ from pydantic import BaseModel, Field, field_validator
 
 
 class Artist(BaseModel):
+    """A credited artist from a chart song's ``ARTISTLIST``."""
     artist_id: str = Field(alias="ARTISTID")
     name: str = Field(alias="ARTISTNAME")
 
@@ -13,11 +20,18 @@ class Artist(BaseModel):
 
 
 class Genre(BaseModel):
+    """A genre code and display name from a song's ``GENRELIST``."""
     genre_code: str = Field(alias="GENRECODE")
     genre_name: str = Field(alias="GENRENAME")
 
 
 class Song(BaseModel):
+    """A chart song entry shared by realtime, Top 100, daily, weekly, and Hot 100.
+
+    Fixture responses encode duration and ranks as strings; Pydantic coerces them
+    to integers. Image URLs may be omitted, so the album-image variants are
+    optional.
+    """
     song_id: str = Field(alias="SONGID")
     title: str = Field(alias="SONGNAME")
     album_id: str = Field(alias="ALBUMID")
@@ -48,27 +62,32 @@ class Song(BaseModel):
     @field_validator("current_rank", "past_rank", "rank_gap", "play_time", mode="before")
     @classmethod
     def empty_string_to_zero(cls, value):
+        """Convert Melon's blank rank/duration value to the numeric sentinel ``0``."""
         if value == "":
             return 0
         return value
 
     @property
     def is_rising(self) -> bool:
+        """Whether Melon reports an upward rank movement (``RANKTYPE == 'UP'``)."""
         return self.rank_type == "UP"
 
 
 class ChartTLog(BaseModel):
+    """Chart page metadata included in standard chart responses under ``TLOG``."""
     menu_id: str = Field(alias="MENUID")
     section: str = Field(alias="SECTION")
     page: str = Field(alias="PAGE")
 
 
 class ChartInfo(BaseModel):
+    """The informational link supplied with Top 100, daily, weekly, and Hot 100."""
     link_url: str = Field(alias="LINKURL")
     link_type: str = Field(alias="LINKTYPE")
 
 
 class RealtimeChart(BaseModel):
+    """Hourly chart response: ``CHARTLIST`` songs and the ``RANKDAY``/``RANKHOUR`` snapshot."""
     status: str = Field(alias="STATUS")
     recommend_list: list = Field(default_factory=list, alias="RECOMMENDLIST")
     songs: list[Song] = Field(alias="CHARTLIST")
@@ -83,11 +102,13 @@ class RealtimeChart(BaseModel):
 
 
 class Top100StatsElements(BaseModel):
+    """Top 100 analytics identifiers returned in ``STATSELEMENTS``."""
     impression_id: str = Field(alias="IMPRESSIONID")
     range_code: str = Field(alias="RANGECODE")
 
 
 class Top100Chart(BaseModel):
+    """Current Top 100 response, whose songs are returned as ``SONGLIST``."""
     rank_day: str = Field(alias="RANKDAY")
     rank_hour: str = Field(alias="RANKHOUR")
     status: str = Field(alias="STATUS")
@@ -101,6 +122,7 @@ class Top100Chart(BaseModel):
 
 
 class DailyChart(BaseModel):
+    """Daily Top 100 response; ``RANKDAY`` can be null in the fixture payload."""
     status: str = Field(alias="STATUS")
     recommend_list: list = Field(default_factory=list, alias="RECOMMENDLIST")
     songs: list[Song] = Field(alias="CHARTLIST")
@@ -115,6 +137,7 @@ class DailyChart(BaseModel):
 
 
 class WeeklyAwardEntry(BaseModel):
+    """One ranked candidate in the weekly popularity award's ``WEEKRANKLIST``."""
     current_rank: int = Field(alias="CURRANK")
     song_name: str = Field(alias="SONGNAME")
     artist_id: str = Field(alias="ARTISTID")
@@ -128,6 +151,7 @@ class WeeklyAwardEntry(BaseModel):
 
 
 class MusicAward(BaseModel):
+    """Weekly popularity-award metadata and its ranked vote entries."""
     title: str = Field(alias="TITLE")
     award_month: int = Field(alias="AWARDMONTH")
     award_week: int = Field(alias="AWARDWEEK")
@@ -139,6 +163,7 @@ class MusicAward(BaseModel):
 
 
 class WeeklyChart(BaseModel):
+    """Weekly Top 100 response, including its chart date range and music award."""
     music_award: MusicAward = Field(alias="MUSICAWARD")
     status: str = Field(alias="STATUS")
     review: dict | None = Field(default=None, alias="REVIEW")
@@ -156,6 +181,7 @@ class WeeklyChart(BaseModel):
 
 
 class Hot100Chart(BaseModel):
+    """Hot 100 chart snapshot, with songs returned under ``SONGLIST``."""
     rank_day: str = Field(alias="RANKDAY")
     rank_hour: str = Field(alias="RANKHOUR")
     status: str = Field(alias="STATUS")
@@ -171,6 +197,7 @@ class Hot100Chart(BaseModel):
 
 
 class ReportArtist(BaseModel):
+    """Artist details embedded in a chart-report song, including optional profile data."""
     artist_id: str = Field(alias="ARTISTID")
     name: str = Field(alias="ARTISTNAME")
     act_type_name: str | None = Field(default=None, alias="ACTTYPENAME")
@@ -182,6 +209,7 @@ class ReportArtist(BaseModel):
 
 
 class ReportSongInfo(BaseModel):
+    """Song metadata and current ranking at the top of a chart report."""
     song_id: str = Field(alias="SONGID")
     title: str = Field(alias="SONGNAME")
     album_id: str = Field(alias="ALBUMID")
@@ -199,23 +227,27 @@ class ReportSongInfo(BaseModel):
     @field_validator("current_rank", "past_rank", "rank_gap", mode="before")
     @classmethod
     def empty_string_to_zero(cls, value):
+        """Convert a blank report rank from the API into ``0``."""
         if value == "":
             return 0
         return value
 
 
 class ListenerChartTitle(BaseModel):
+    """Templated listener-chart title; ``value`` replaces ``value_placeholder``."""
     value_placeholder: str = Field(alias="VALUEPLACEHOLDER")
     text: str = Field(alias="TEXT")
     value: str = Field(alias="VALUE")
 
 
 class InfoListItem(BaseModel):
+    """A title/text explanatory item shown with a chart report graph."""
     title: str = Field(alias="TITLE")
     text: str = Field(alias="TEXT")
 
 
 class ListenerChartInfo(BaseModel):
+    """Descriptive copy and update notes for the listener chart."""
     title: str = Field(alias="TITLE")
     desc: str = Field(alias="DESC")
     info_list: list[InfoListItem] = Field(alias="INFOLIST")
@@ -223,6 +255,7 @@ class ListenerChartInfo(BaseModel):
 
 
 class ListenerChart(BaseModel):
+    """Recent-listener graph, including axis bounds, observations, and display copy."""
     x_labels: list = Field(default_factory=list, alias="XLABELS")
     y_minimum: int = Field(alias="YMINIMUM")
     y_maximum: int = Field(alias="YMAXIMUM")
@@ -232,16 +265,19 @@ class ListenerChart(BaseModel):
 
 
 class ListenerData(BaseModel):
+    """Current one-hour and one-day listener values; unavailable values are ``'-'``."""
     one_hour: str = Field(alias="ONEHOUR")
     one_day: str = Field(alias="ONEDAY")
 
 
 class RankChartXLabel(BaseModel):
+    """A rank-chart x-axis label, optionally highlighted for current/predicted time."""
     x_label: str = Field(alias="XLABEL")
     highlighting: bool = Field(alias="HIGHLIGHTING")
 
 
 class RankChartDataPoint(BaseModel):
+    """One actual or predicted rank observation in the chart report."""
     x_index: int = Field(alias="XINDEX")
     value: int = Field(alias="VALUE")
     label: str = Field(alias="LABEL")
@@ -249,18 +285,21 @@ class RankChartDataPoint(BaseModel):
 
 
 class RankChartTitle(BaseModel):
+    """Templated title for the rank trend and prediction graph."""
     value_placeholder: str = Field(alias="VALUEPLACEHOLDER")
     text: str = Field(alias="TEXT")
     value: str = Field(alias="VALUE")
 
 
 class RankChartInfo(BaseModel):
+    """Descriptive copy and update notes for the rank trend graph."""
     title: str = Field(alias="TITLE")
     desc: str = Field(alias="DESC")
     info_list: list[InfoListItem] = Field(alias="INFOLIST")
 
 
 class RankChart(BaseModel):
+    """Rank history and optional predicted points from a song chart report."""
     x_labels: list[RankChartXLabel] = Field(alias="XLABELS")
     y_minimum: int = Field(alias="YMINIMUM")
     y_maximum: int = Field(alias="YMAXIMUM")
@@ -271,12 +310,14 @@ class RankChart(BaseModel):
 
 
 class YesterChartInfoTitle(BaseModel):
+    """Templated title describing the previous day's chart placement."""
     value_placeholder: str = Field(alias="VALUEPLACEHOLDER")
     text: str = Field(alias="TEXT")
     value: str = Field(alias="VALUE")
 
 
 class YesterChartInfo(BaseModel):
+    """Previous-day rank, best-record summaries, and daily-record metadata."""
     title: YesterChartInfoTitle = Field(alias="TITLE")
     first_info_label: str = Field(alias="FIRSTINFOLABEL")
     first_info_value: str = Field(alias="FIRSTINFOVALUE")
@@ -287,15 +328,18 @@ class YesterChartInfo(BaseModel):
 
 
 class NextButton(BaseModel):
+    """The next-song target exposed by the chart report footer."""
     song_id: str = Field(alias="SONGID")
     label: str = Field(alias="LABEL")
 
 
 class FootButton(BaseModel):
+    """Footer navigation container for a chart report."""
     next_button: NextButton = Field(alias="NEXTBUTTON")
 
 
 class TLog(BaseModel):
+    """Expanded chart-report tracking metadata, including the reported song identity."""
     menu_id: str = Field(alias="MENUID")
     section: str = Field(alias="SECTION")
     page: str = Field(alias="PAGE")
@@ -306,6 +350,7 @@ class TLog(BaseModel):
 
 
 class ChartReport(BaseModel):
+    """Full per-song report: listener metrics, rank history, prediction, and daily record."""
     result_code: str = Field(alias="RESULTCODE")
     response_type: str = Field(alias="RESPONSE")
     cp_plan_code: str = Field(alias="CPLANCODE")
@@ -326,6 +371,7 @@ class ChartReport(BaseModel):
 
 
 class GraphDataPoint(BaseModel):
+    """An hourly Hot 100 graph point with score and rank-event flags."""
     x: int = Field(alias="X")
     value: float = Field(alias="VAL")
     top_count_tick: int = Field(alias="TOPCNTTIC")
@@ -336,15 +382,17 @@ class GraphDataPoint(BaseModel):
 
 
 class EntGraphDataPoint(BaseModel):
+    """An entertainment-chart rank point aligned to the hourly graph x-axis."""
     x: int = Field(alias="X")
     rank: int = Field(alias="RANK")
 
 
 class GraphChartInfo(Song):
-    pass
+    """Song metadata embedded with an hourly graph series."""
 
 
 class GraphDataList(BaseModel):
+    """One song's hourly Hot 100 series and ranking summary."""
     graph_rank: int = Field(alias="GRAPHRANK")
     song_id: str = Field(alias="SONGID")
     peek_time: str = Field(alias="PEEKTIME")
@@ -361,6 +409,7 @@ class GraphDataList(BaseModel):
 
 
 class ChartGraph(BaseModel):
+    """Hourly Hot 100 graph response with shared categories and per-song series."""
     x_categories: list[str] = Field(alias="XCATE")
     ent_chart_x_categories: list[str] = Field(alias="ENTCHARTXCATE")
     standard: str = Field(alias="STANDARD")
@@ -382,11 +431,13 @@ class ChartGraph(BaseModel):
 
 
 class FiveGraphDataPoint(BaseModel):
+    """A five-minute Hot 100 graph score point."""
     x: int = Field(alias="X")
     value: float = Field(alias="VAL")
 
 
 class FiveGraphDataList(BaseModel):
+    """One song's five-minute graph series and current score summary."""
     song_id: str = Field(alias="SONGID")
     last_group_current_score: float = Field(alias="LSTGRPCURSCORE")
     graph_data: list[FiveGraphDataPoint] = Field(alias="GRAPHDATA")
@@ -396,6 +447,7 @@ class FiveGraphDataList(BaseModel):
 
 
 class FiveGraph(BaseModel):
+    """Five-minute Hot 100 graph response returned by the graph endpoint."""
     graph_data_list: list[FiveGraphDataList] = Field(alias="GRAPHDATALIST")
     x_categories: list[str] = Field(alias="XCATE")
     five_time: str = Field(alias="FIVETIME")
@@ -413,16 +465,19 @@ class FiveGraph(BaseModel):
 
 
 class SearchTypeItem(BaseModel):
+    """An artist-chart category option from ``SEARCHTYPELIST``."""
     type_code: str = Field(alias="TYPECODE")
     type_code_name: str = Field(alias="TYPECODENAME")
 
 
 class ArtistChartInfo(BaseModel):
+    """Link metadata that accompanies the artist chart."""
     open_link: str = Field(alias="OPENLINK")
     open_type: str = Field(alias="OPENTYPE")
 
 
 class ArtistChartEntry(BaseModel):
+    """One artist-chart ranking with fan counts and the component score indices."""
     artist_id: str = Field(alias="ARTISTID")
     name: str = Field(alias="ARTISTNAME")
     act_type_name: str = Field(alias="ACTTYPENAME")
@@ -452,12 +507,14 @@ class ArtistChartEntry(BaseModel):
     @field_validator("current_rank", "past_rank", "rank_gap", mode="before")
     @classmethod
     def empty_string_to_zero(cls, value):
+        """Convert a blank artist-chart rank from the API into ``0``."""
         if value == "":
             return 0
         return value
 
 
 class ArtistChart(BaseModel):
+    """Artist chart response, including category choices and ranked artist entries."""
     status: str = Field(alias="STATUS")
     search_type_list: list[SearchTypeItem] = Field(alias="SEARCHTYPELIST")
     artists: list[ArtistChartEntry] = Field(alias="CHARTLIST")

@@ -1,3 +1,10 @@
+"""Synchronous client for Melon's chart endpoints.
+
+Every endpoint returns an envelope whose parsed payload is in ``response``.
+The methods in :class:`MelonClient` unwrap that envelope and validate it with
+the matching model.
+"""
+
 import httpx
 from typing import Literal
 from melon.models import ArtistChart, ChartGraph, DailyChart, FiveGraph, Hot100Chart, RealtimeChart, ChartReport, Top100Chart, WeeklyChart
@@ -14,7 +21,10 @@ ARTIST_CHART_URL = "https://m2.melon.com/chart/artist/artistChartList.json"
 
 
 class MelonClient:
+    """Reusable synchronous HTTP client for Melon chart and chart-graph APIs."""
+
     def __init__(self, timeout: float = 10.0):
+        """Create the underlying HTTP client with the timeout in seconds."""
         self.client = httpx.Client(timeout=timeout)
 
     def get_realtime_chart(
@@ -28,6 +38,11 @@ class MelonClient:
         is_recom: str = "N",
         page_size: int = 100,
     ) -> RealtimeChart:
+        """Fetch the hourly chart snapshot.
+
+        Returns songs from ``CHARTLIST`` plus its date/time snapshot. ``page_size``
+        controls the number of entries requested (100 by default).
+        """
         params = {
             "cpId": cp_id,
             "cpKey": cp_key,
@@ -50,6 +65,7 @@ class MelonClient:
         cp_key: str = "14LNC3",
         app_ver: str = "6.2.0",
     ) -> ChartReport:
+        """Fetch the listener and rank-history report for ``song_id``."""
         params = {
             "cpId": cp_id,
             "cpKey": cp_key,
@@ -67,6 +83,7 @@ class MelonClient:
         cp_key: str = "17LNM9",
         app_ver: str = "6.22.1",
     ) -> Top100Chart:
+        """Fetch the current Top 100 chart, whose songs are in ``SONGLIST``."""
         params = {
             "cpId": cp_id,
             "cpKey": cp_key,
@@ -83,6 +100,7 @@ class MelonClient:
         cp_key: str = "17LNM9",
         app_ver: str = "6.22.1",
     ) -> DailyChart:
+        """Fetch the daily Top 100 chart; its API may return a null rank date."""
         params = {
             "cpId": cp_id,
             "cpKey": cp_key,
@@ -99,6 +117,7 @@ class MelonClient:
         cp_key: str = "17LNM9",
         app_ver: str = "6.22.1",
     ) -> WeeklyChart:
+        """Fetch the weekly Top 100 chart and its weekly popularity-award data."""
         params = {
             "cpId": cp_id,
             "cpKey": cp_key,
@@ -116,6 +135,7 @@ class MelonClient:
         cp_key: str = "17LNM9",
         app_ver: str = "6.22.1",
     ) -> Hot100Chart:
+        """Fetch a Hot 100 snapshot for ``D30`` or ``D100`` (default)."""
         params = {
             "chartType": chart_type,
             "cpId": cp_id,
@@ -133,6 +153,7 @@ class MelonClient:
         cp_id: str = "IS40",
         cp_key: str = "17LNM9",
     ) -> ChartGraph:
+        """Fetch the hourly Hot 100 score/rank graph series."""
         params = {
             "v": v,
             "cpId": cp_id,
@@ -149,6 +170,7 @@ class MelonClient:
         cp_id: str = "IS40",
         cp_key: str = "17LNM9",
     ) -> FiveGraph:
+        """Fetch the five-minute Hot 100 score graph series."""
         params = {
             "v": v,
             "cpId": cp_id,
@@ -169,6 +191,7 @@ class MelonClient:
         cp_key: str = "17LNM9",
         app_ver: str = "6.22.1",
     ) -> ArtistChart:
+        """Fetch a paginated artist chart for the selected ``search_type``."""
         params = {
             "pageSize": page_size,
             "searchType": search_type,
@@ -184,10 +207,13 @@ class MelonClient:
         return ArtistChart.model_validate(raw["response"])
 
     def close(self):
+        """Close the underlying :class:`httpx.Client`."""
         self.client.close()
 
     def __enter__(self):
+        """Return this client for use in a ``with MelonClient()`` block."""
         return self
 
     def __exit__(self, *args):
+        """Close the HTTP client when the context-manager block exits."""
         self.close()
