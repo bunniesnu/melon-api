@@ -111,7 +111,7 @@ wheels = [
 ]
 
 [[package]]
-name = "melon-chart"
+name = "melon-api"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
