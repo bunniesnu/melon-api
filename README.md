@@ -16,13 +16,13 @@ An unofficial API SDK for Melon music app — a Python client for fetching, mode
 ## Installation
 
 ```bash
-pip install melon-api
+pip install melon-api-client
 ```
 
 Or with uv:
 
 ```bash
-uv add melon-api
+uv add melon-api-client
 ```
 
 ## Usage
