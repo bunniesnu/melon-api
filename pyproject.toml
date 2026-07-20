@@ -1,7 +1,7 @@
 [project]
-name = "melon-chart"
+name = "melon-api-client"
 version = "0.1.0"
-description = "An unofficial API SDK for melon charts"
+description = "An unofficial API SDK for melon app"
 readme = "README.md"
 authors = [
     { name = "Bunniesnu", email = "bunniesnu@gmail.com" }
@@ -32,5 +32,5 @@ markers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/bunniesnu/melon-chart"
-Repository = "https://github.com/bunniesnu/melon-chart"
+Homepage = "https://github.com/bunniesnu/melon-api"
+Repository = "https://github.com/bunniesnu/melon-api"
