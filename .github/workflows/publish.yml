@@ -51,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/p/melon-api
+      url: https://pypi.org/p/melon-api-client
     permissions:
       id-token: write  # required for trusted publishing (OIDC)
     steps:
