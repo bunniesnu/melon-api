@@ -1,6 +1,6 @@
-# melon-chart
+# melon-api
 
-An unofficial API SDK for Melon music charts — a Python client for fetching, modeling, and persisting chart data from multiple Melon endpoints.
+An unofficial API SDK for Melon music app — a Python client for fetching, modeling, and persisting data from multiple Melon endpoints.
 
 ## Features
 
@@ -16,13 +16,13 @@ An unofficial API SDK for Melon music charts — a Python client for fetching, m
 ## Installation
 
 ```bash
-pip install melon-chart
+pip install melon-api
 ```
 
 Or with uv:
 
 ```bash
-uv add melon-chart
+uv add melon-api
 ```
 
 ## Usage
@@ -48,8 +48,8 @@ with MelonClient() as client:
 Clone the repo and install with dev dependencies:
 
 ```bash
-git clone https://github.com/bunniesnu/melon-chart.git
-cd melon-chart
+git clone https://github.com/bunniesnu/melon-api.git
+cd melon-api
 make install
 ```
 
@@ -97,7 +97,7 @@ make publish
 ## Project structure
 
 ```
-melon-chart/
+melon-api/
 ├── src/melon/       # package source
 ├── tests/           # test suite
 ├── data/            # output JSON files (gitignored)
@@ -113,8 +113,8 @@ melon-chart/
 
 ## Links
 
-- [Repository](https://github.com/bunniesnu/melon-chart)
-- [PyPI](https://pypi.org/project/melon-chart/)
+- [Repository](https://github.com/bunniesnu/melon-api)
+- [PyPI](https://pypi.org/project/melon-api/)
 
 ## License
 
