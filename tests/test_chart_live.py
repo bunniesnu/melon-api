@@ -109,3 +109,21 @@ class TestMelonClientLive:
         assert album_info.album.name
         assert len(album_info.album.artist_list) > 0
         assert album_info.album.artist_list[0].artist_id
+
+    def test_get_album_songs_returns_valid_response(self):
+        with MelonClient() as client:
+            album_songs = client.get_album_songs("13788545")
+
+        assert album_songs.result_code == "0"
+        assert album_songs.total_song_count > 0
+        assert len(album_songs.discs) > 0
+
+        disc = album_songs.discs[0]
+        assert len(disc.songs) > 0
+
+        song = disc.songs[0]
+        assert song.song_id
+        assert song.title
+        assert song.album_id == "13788545"
+        assert song.artists
+        assert song.artists[0].artist_id

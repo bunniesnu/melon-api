@@ -2,6 +2,7 @@ from pydantic import Field
 
 from melon.models.base import MelonModel
 from melon.models.common import ArtistInfo, Genre, TLog
+from melon.models.song import AlbumSong
 
 class Album(MelonModel):
     """Core album metadata returned in an album-detail response."""
@@ -93,3 +94,18 @@ class AlbumInfo(MelonModel):
     section: str = Field(alias="SECTION")
     page: str = Field(alias="PAGE")
     tlog: TLog = Field(alias="TLOG")
+
+class AlbumDisc(MelonModel):
+    cd_no: int = Field(alias="CDNO")
+    songs: list[AlbumSong] = Field(alias="SONGLIST")
+
+class AlbumSongs(MelonModel):
+    """Album-detail response with the album's song list included."""
+    result_code: str = Field(alias="RESULTCODE")
+    response_type: str = Field(alias="RESPONSE")
+    cp_plan_code: str = Field(alias="CPLANCODE")
+    menu_id: str = Field(alias="MENUID")
+    discs: list[AlbumDisc] = Field(alias="CDLIST")
+    total_song_count: int = Field(alias="TOTSONGCNT")
+    is_classic: str = Field(alias="ISCLASSIC")
+    total_playtime: str = Field(alias="TOTPLAYTIME")

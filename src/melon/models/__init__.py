@@ -5,7 +5,8 @@ Each field alias below maps one of those wire-format keys to a Pythonic attribut
 """
 
 from .album import (
-    AlbumInfo
+    AlbumInfo,
+    AlbumSongs
 )
 from .artist import (
     ArtistChart
@@ -46,4 +47,5 @@ __all__ = [
     "FiveGraph",
     "ArtistChart",
     "AlbumInfo",
+    "AlbumSongs",
 ]

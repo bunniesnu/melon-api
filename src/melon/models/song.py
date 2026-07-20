@@ -78,3 +78,6 @@ class ReportSongInfo(MelonModel):
 
 class GraphChartInfo(ChartSong):
     """Song metadata embedded with an hourly graph series."""
+
+class AlbumSong(BaseSong):
+    track_no: int = Field(alias="TRACKNO")

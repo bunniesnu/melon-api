@@ -883,3 +883,73 @@ def sample_album_info():
         },
         "httpDomain":"http://m2.melon.com"
     }
+
+@pytest.fixture
+def sample_album_songs():
+    return {
+        "httpsDomain": "https://m2.melon.com",
+        "response": {
+            "ISCLASSIC": "N",
+            "RESULTCODE": "0",
+            "RESPONSE": "albumListSong",
+            "CPLANCODE": "0",
+            "MENUID": "1000000461",
+            "CDLIST": [
+                {
+                    "CDNO": "1",
+                    "SONGLIST": [
+                    {
+                        "SONGID": "602450078",
+                        "SONGNAME": "Pretty Girl",
+                        "ALBUMID": "13788545",
+                        "ALBUMNAME": "Pretty Girl - Special Single",
+                        "ARTISTLIST": [
+                            {
+                                "ARTISTID": "3709231",
+                                "ARTISTNAME": "RESCENE (리센느)"
+                            }
+                        ],
+                        "PLAYTIME": "210",
+                        "GENRELIST": [
+                            {
+                                "GENRECODE": "GC0011",
+                                "GENRENAME": "Dance"
+                            },
+                            {
+                                "GENRECODE": "GC0091",
+                                "GENRENAME": "아이돌 여자"
+                            },
+                            {
+                                "GENRECODE": "GC0093",
+                                "GENRENAME": "아이돌 댄스"
+                            },
+                            {
+                                "GENRECODE": "GC0167",
+                                "GENRENAME": "댄스 20'"
+                            }
+                        ],
+                        "ISMV": True,
+                        "ISADULT": False,
+                        "ISFREE": False,
+                        "ISHITSONG": False,
+                        "ISHOLDBACK": False,
+                        "ISTITLESONG": True,
+                        "ISSERVICE": True,
+                        "ISTRACKZERO": False,
+                        "ALBUMIMG": "https://cdnimg.melon.co.kr/cm2/album/images/137/88/545/13788545_20260707111659_500.jpg?3ef0f9e6af1ea09e3f919c7cb69065ed/melon/resize/144/optimize/90",
+                        "ALBUMIMGPATH": "https://cdnimg.melon.co.kr/cm2/album/images/137/88/545/13788545_20260707111659_500.jpg?3ef0f9e6af1ea09e3f919c7cb69065ed/melon/resize/144/optimize/90",
+                        "ALBUMIMGLARGE": "https://cdnimg.melon.co.kr/cm2/album/images/137/88/545/13788545_20260707111659_500.jpg?3ef0f9e6af1ea09e3f919c7cb69065ed/melon/optimize/90",
+                        "ALBUMIMGSMALL": "https://cdnimg.melon.co.kr/cm2/album/images/137/88/545/13788545_20260707111659_500.jpg?3ef0f9e6af1ea09e3f919c7cb69065ed/melon/resize/50/optimize/90",
+                        "ISSUEDATE": "-",
+                        "CTYPE": "1",
+                        "CONTSTYPECODE": "N10001",
+                        "TRACKNO": "1"
+                    }
+                    ]
+                }
+            ],
+            "TOTSONGCNT": "1",
+            "TOTPLAYTIME": "3분 30초"
+        },
+        "httpDomain": "http://m2.melon.com"
+    }
