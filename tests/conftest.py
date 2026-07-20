@@ -778,3 +778,108 @@ def sample_artist_chart_response():
         },
         "httpDomain": "http://m2.melon.com"
     }
+
+@pytest.fixture
+def sample_album_info():
+    return {
+        "httpsDomain": "https://m2.melon.com",
+        "response": {
+            "RESULTCODE": "0",
+            "RESPONSE": "albumInfo",
+            "CPLANCODE": "0",
+            "MENUID": "1000000461",
+            "ALBUMINFO": {
+                "ISSERVICE": True,
+                "ALBUMID": "13788545",
+                "ALBUMNAME": "Pretty Girl - Special Single",
+                "ISSUEDATE": "2026.07.08",
+                "ISTRACKZERO": False,
+                "ALBUMIMG": "https://cdnimg.melon.co.kr/cm2/album/images/137/88/545/13788545_20260707111659_500.jpg?3ef0f9e6af1ea09e3f919c7cb69065ed",
+                "ALBUMIMGLARGE": "https://cdnimg.melon.co.kr/cm2/album/images/137/88/545/13788545_20260707111659_1000.jpg?3ef0f9e6af1ea09e3f919c7cb69065ed",
+                "SONGCNT": "1",
+                "CTYPE": "2",
+                "CONTSTYPECODE": "N10002",
+                "ARTISTLIST": [
+                    {
+                        "ARTISTID": "3709231",
+                        "ARTISTNAME": "RESCENE (리센느)",
+                        "ACTTYPENAME": None,
+                        "DEBUTDAY": None,
+                        "BIRTHDAY": None,
+                        "ARTISTIMG": "https://cdnimg.melon.co.kr/cm2/artistcrop/images/037/09/231/3709231_20260701101738_500.jpg?78297ceffb4a156b74f31cc249aa2b51/melon/resize/220/optimize/90",
+                        "IMAGETYPE": "S",
+                        "CONTSTYPECODE": "N10006"
+                    }
+                ]
+            },
+            "TOTAVRGSCOREINFO": {
+                "TITLE": "평점 부여 권한",
+                "TEXT": "클린한 평점 환경을 위해\r\n24시간 이내에\r\n다운로드 받은 파일 재생,\r\n스트리밍으로 감상한 경우에만\r\n평점 부여가 가능합니다.\r\n참고하여 서비스 이용 바랍니다.\r\n\r\n* 접속자가 많은 경우\r\n평점주기가 지연 될 수 있습니다.",
+                "TOTAVRGSCORE": "4.9",
+                "PTCPNMPRCO": "1946"
+            },
+            "LIKECNT": "13207",
+            "ISDOLBYATMOS": True,
+            "ISMASTERPIECE": False,
+            "BOOKLETIMGLIST": None,
+            "ALBUMPRICE": "",
+            "ALBUMPRICEFLAC16": "",
+            "ALBUMPRICEFLAC24": "",
+            "ALBUMFLACINFO": "FLAC",
+            "ALBUMMESSAGE": "",
+            "BBSCHANNELSEQ": "102",
+            "BBSCONTSREFVALUE": "13788545",
+            "POSTIMG": "https://cdnimg.melon.co.kr/cm2/album/images/137/88/545/13788545_20260707111659_500.jpg/melon/optimize/90",
+            "POSTEDITIMG": "https://cdnimg.melon.co.kr/cm2/album/images/137/88/545/13788545_20260707111659_500.jpg/melon/resize/144/optimize/90",
+            "TITLESONGINFO": {
+                "SONGID": "602450078",
+                "SONGNAME":"Pretty Girl"
+            },
+            "ARTISTNOTEINFO": {
+                "ALBUMID": "13788545",
+                "ARTISTID": "3709887",
+                "ARTISTNOTE": "안녕~ 리마인 원이입니다! 이번 앨범은 프리티 원이로 돌아왔어요. 이 곡을 듣는 모든 분들의 발걸음이 어디서든 당당해졌으면 좋겠습니다! 첫 리메이크 곡인 만큼 많이 사랑해주세요! 리마인 사랑해\U0001F497\U0001F61D","ARTISTNAME":"원이 (WONI)",
+                "ARTISTIMG": "https://cdnimg.melon.co.kr/cm2/artistcrop/images/037/09/887/3709887_20260701101801.jpg?b18a48740a42a972a398c8d6e8584217",
+                "ISSUEDATE": "2026.07.08"
+            },
+            "ARTISTNOTEALLBUTTONFLAG": True,
+            "GENRELIST": [
+                {
+                    "GENRECODE": "GN0200",
+                    "GENRENAME": "댄스"
+                }
+            ],
+            "ISSUEDATE": "2026.07.08",
+            "REPORT": "RESCENE [Pretty Girl - Special Single] \n \n5세대 대세 걸그룹 '리센느(RESCENE)' \n자몽향을 가득 담아 리센느만의 청량함으로 재해석한 2세대 레전드 명곡, ‘Pretty Girl’ \n \n2세대 대표 아이돌 카라(KARA)의 메가 히트곡 ‘Pretty Girl’이 독보적인 콘셉트로 매 앨범마다 특별한 향기를 선사하는 걸그룹 리센느(RESCENE)의 목소리를 통해 재탄생했다. \n \n원곡 특유의 깜찍 발랄함과 당당한 매력으로 큰 사랑을 받았던 대표적인 틴팝(Teen Pop) 장르의 느낌을 유지하면서도, 입안 가득 톡 터지는 '자몽향'처럼 상큼하고 청량감 넘치는 편곡으로 선명하고 싱그러운 이미지를 더했다. \n \n이번 리메이크는 원곡의 중독성 있는 멜로디 라인을 살리면서도 트랙 전반의 사운드 아키텍처를 다듬어 음악적 완성도를 높였다. 기존의 기타 사운드에 강렬한 디스토션(Distortion) 사운드를 가미하여 곡의 전체적인 윤곽을 한층 더 선명하게 잡아주었으며, 여기에 리센느만의 세련된 감성을 느낄 수 있도록 감각적인 신스(Synth) 소스들을 추가해 세련된 공간감을 연출했다. 특히 묵직한 타격감이 돋보이는 드럼의 활용으로 트랙의 무게중심을 아래로 낮추어, 리센느만의 깊이 있고 탄탄한 베이스 라인을 강조하는 스타일을 완성해 냈다. \n \n이렇듯 견고해진 트랙의 무게감 위로 원곡의 탑라인에 리센느의 맑고 부드러운 보컬을 더해, 전반적인 에너지가 한층 더 입체적으로 업그레이드되었다. 청각을 넘어 시각과 후각까지 자극하는 리센느만의 선명하고 청량한 '자몽향' 가득한 ‘Pretty Girl’은 올여름 대중들의 귀를 완벽하게 사로잡을 것이다. \n \nTRACKLIST CREDIT \n01. Pretty Girl \nLyrics by 송수윤, 한재호, 김승수 \nComposed by 한재호, 김승수 \nArranged by 한재호, 김승수, 이주헌 (The Muze), 더풀킴 (The Muze), 황세영 \n \nVocal Directed by 이주헌, 더풀킴, 김보아 \nBackground Vocals by 김보아, 미나미 \n \nRecorded by 장우영 @DOOBDOOB STUDIO \nMixed by Simon Bergseth @Stadion Studio \nMastered by 권남우 @821 SOUND \n","ALBUMTYPE":"싱글","SELLCNPY":"지니뮤직, STONE MUSIC","PLANCNPY":"더뮤즈엔터테인먼트",
+            "CREDITLIST": None,
+            "REPORTPREVIEW": "RESCENE [Pretty Girl - Special Single]  5세대 대세 걸그룹 '리센느(RESCENE)' 자몽향을 가득 담아 리센느만의 청량함으로 재해석한 2세대 레전드 명곡, ‘Pretty Girl’  2세대 대표 아이돌 카라(KARA)의 메가 히트곡 ‘Pretty Girl’이 독보적인 콘셉트로 매 앨범마다 특별한 향기를 선사하는 걸그룹 리센느(RESCENE)의 목소리를 통해 재탄생했다.  원곡 특유의 깜찍 발랄함과 당당한 매력으로 큰 사랑을 받았던 대표적인 틴팝(Teen Pop) 장르의 느낌을 유지하면서도, 입안 가득 톡 터지는 '자몽향'처럼 상큼하고 청량감 넘치는 편곡으로 선명하고 싱그러운 이미지를 더했다.  이번 리메이크는 원곡의 중독성 있는 멜로디 라인을 살리면서도 트랙 전반의 사운드 아키텍처를 다듬어 음악적 완성도를 높였다. 기존의 기타 사운드에 강렬한 디스토션(Distortion) 사운드를 가미하여 곡의 전체적인 윤곽을 한층 더 선명하게 잡아주었으며, 여기에 리센느만의 세련된 감성을 느낄 수 있도록 감각적인 신스(Synth) 소스들을 추가해 세련된 공간감을 연출했다. 특히 묵직한 타격감이 돋보이는 드럼의 활용으로 트랙의 무게중심을 아래로 낮추어, 리센느만의 깊이 있고 탄탄한 베이스 라인을 강조하는 스타일을 완성해 냈다.  이렇듯 견고해진 트랙의 무게감 위로 원곡의 탑라인에 리센느의 맑고 부드러운 보컬을 더해, 전반적인 에너지가 한층 더 입체적으로 업그레이드되었다. 청각을 넘어 시각과 후각까지 자극하는 리센느만의 선명하고 청량한 '자몽향' 가득한 ‘Pretty Girl’은 올여름 대중들의 귀를 완벽하게 사로잡을 것이다.  TRACKLIST CREDIT 01. Pretty Girl Lyrics by 송수윤, 한재호, 김승수 Composed by 한재호, 김승수 Arranged by 한재호, 김승수, 이주헌 (The Muze), 더풀킴 (The Muze), 황세영  Vocal Directed by 이주헌, 더풀킴, 김보아 Background Vocals by 김보아, 미나미  Recorded by 장우영 @DOOBDOOB STUDIO Mixed by Simon Bergseth @Stadion Studio Mastered by 권남우 @821 SOUND",
+            "SPOTLIGHTBUTTONFLAG": "N",
+            "HIRISINGBUTTONFLAG": "N",
+            "MILLIONSINFO": {
+                "HISTDATA": 580502,
+                "ISSUEDATE": "202607081800",
+                "HISTINFO": "ST",
+                "ISNOW": "N",
+                "ISCOUNTING": "N",
+                "REACHINGINFO": "",
+                "ACCUMDATA":"580502",
+                "LINK": {
+                    "LINKTYPE":"ZA",
+                    "LINKURL":""
+                }
+            },
+            "DUMMYTEXT": "22#_h8Si9Rj0Qk!Pl@OmN#nM$oL%pK^qJ&r*IsH(tG)uF-v:Ew;Dx=Cy{Bz}A<>a1Zb2Yc_l@OmN#nM$oL%pK^qJ&r*IsH(tG)uF-v:Ew;Dx=Cy{Bz}A<>a",
+            "SECTION": "앨범상세",
+            "PAGE": "앨범상세_앨범홈",
+            "TLOG": {
+                "MENUID": "1000000461",
+                "SECTION": "앨범상세",
+                "PAGE": "앨범상세_앨범홈",
+                "CONTSTYPECODE": "N10002",
+                "CONTSTYPENAME": "앨범",
+                "CONTSID": "13788545",
+                "CONTSNAME": "Pretty Girl - Special Single"
+            }
+        },
+        "httpDomain":"http://m2.melon.com"
+    }

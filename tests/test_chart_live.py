@@ -99,3 +99,13 @@ class TestMelonClientLive:
         assert first_artist.artist_id
         assert first_artist.name
         assert first_artist.total_fan_count >= 0
+
+    def test_get_album_info_returns_valid_response(self):
+        with MelonClient() as client:
+            album_info = client.get_album_info("13788545")
+
+        assert album_info.result_code == "0"
+        assert album_info.album.album_id == "13788545"
+        assert album_info.album.name
+        assert len(album_info.album.artist_list) > 0
+        assert album_info.album.artist_list[0].artist_id
