@@ -46,6 +46,9 @@ from .common import (
     Artist,
     Genre
 )
+from .magazine import (
+    Magazine,
+)
 
 __all__ = [
     "Artist",
@@ -72,4 +75,5 @@ __all__ = [
     "ArtistChart",
     "AlbumInfo",
     "AlbumSongs",
+    "Magazine",
 ]

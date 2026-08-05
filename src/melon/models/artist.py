@@ -2,6 +2,7 @@ from pydantic import Field, field_validator
 
 from melon.models.base import MelonModel
 from melon.models.common import Artist, ChartTLog, TLog
+from melon.models.magazine import Magazine
 from melon.models.photo import Photo
 from melon.models.song import BaseSong
 from melon.models.video import Video
@@ -201,6 +202,17 @@ class ArtistDetail(MelonModel):
     member_list: list[ArtistMember] = Field(alias="MEMBERLIST")
     week_award_list: list[ArtistWeekAward] = Field(alias="WEEKAWARDLIST")
     dummy_text: str = Field(alias="DUMMYTEXT")
+    section: str = Field(alias="SECTION")
+    page: str = Field(alias="PAGE")
+    tlog: TLog = Field(alias="TLOG")
+
+class ArtistMagazines(MelonModel):
+    """Artist magazine-list response, including pagination state and magazine entries."""
+
+    result_code: str = Field(alias="RESULTCODE")
+    menu_id: str = Field(alias="MENUID")
+    has_more: bool = Field(alias="HASMORE")
+    magazines: list[Magazine] = Field(alias="MAGAZINELIST")
     section: str = Field(alias="SECTION")
     page: str = Field(alias="PAGE")
     tlog: TLog = Field(alias="TLOG")
