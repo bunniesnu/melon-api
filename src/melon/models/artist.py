@@ -2,6 +2,7 @@ from pydantic import Field, field_validator
 
 from melon.models.base import MelonModel
 from melon.models.common import Artist, ChartTLog, TLog
+from melon.models.photo import Photo
 from melon.models.song import BaseSong
 from melon.models.video import Video
 
@@ -63,7 +64,7 @@ class ArtistChart(MelonModel):
     tlog: ChartTLog = Field(alias="TLOG")
 
 class ArtistSong(BaseSong):
-     """A song listed on an artist's song-list endpoint."""
+    """A song listed on an artist's song-list endpoint."""
 
 class ArtistSongs(MelonModel):
     """Artist song-list response, including pagination state and tracked songs."""
@@ -113,6 +114,19 @@ class ArtistVideos(MelonModel):
     menu_id: str = Field(alias="MENUID")
     has_more: bool = Field(alias="HASMORE")
     videos: list[Video] = Field(alias="MVLIST")
+    section: str = Field(alias="SECTION")
+    page: str = Field(alias="PAGE")
+    tlog: TLog = Field(alias="TLOG")
+
+
+class ArtistPhotos(MelonModel):
+    """Artist photo-list response, including pagination state and photo entries."""
+
+    result_code: str = Field(alias="RESULTCODE")
+    menu_id: str = Field(alias="MENUID")
+    has_more: bool = Field(alias="HASMORE")
+    photos: list[Photo] = Field(alias="PHOTOLIST")
+    artist_name: str = Field(alias="ARTISTNAME")
     section: str = Field(alias="SECTION")
     page: str = Field(alias="PAGE")
     tlog: TLog = Field(alias="TLOG")

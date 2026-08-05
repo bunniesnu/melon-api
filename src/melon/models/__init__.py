@@ -12,9 +12,13 @@ from .artist import (
     ArtistChart,
     ArtistAlbum,
     ArtistAlbums,
+    ArtistPhotos,
     ArtistSong,
     ArtistSongs,
     ArtistVideos,
+)
+from .photo import (
+    Photo,
 )
 from .video import (
     Video,
@@ -49,6 +53,8 @@ __all__ = [
     "SongDetail",
     "ArtistAlbum",
     "ArtistAlbums",
+    "Photo",
+    "ArtistPhotos",
     "ArtistSong",
     "ArtistSongs",
     "Video",
