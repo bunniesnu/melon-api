@@ -10,6 +10,8 @@ from .album import (
 )
 from .artist import (
     ArtistChart,
+    ArtistAlbum,
+    ArtistAlbums,
     ArtistSong,
     ArtistSongs,
 )
@@ -41,6 +43,8 @@ __all__ = [
     "Genre",
     "ChartSong",
     "SongDetail",
+    "ArtistAlbum",
+    "ArtistAlbums",
     "ArtistSong",
     "ArtistSongs",
     "RealtimeChart",

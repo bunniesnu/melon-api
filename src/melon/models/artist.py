@@ -1,8 +1,7 @@
 from pydantic import Field, field_validator
 
 from melon.models.base import MelonModel
-from melon.models.common import ChartTLog
-from melon.models.common import TLog
+from melon.models.common import Artist, ChartTLog, TLog
 from melon.models.song import BaseSong
 
 class SearchTypeItem(MelonModel):
@@ -66,12 +65,41 @@ class ArtistSong(BaseSong):
      """A song listed on an artist's song-list endpoint."""
 
 class ArtistSongs(MelonModel):
-     """Artist song-list response, including pagination state and tracked songs."""
+    """Artist song-list response, including pagination state and tracked songs."""
 
-     result_code: str = Field(alias="RESULTCODE")
-     menu_id: str = Field(alias="MENUID")
-     has_more: bool = Field(alias="HASMORE")
-     songs: list[ArtistSong] = Field(alias="SONGLIST")
-     section: str = Field(alias="SECTION")
-     page: str = Field(alias="PAGE")
-     tlog: TLog = Field(alias="TLOG")
+    result_code: str = Field(alias="RESULTCODE")
+    menu_id: str = Field(alias="MENUID")
+    has_more: bool = Field(alias="HASMORE")
+    songs: list[ArtistSong] = Field(alias="SONGLIST")
+    section: str = Field(alias="SECTION")
+    page: str = Field(alias="PAGE")
+    tlog: TLog = Field(alias="TLOG")
+
+
+class ArtistAlbum(MelonModel):
+    """An album listed on an artist's album-list endpoint."""
+
+    is_service: bool = Field(alias="ISSERVICE")
+    album_id: str = Field(alias="ALBUMID")
+    album_name: str = Field(alias="ALBUMNAME")
+    artist_list: list[Artist] = Field(alias="ARTISTLIST")
+    issue_date: str = Field(alias="ISSUEDATE")
+    is_track_zero: bool = Field(alias="ISTRACKZERO")
+    album_img: str = Field(alias="ALBUMIMG")
+    album_img_large: str = Field(alias="ALBUMIMGLARGE")
+    song_cnt: int = Field(alias="SONGCNT")
+    content_type: str = Field(alias="CTYPE")
+    content_type_code: str = Field(alias="CONTSTYPECODE")
+    is_masterpiece: bool = Field(alias="ISMASTERPIECE")
+
+
+class ArtistAlbums(MelonModel):
+    """Artist album-list response, including pagination state and album entries."""
+
+    result_code: str = Field(alias="RESULTCODE")
+    menu_id: str = Field(alias="MENUID")
+    has_more: bool = Field(alias="HASMORE")
+    albums: list[ArtistAlbum] = Field(alias="ALBUMLIST")
+    section: str = Field(alias="SECTION")
+    page: str = Field(alias="PAGE")
+    tlog: TLog = Field(alias="TLOG")
