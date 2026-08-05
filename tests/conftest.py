@@ -936,6 +936,37 @@ def sample_artist_videos_response():
         },
     }
 
+
+@pytest.fixture
+def sample_artist_photos_response():
+    return {
+        "httpsDomain": "https://m2.melon.com",
+        "response": {
+            "RESULTCODE": "0",
+            "MENUID": "1000000435",
+            "HASMORE": True,
+            "PHOTOLIST": [
+                {
+                    "PHOTOID": "80346787",
+                    "PHOTOIMG": "https://cdnimg.melon.co.kr/example-photo.jpg",
+                    "PHOTONAME": "프로필 이미지",
+                }
+            ],
+            "ARTISTNAME": "RESCENE (리센느)",
+            "SECTION": "아티스트상세",
+            "PAGE": "아티스트상세_아티스트포토",
+            "TLOG": {
+                "MENUID": "1000000435",
+                "SECTION": "아티스트상세",
+                "PAGE": "아티스트상세_아티스트포토",
+                "CONTSTYPECODE": "N10006",
+                "CONTSTYPENAME": "아티스트",
+                "CONTSID": "3709231",
+                "CONTSNAME": "",
+            },
+        },
+    }
+
 @pytest.fixture
 def sample_album_info():
     return {
