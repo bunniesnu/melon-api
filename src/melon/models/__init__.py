@@ -9,7 +9,9 @@ from .album import (
     AlbumSongs
 )
 from .artist import (
-    ArtistChart
+    ArtistChart,
+    ArtistSong,
+    ArtistSongs,
 )
 from .charts import (
     DailyChart,
@@ -39,6 +41,8 @@ __all__ = [
     "Genre",
     "ChartSong",
     "SongDetail",
+    "ArtistSong",
+    "ArtistSongs",
     "RealtimeChart",
     "Top100Chart",
     "DailyChart",

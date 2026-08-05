@@ -2,6 +2,8 @@ from pydantic import Field, field_validator
 
 from melon.models.base import MelonModel
 from melon.models.common import ChartTLog
+from melon.models.common import TLog
+from melon.models.song import BaseSong
 
 class SearchTypeItem(MelonModel):
     """An artist-chart category option from ``SEARCHTYPELIST``."""
@@ -59,3 +61,17 @@ class ArtistChart(MelonModel):
     section: str = Field(alias="SECTION")
     page: str = Field(alias="PAGE")
     tlog: ChartTLog = Field(alias="TLOG")
+
+class ArtistSong(BaseSong):
+     """A song listed on an artist's song-list endpoint."""
+
+class ArtistSongs(MelonModel):
+     """Artist song-list response, including pagination state and tracked songs."""
+
+     result_code: str = Field(alias="RESULTCODE")
+     menu_id: str = Field(alias="MENUID")
+     has_more: bool = Field(alias="HASMORE")
+     songs: list[ArtistSong] = Field(alias="SONGLIST")
+     section: str = Field(alias="SECTION")
+     page: str = Field(alias="PAGE")
+     tlog: TLog = Field(alias="TLOG")

@@ -6,10 +6,11 @@ the matching model.
 """
 
 from melon.chart import ChartClient
+from melon.artist import ArtistClient
 from melon.album import AlbumClient
 from melon.song import SongClient
 
-class MelonClient(ChartClient, AlbumClient, SongClient):
+class MelonClient(ChartClient, ArtistClient, AlbumClient, SongClient):
     """Reusable synchronous HTTP client for Melon chart and chart-graph APIs."""
     def __init__(self, timeout: float = 10.0):
         """Create the underlying HTTP client with the timeout in seconds."""
