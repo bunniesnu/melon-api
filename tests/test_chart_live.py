@@ -156,6 +156,16 @@ class TestMelonClientLive:
         assert first_photo.photo_name
         assert artist_photos.artist_name == "RESCENE (리센느)"
 
+    def test_get_artist_detail_returns_valid_response(self):
+        with MelonClient() as client:
+            artist_detail = client.get_artist_detail("3709231")
+
+        assert artist_detail.result_code == "0"
+        assert artist_detail.artist_id == "3709231"
+        assert artist_detail.artist_name == "RESCENE (리센느)"
+        assert artist_detail.debut_song.song_id
+        assert artist_detail.credit_info.release_song_count >= 0
+
     def test_get_album_info_returns_valid_response(self):
         with MelonClient() as client:
             album_info = client.get_album_info("13788545")

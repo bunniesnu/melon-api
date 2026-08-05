@@ -967,6 +967,107 @@ def sample_artist_photos_response():
         },
     }
 
+
+@pytest.fixture
+def sample_artist_detail_response():
+    return {
+        "httpsDomain": "https://m2.melon.com",
+        "response": {
+            "RESULTCODE": "0",
+            "MENUID": "1000000744",
+            "ARTISTID": "3709231",
+            "ARTISTNAME": "RESCENE (리센느)",
+            "CREDITINFO": {
+                "RELEASESONGCOUNT": "38"
+            },
+            "DEBUTDATE": "2024.03.26",
+            "DEBUTSONG": {
+                "SONGID": "37348529",
+                "SONGNAME": "UhUh",
+                "ALBUMID": "11450232",
+                "ALBUMNAME": "Re:Scene",
+                "ARTISTLIST": [
+                    {"ARTISTID": "3709231", "ARTISTNAME": "RESCENE (리센느)"}
+                ],
+                "PLAYTIME": "203",
+                "GENRELIST": [
+                    {"GENRECODE": "GC0011", "GENRENAME": "Dance"}
+                ],
+                "ISMV": True,
+                "ISADULT": False,
+                "ISFREE": False,
+                "ISHITSONG": False,
+                "ISHOLDBACK": False,
+                "ISTITLESONG": True,
+                "ISSERVICE": True,
+                "ISTRACKZERO": False,
+                "ALBUMIMG": "https://cdnimg.melon.co.kr/example.jpg",
+                "ALBUMIMGPATH": "https://cdnimg.melon.co.kr/example.jpg",
+                "ALBUMIMGLARGE": "https://cdnimg.melon.co.kr/example.jpg",
+                "ALBUMIMGSMALL": "https://cdnimg.melon.co.kr/example.jpg",
+                "ISSUEDATE": "2024.03.26",
+                "CTYPE": "1",
+                "CONTSTYPECODE": "N10001"
+            },
+            "NATIONALITY": "대한민국",
+            "GENDER": "여성",
+            "ACTTYPE": "그룹",
+            "ACTGENRE": "댄스, R&B/Soul, 국내드라마",
+            "COMPNAME": "더뮤즈엔터테인먼트",
+            "INTRO": "RESCENE intro",
+            "WIKIBUTTONYN": "N",
+            "AWARDLIST": [
+                {
+                    "NAME": "2026 대한민국 퍼스트브랜드 대상",
+                    "PRIOT": "여자아이돌(라이징스타)",
+                    "DATE": "2026"
+                }
+            ],
+            "SNSLIST": [
+                {
+                    "TYPE": "1",
+                    "URL": "https://x.com/RESCENEofficial"
+                }
+            ],
+            "MEMBERLIST": [
+                {
+                    "ARTISTID": "3709887",
+                    "ARTISTNAME": "원이 (WONI)",
+                    "ACTTYPENAME": "솔로",
+                    "DEBUTDAY": None,
+                    "BIRTHDAY": None,
+                    "ARTISTIMG": "https://cdnimg.melon.co.kr/member.jpg",
+                    "ACTGENRE": "",
+                    "IMAGETYPE": "S",
+                    "CONTSTYPECODE": "N10006"
+                }
+            ],
+            "WEEKAWARDLIST": [
+                {
+                    "AWARDMONTH": "2026년 07월",
+                    "AWARDWEEK": "5주차",
+                    "AWARDRANK": "1위",
+                    "SONGID": "602450078",
+                    "SONGNAME": "Pretty Girl",
+                    "ARTISTNAME": "RESCENE (리센느)",
+                    "ALBUMIMG": "https://cdnimg.melon.co.kr/album.jpg"
+                }
+            ],
+            "DUMMYTEXT": "dummy",
+            "SECTION": "아티스트상세",
+            "PAGE": "아티스트상세_상세정보",
+            "TLOG": {
+                "MENUID": "1000000744",
+                "SECTION": "아티스트상세",
+                "PAGE": "아티스트상세_상세정보",
+                "CONTSTYPECODE": "N10006",
+                "CONTSTYPENAME": "아티스트",
+                "CONTSID": "3709231",
+                "CONTSNAME": ""
+            }
+        },
+    }
+
 @pytest.fixture
 def sample_album_info():
     return {
