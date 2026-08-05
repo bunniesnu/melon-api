@@ -8,8 +8,8 @@ class SongClient(BaseClient):
         self,
         song_id: str,
         adult_flag: int = 3,
-        cp_id: str = "AS40",
-        cp_key: str = "14LNC3",
+        cp_id: str = "IS40",
+        cp_key: str = "17LNM9",
     ) -> SongDetail:
         """Fetch the song-detail response for ``song_id``."""
         params = {
