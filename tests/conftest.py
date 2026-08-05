@@ -873,6 +873,69 @@ def sample_artist_albums_response():
         },
     }
 
+
+@pytest.fixture
+def sample_artist_videos_response():
+    return {
+        "httpsDomain": "https://m2.melon.com",
+        "response": {
+            "RESULTCODE": "0",
+            "MENUID": "1000000436",
+            "HASMORE": False,
+            "MVLIST": [
+                {
+                    "MVID": "50290538",
+                    "MVNAME": "Pretty Girl (Special Video)",
+                    "BRANDKEY": "",
+                    "REPARTIST": {
+                        "ARTISTID": "3709231",
+                        "ARTISTNAME": "RESCENE (리센느)",
+                        "ARTISTIMG": "",
+                        "ISBRANDJS": False,
+                    },
+                    "ARTISTLIST": [
+                        {"ARTISTID": "3709231", "ARTISTNAME": "RESCENE (리센느)"}
+                    ],
+                    "ADULTGRADE": "ALL",
+                    "SONGID": "602450078",
+                    "SONGNAME": "Pretty Girl",
+                    "PLAYTIME": "214",
+                    "ISSONG": True,
+                    "ISADULT": False,
+                    "ISSERVICE": True,
+                    "ISSUEDATE": "2026.07.08",
+                    "MVIMG": "https://cdnimg.melon.co.kr/example.jpg",
+                    "MV169IMG": "https://cdnimg.melon.co.kr/example.jpg",
+                    "ISMV": True,
+                    "ISLIVE": False,
+                    "ISLIVESTREAMING": False,
+                    "VIEWCNT": "22312",
+                    "MVDESC": ".",
+                    "ALBUMID": "13788545",
+                    "ALBUMNAME": "Pretty Girl - Special Single",
+                    "PROGSEQ": "",
+                    "PROGNAME": "",
+                    "EPSDNAME": "",
+                    "EPSDNO": "",
+                    "EPSDNONAME": "",
+                    "CTYPE": "21",
+                    "CONTSTYPECODE": "N10003",
+                },
+            ],
+            "SECTION": "아티스트상세",
+            "PAGE": "아티스트상세_아티스트비디오",
+            "TLOG": {
+                "MENUID": "1000000436",
+                "SECTION": "아티스트상세",
+                "PAGE": "아티스트상세_아티스트비디오",
+                "CONTSTYPECODE": "N10006",
+                "CONTSTYPENAME": "아티스트",
+                "CONTSID": "3709231",
+                "CONTSNAME": "",
+            },
+        },
+    }
+
 @pytest.fixture
 def sample_album_info():
     return {

@@ -128,6 +128,20 @@ class TestMelonClientLive:
         assert first_album.artist_list
         assert first_album.artist_list[0].artist_id == "3709231"
 
+    def test_get_artist_videos_returns_valid_response(self):
+        with MelonClient() as client:
+            artist_videos = client.get_artist_videos("3709231")
+
+        assert artist_videos.result_code == "0"
+        assert isinstance(artist_videos.has_more, bool)
+        assert len(artist_videos.videos) > 0
+
+        first_video = artist_videos.videos[0]
+        assert first_video.mv_id
+        assert first_video.name
+        assert first_video.song_id == "602450078"
+        assert first_video.repartist.artist_id == "3709231"
+
     def test_get_album_info_returns_valid_response(self):
         with MelonClient() as client:
             album_info = client.get_album_info("13788545")
