@@ -14,6 +14,10 @@ from .artist import (
     ArtistAlbums,
     ArtistSong,
     ArtistSongs,
+    ArtistVideos,
+)
+from .video import (
+    Video,
 )
 from .charts import (
     DailyChart,
@@ -47,6 +51,8 @@ __all__ = [
     "ArtistAlbums",
     "ArtistSong",
     "ArtistSongs",
+    "Video",
+    "ArtistVideos",
     "RealtimeChart",
     "Top100Chart",
     "DailyChart",

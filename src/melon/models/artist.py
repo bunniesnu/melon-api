@@ -3,6 +3,7 @@ from pydantic import Field, field_validator
 from melon.models.base import MelonModel
 from melon.models.common import Artist, ChartTLog, TLog
 from melon.models.song import BaseSong
+from melon.models.video import Video
 
 class SearchTypeItem(MelonModel):
     """An artist-chart category option from ``SEARCHTYPELIST``."""
@@ -100,6 +101,18 @@ class ArtistAlbums(MelonModel):
     menu_id: str = Field(alias="MENUID")
     has_more: bool = Field(alias="HASMORE")
     albums: list[ArtistAlbum] = Field(alias="ALBUMLIST")
+    section: str = Field(alias="SECTION")
+    page: str = Field(alias="PAGE")
+    tlog: TLog = Field(alias="TLOG")
+
+
+class ArtistVideos(MelonModel):
+    """Artist video-list response, including pagination state and video entries."""
+
+    result_code: str = Field(alias="RESULTCODE")
+    menu_id: str = Field(alias="MENUID")
+    has_more: bool = Field(alias="HASMORE")
+    videos: list[Video] = Field(alias="MVLIST")
     section: str = Field(alias="SECTION")
     page: str = Field(alias="PAGE")
     tlog: TLog = Field(alias="TLOG")
