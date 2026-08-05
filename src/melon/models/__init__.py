@@ -1,0 +1,79 @@
+"""Pydantic models for the Melon chart JSON payloads used in the test fixtures.
+
+Melon's API uses uppercase keys and represents many numeric values as strings.
+Each field alias below maps one of those wire-format keys to a Pythonic attribute.
+"""
+
+from .album import (
+    AlbumInfo,
+    AlbumSongs
+)
+from .artist import (
+    ArtistChart,
+    ArtistAlbum,
+    ArtistAlbums,
+    ArtistDetail,
+    ArtistPhotos,
+    ArtistSong,
+    ArtistSongs,
+    ArtistVideos,
+)
+from .photo import (
+    Photo,
+)
+from .video import (
+    Video,
+)
+from .charts import (
+    DailyChart,
+    Hot100Chart,
+    RealtimeChart,
+    Top100Chart,
+    WeeklyChart,
+)
+from .report import (
+    ChartReport
+)
+from .graph import (
+    ChartGraph,
+    FiveGraph
+)
+from .song import (
+    ChartSong,
+    SongDetail,
+)
+from .common import (
+    Artist,
+    Genre
+)
+from .magazine import (
+    Magazine,
+)
+
+__all__ = [
+    "Artist",
+    "Genre",
+    "ChartSong",
+    "SongDetail",
+    "ArtistAlbum",
+    "ArtistAlbums",
+    "ArtistDetail",
+    "Photo",
+    "ArtistPhotos",
+    "ArtistSong",
+    "ArtistSongs",
+    "Video",
+    "ArtistVideos",
+    "RealtimeChart",
+    "Top100Chart",
+    "DailyChart",
+    "WeeklyChart",
+    "Hot100Chart",
+    "ChartReport",
+    "ChartGraph",
+    "FiveGraph",
+    "ArtistChart",
+    "AlbumInfo",
+    "AlbumSongs",
+    "Magazine",
+]

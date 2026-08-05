@@ -3,7 +3,11 @@ import pytest
 import respx
 from typing import Any
 
-from melon.chart import ARTIST_CHART_URL, DAILY_CHART_URL, HOT100_CHART_URL, HOT100_GRAPH_HOUR_URL, TOP100_CHART_URL, WEEKLY_CHART_URL, MelonClient, HOURLY_CHART_URL, CHART_REPORT_URL
+from melon import MelonClient
+from melon.album import ALBUM_INFO_URL, ALBUM_SONGS_URL
+from melon.artist import ARTIST_ALBUMS_URL, ARTIST_DETAIL_URL, ARTIST_MAGAZINES_URL, ARTIST_PHOTOS_URL, ARTIST_SONGS_URL, ARTIST_VIDEOS_URL
+from melon.chart import ARTIST_CHART_URL, DAILY_CHART_URL, HOT100_CHART_URL, HOT100_GRAPH_HOUR_URL, TOP100_CHART_URL, WEEKLY_CHART_URL, HOURLY_CHART_URL, CHART_REPORT_URL
+from melon.song import SONG_DETAIL_URL
 
 
 class TestMelonClientGetRealtimeChart:
@@ -116,6 +120,7 @@ class TestMelonClientGetChartReport:
 
         result = melon_client.get_chart_report(song_id="37928381")
 
+        assert result.listener_data
         assert result.listener_data.one_hour == "-"
         assert result.rank_chart.y_maximum == 61
         assert result.yester_chart_info.first_info_value == "2위"
@@ -609,3 +614,535 @@ class TestMelonClientGetArtistChart:
 
         with pytest.raises(httpx.HTTPStatusError):
             melon_client.get_artist_chart()
+
+
+class TestMelonClientGetArtistSongs:
+    """Tests for MelonClient.get_artist_songs."""
+
+    @respx.mock
+    def test_returns_parsed_artist_songs(self, melon_client: MelonClient, sample_artist_songs_response):
+        route = respx.get(ARTIST_SONGS_URL).mock(
+            return_value=httpx.Response(200, json=sample_artist_songs_response)
+        )
+
+        result = melon_client.get_artist_songs("3709231")
+
+        assert route.called
+        assert result.result_code == "0"
+        assert result.has_more is False
+        assert len(result.songs) == 1
+
+    @respx.mock
+    def test_parses_artist_song_fields(self, melon_client: MelonClient, sample_artist_songs_response):
+        respx.get(ARTIST_SONGS_URL).mock(
+            return_value=httpx.Response(200, json=sample_artist_songs_response)
+        )
+
+        result = melon_client.get_artist_songs("3709231")
+        song = result.songs[0]
+
+        assert song.song_id == "602450078"
+        assert song.title == "Pretty Girl"
+        assert song.album_name == "Pretty Girl - Special Single"
+        assert song.play_time == 210
+        assert song.artists[0].name == "RESCENE (리센느)"
+        assert song.genres[0].genre_name == "Dance"
+
+    @respx.mock
+    def test_sends_correct_default_params(self, melon_client: MelonClient, sample_artist_songs_response):
+        route = respx.get(ARTIST_SONGS_URL).mock(
+            return_value=httpx.Response(200, json=sample_artist_songs_response)
+        )
+
+        melon_client.get_artist_songs("3709231")
+
+        request = route.calls[0].request
+        params = dict(httpx.QueryParams(request.url.query))
+
+        assert params["artistId"] == "3709231"
+        assert params["caterogyCode"] == ""
+        assert params["filterBy"] == "A"
+        assert params["orderBy"] == "NEW"
+        assert params["pageSize"] == "100"
+        assert params["startIndex"] == "1"
+        assert params["cpId"] == "IS40"
+        assert params["cpKey"] == "17LNM9"
+
+    @respx.mock
+    def test_raises_on_http_error(self, melon_client: MelonClient):
+        respx.get(ARTIST_SONGS_URL).mock(return_value=httpx.Response(500))
+
+        with pytest.raises(httpx.HTTPStatusError):
+            melon_client.get_artist_songs("3709231")
+
+
+class TestMelonClientGetArtistAlbums:
+    """Tests for MelonClient.get_artist_albums."""
+
+    @respx.mock
+    def test_returns_parsed_artist_albums(self, melon_client: MelonClient, sample_artist_albums_response):
+        route = respx.get(ARTIST_ALBUMS_URL).mock(
+            return_value=httpx.Response(200, json=sample_artist_albums_response)
+        )
+
+        result = melon_client.get_artist_albums("3709231")
+
+        assert route.called
+        assert result.result_code == "0"
+        assert result.has_more is False
+        assert len(result.albums) == 1
+
+    @respx.mock
+    def test_parses_artist_album_fields(self, melon_client: MelonClient, sample_artist_albums_response):
+        respx.get(ARTIST_ALBUMS_URL).mock(
+            return_value=httpx.Response(200, json=sample_artist_albums_response)
+        )
+
+        result = melon_client.get_artist_albums("3709231")
+        album = result.albums[0]
+
+        assert album.album_id == "13788545"
+        assert album.album_name == "Pretty Girl - Special Single"
+        assert album.song_cnt == 1
+        assert album.artist_list[0].artist_id == "3709231"
+        assert album.artist_list[0].name == "RESCENE (리센느)"
+
+    @respx.mock
+    def test_sends_correct_default_params(self, melon_client: MelonClient, sample_artist_albums_response):
+        route = respx.get(ARTIST_ALBUMS_URL).mock(
+            return_value=httpx.Response(200, json=sample_artist_albums_response)
+        )
+
+        melon_client.get_artist_albums("3709231")
+
+        request = route.calls[0].request
+        params = dict(httpx.QueryParams(request.url.query))
+
+        assert params["artistId"] == "3709231"
+        assert params["cpId"] == "IS40"
+        assert params["cpKey"] == "17LNM9"
+
+    @respx.mock
+    def test_raises_on_http_error(self, melon_client: MelonClient):
+        respx.get(ARTIST_ALBUMS_URL).mock(return_value=httpx.Response(500))
+
+        with pytest.raises(httpx.HTTPStatusError):
+            melon_client.get_artist_albums("3709231")
+
+
+class TestMelonClientGetArtistVideos:
+    """Tests for MelonClient.get_artist_videos."""
+
+    @respx.mock
+    def test_returns_parsed_artist_videos(self, melon_client: MelonClient, sample_artist_videos_response):
+        route = respx.get(ARTIST_VIDEOS_URL).mock(
+            return_value=httpx.Response(200, json=sample_artist_videos_response)
+        )
+
+        result = melon_client.get_artist_videos("3709231")
+
+        assert route.called
+        assert result.result_code == "0"
+        assert result.has_more is False
+        assert len(result.videos) == 1
+
+    @respx.mock
+    def test_parses_artist_video_fields(self, melon_client: MelonClient, sample_artist_videos_response):
+        respx.get(ARTIST_VIDEOS_URL).mock(
+            return_value=httpx.Response(200, json=sample_artist_videos_response)
+        )
+
+        result = melon_client.get_artist_videos("3709231")
+        video = result.videos[0]
+
+        assert video.mv_id == "50290538"
+        assert video.name == "Pretty Girl (Special Video)"
+        assert video.song_id == "602450078"
+        assert video.song_name == "Pretty Girl"
+        assert video.play_time == 214
+        assert video.view_count == 22312
+        assert video.repartist.artist_id == "3709231"
+        assert video.repartist.name == "RESCENE (리센느)"
+        assert video.artists[0].artist_id == "3709231"
+
+    @respx.mock
+    def test_sends_correct_default_params(self, melon_client: MelonClient, sample_artist_videos_response):
+        route = respx.get(ARTIST_VIDEOS_URL).mock(
+            return_value=httpx.Response(200, json=sample_artist_videos_response)
+        )
+
+        melon_client.get_artist_videos("3709231")
+
+        request = route.calls[0].request
+        params = dict(httpx.QueryParams(request.url.query))
+
+        assert params["artistId"] == "3709231"
+        assert params["filterBy"] == "A"
+        assert params["orderBy"] == "NEW"
+        assert params["pageSize"] == "100"
+        assert params["startIndex"] == "1"
+        assert params["cpId"] == "IS40"
+        assert params["cpKey"] == "17LNM9"
+
+    @respx.mock
+    def test_raises_on_http_error(self, melon_client: MelonClient):
+        respx.get(ARTIST_VIDEOS_URL).mock(return_value=httpx.Response(500))
+
+        with pytest.raises(httpx.HTTPStatusError):
+            melon_client.get_artist_videos("3709231")
+
+
+class TestMelonClientGetArtistPhotos:
+    """Tests for MelonClient.get_artist_photos."""
+
+    @respx.mock
+    def test_returns_parsed_artist_photos(self, melon_client: MelonClient, sample_artist_photos_response):
+        route = respx.get(ARTIST_PHOTOS_URL).mock(
+            return_value=httpx.Response(200, json=sample_artist_photos_response)
+        )
+
+        result = melon_client.get_artist_photos("3709231")
+
+        assert route.called
+        assert result.result_code == "0"
+        assert result.has_more is True
+        assert len(result.photos) == 1
+
+    @respx.mock
+    def test_parses_artist_photo_fields(self, melon_client: MelonClient, sample_artist_photos_response):
+        respx.get(ARTIST_PHOTOS_URL).mock(
+            return_value=httpx.Response(200, json=sample_artist_photos_response)
+        )
+
+        result = melon_client.get_artist_photos("3709231")
+        photo = result.photos[0]
+
+        assert photo.photo_id == "80346787"
+        assert photo.photo_name == "프로필 이미지"
+        assert photo.photo_img == "https://cdnimg.melon.co.kr/example-photo.jpg"
+        assert result.artist_name == "RESCENE (리센느)"
+
+    @respx.mock
+    def test_sends_correct_default_params(self, melon_client: MelonClient, sample_artist_photos_response):
+        route = respx.get(ARTIST_PHOTOS_URL).mock(
+            return_value=httpx.Response(200, json=sample_artist_photos_response)
+        )
+
+        melon_client.get_artist_photos("3709231")
+
+        request = route.calls[0].request
+        params = dict(httpx.QueryParams(request.url.query))
+
+        assert params["artistId"] == "3709231"
+        assert params["orderBy"] == "NEW"
+        assert params["pageSize"] == "100"
+        assert params["startIndex"] == "1"
+        assert params["cpId"] == "IS40"
+        assert params["cpKey"] == "17LNM9"
+
+    @respx.mock
+    def test_raises_on_http_error(self, melon_client: MelonClient):
+        respx.get(ARTIST_PHOTOS_URL).mock(return_value=httpx.Response(500))
+
+        with pytest.raises(httpx.HTTPStatusError):
+            melon_client.get_artist_photos("3709231")
+
+
+class TestMelonClientGetArtistDetail:
+    """Tests for MelonClient.get_artist_detail."""
+
+    @respx.mock
+    def test_returns_parsed_artist_detail(self, melon_client: MelonClient, sample_artist_detail_response):
+        route = respx.get(ARTIST_DETAIL_URL).mock(
+            return_value=httpx.Response(200, json=sample_artist_detail_response)
+        )
+
+        result = melon_client.get_artist_detail("3709231")
+
+        assert route.called
+        assert result.result_code == "0"
+        assert result.artist_id == "3709231"
+        assert result.artist_name == "RESCENE (리센느)"
+
+    @respx.mock
+    def test_parses_artist_detail_fields(self, melon_client: MelonClient, sample_artist_detail_response):
+        respx.get(ARTIST_DETAIL_URL).mock(
+            return_value=httpx.Response(200, json=sample_artist_detail_response)
+        )
+
+        result = melon_client.get_artist_detail("3709231")
+
+        assert result.credit_info.release_song_count == 38
+        assert result.debut_song.song_id == "37348529"
+        assert result.debut_song.title == "UhUh"
+        assert result.award_list[0].name == "2026 대한민국 퍼스트브랜드 대상"
+        assert result.sns_list[0].url == "https://x.com/RESCENEofficial"
+        assert result.member_list[0].artist_name == "원이 (WONI)"
+        assert result.week_award_list[0].song_name == "Pretty Girl"
+
+    @respx.mock
+    def test_sends_correct_default_params(self, melon_client: MelonClient, sample_artist_detail_response):
+        route = respx.get(ARTIST_DETAIL_URL).mock(
+            return_value=httpx.Response(200, json=sample_artist_detail_response)
+        )
+
+        melon_client.get_artist_detail("3709231")
+
+        request = route.calls[0].request
+        params = dict(httpx.QueryParams(request.url.query))
+
+        assert params["artistId"] == "3709231"
+        assert params["cpId"] == "IS40"
+        assert params["cpKey"] == "17LNM9"
+
+    @respx.mock
+    def test_raises_on_http_error(self, melon_client: MelonClient):
+        respx.get(ARTIST_DETAIL_URL).mock(return_value=httpx.Response(500))
+
+        with pytest.raises(httpx.HTTPStatusError):
+            melon_client.get_artist_detail("3709231")
+
+
+class TestMelonClientGetAlbumInfo:
+    """Tests for MelonClient.get_album_info."""
+
+    @respx.mock
+    def test_returns_parsed_album_info(self, melon_client: MelonClient, sample_album_info):
+        route = respx.get(ALBUM_INFO_URL).mock(
+            return_value=httpx.Response(200, json=sample_album_info)
+        )
+
+        result = melon_client.get_album_info("13788545")
+
+        assert route.called
+        assert result.result_code == "0"
+        assert result.album.album_id == "13788545"
+        assert result.album.name == "Pretty Girl - Special Single"
+        assert result.like_count == 13207
+
+    @respx.mock
+    def test_parses_nested_album_info(self, melon_client: MelonClient, sample_album_info):
+        respx.get(ALBUM_INFO_URL).mock(
+            return_value=httpx.Response(200, json=sample_album_info)
+        )
+
+        result = melon_client.get_album_info("13788545")
+
+        assert result.album.song_cnt == 1
+        assert result.album.artist_list[0].name == "RESCENE (리센느)"
+        assert result.title_song_info
+        assert result.title_song_info.song_id == "602450078"
+        assert result.genres[0].genre_name == "댄스"
+        assert result.millions_info
+        assert result.millions_info.accumulated_data == 580502
+
+    @respx.mock
+    def test_sends_correct_default_params(self, melon_client: MelonClient, sample_album_info):
+        route = respx.get(ALBUM_INFO_URL).mock(
+            return_value=httpx.Response(200, json=sample_album_info)
+        )
+
+        melon_client.get_album_info("13788545")
+
+        request = route.calls[0].request
+        params = dict(httpx.QueryParams(request.url.query))
+        assert params["albumId"] == "13788545"
+        assert params["cpId"] == "AS40"
+        assert params["cpKey"] == "14LNC3"
+        assert params["appVer"] == "6.2.0"
+
+    @respx.mock
+    def test_raises_on_http_error(self, melon_client: MelonClient):
+        respx.get(ALBUM_INFO_URL).mock(return_value=httpx.Response(500))
+
+        with pytest.raises(httpx.HTTPStatusError):
+            melon_client.get_album_info("13788545")
+
+
+class TestMelonClientGetAlbumSongs:
+    """Tests for MelonClient.get_album_songs."""
+
+    @respx.mock
+    def test_returns_parsed_album_songs(self, melon_client: MelonClient, sample_album_songs):
+        route = respx.get(ALBUM_SONGS_URL).mock(
+            return_value=httpx.Response(200, json=sample_album_songs)
+        )
+
+        result = melon_client.get_album_songs("13788545")
+
+        assert route.called
+        assert result.result_code == "0"
+        assert result.total_song_count == 1
+        assert len(result.discs) == 1
+
+    @respx.mock
+    def test_parses_nested_song_info(self, melon_client: MelonClient, sample_album_songs):
+        respx.get(ALBUM_SONGS_URL).mock(
+            return_value=httpx.Response(200, json=sample_album_songs)
+        )
+
+        result = melon_client.get_album_songs("13788545")
+
+        disc = result.discs[0]
+        song = disc.songs[0]
+
+        assert disc.cd_no == 1
+        assert song.song_id == "602450078"
+        assert song.title == "Pretty Girl"
+        assert song.album_id == "13788545"
+        assert song.album_name == "Pretty Girl - Special Single"
+        assert song.track_no == 1
+        assert song.artists[0].artist_id == "3709231"
+        assert song.artists[0].name == "RESCENE (리센느)"
+        assert song.genres[0].genre_name == "Dance"
+
+    @respx.mock
+    def test_sends_correct_default_params(self, melon_client: MelonClient, sample_album_songs):
+        route = respx.get(ALBUM_SONGS_URL).mock(
+            return_value=httpx.Response(200, json=sample_album_songs)
+        )
+
+        melon_client.get_album_songs("13788545")
+
+        request = route.calls[0].request
+        params = dict(httpx.QueryParams(request.url.query))
+
+        assert params["albumId"] == "13788545"
+        assert params["cpId"] == "AS40"
+        assert params["cpKey"] == "14LNC3"
+
+    @respx.mock
+    def test_raises_on_http_error(self, melon_client: MelonClient):
+        respx.get(ALBUM_SONGS_URL).mock(
+            return_value=httpx.Response(500)
+        )
+
+        with pytest.raises(httpx.HTTPStatusError):
+            melon_client.get_album_songs("13788545")
+
+
+class TestMelonClientGetSongDetail:
+    """Tests for MelonClient.get_song_detail"""
+
+    @respx.mock
+    def test_returns_parsed_song_detail(self, melon_client: MelonClient, sample_song_detail_response):
+        route = respx.get(SONG_DETAIL_URL).mock(
+            return_value=httpx.Response(200, json=sample_song_detail_response)
+        )
+
+        result = melon_client.get_song_detail("37928381")
+
+        assert route.called
+        assert result.result_code == "0"
+        assert result.song.song_id == "37928381"
+        assert result.song.title == "LOVE ATTACK"
+        assert result.album.album_id == "11575849"
+        assert result.song.is_flac_available is True
+        assert result.stream_report.daily_listener_count == 203728
+        assert result.stream_report.total_listen_count == 48782936
+        assert result.stream_report.total_listener_count == 2147287
+
+    @respx.mock
+    def test_sends_correct_default_params(self, melon_client: MelonClient, sample_song_detail_response):
+        route = respx.get(SONG_DETAIL_URL).mock(
+            return_value=httpx.Response(200, json=sample_song_detail_response)
+        )
+
+        melon_client.get_song_detail("37928381")
+
+        request = route.calls[0].request
+        params = dict(httpx.QueryParams(request.url.query))
+        assert params["songId"] == "37928381"
+        assert params["cpId"] == "IS40"
+        assert params["cpKey"] == "17LNM9"
+        assert params["adultFlg"] == "3"
+
+    @respx.mock
+    def test_raises_on_http_error(self, melon_client: MelonClient):
+        respx.get(SONG_DETAIL_URL).mock(return_value=httpx.Response(500))
+
+        with pytest.raises(httpx.HTTPStatusError):
+            melon_client.get_song_detail("37928381")
+
+
+class TestMelonClientGetArtistMagazines:
+    """Tests for MelonClient.get_artist_magazines."""
+
+    @respx.mock
+    def test_returns_parsed_artist_magazines(self, melon_client: MelonClient, sample_artist_magazines_response):
+        route = respx.get(ARTIST_MAGAZINES_URL).mock(
+            return_value=httpx.Response(200, json=sample_artist_magazines_response)
+        )
+
+        result = melon_client.get_artist_magazines("3709231")
+
+        assert route.called
+        assert result.result_code == "0"
+        assert result.has_more is False
+        assert len(result.magazines) == 1
+
+    @respx.mock
+    def test_parses_artist_magazine_fields(self, melon_client: MelonClient, sample_artist_magazines_response):
+        respx.get(ARTIST_MAGAZINES_URL).mock(
+            return_value=httpx.Response(200, json=sample_artist_magazines_response)
+        )
+
+        result = melon_client.get_artist_magazines("3709231")
+        magazine = result.magazines[0]
+
+        assert magazine.content_type_code == "N10007"
+        assert magazine.content_id == "17092"
+        assert magazine.content_name == "리메이크로 다시 급부상한 곡들의 Data는?💿🎧"
+        assert magazine.content_img.startswith("https://cdnimg.melon.co.kr")
+
+    @respx.mock
+    def test_parses_magazine_artist_list(self, melon_client: MelonClient, sample_artist_magazines_response):
+        respx.get(ARTIST_MAGAZINES_URL).mock(
+            return_value=httpx.Response(200, json=sample_artist_magazines_response)
+        )
+
+        result = melon_client.get_artist_magazines("3709231")
+        magazine = result.magazines[0]
+
+        assert len(magazine.artist_list) == 2
+        assert magazine.artist_list[0].artist_id == "3709231"
+        assert magazine.artist_list[0].name == "RESCENE (리센느)"
+        assert magazine.artist_list[1].artist_id == "222128"
+        assert magazine.artist_list[1].name == "카라"
+
+    @respx.mock
+    def test_parses_magazine_link(self, melon_client: MelonClient, sample_artist_magazines_response):
+        respx.get(ARTIST_MAGAZINES_URL).mock(
+            return_value=httpx.Response(200, json=sample_artist_magazines_response)
+        )
+
+        result = melon_client.get_artist_magazines("3709231")
+        magazine = result.magazines[0]
+
+        assert magazine.link.link_type == "ZA"
+        assert magazine.link.link_url == "https://m2.melon.com/musicstory/detail.htm?mstorySeq=17092"
+
+    @respx.mock
+    def test_sends_correct_default_params(self, melon_client: MelonClient, sample_artist_magazines_response):
+        route = respx.get(ARTIST_MAGAZINES_URL).mock(
+            return_value=httpx.Response(200, json=sample_artist_magazines_response)
+        )
+
+        melon_client.get_artist_magazines("3709231")
+
+        request = route.calls[0].request
+        params = dict(httpx.QueryParams(request.url.query))
+
+        assert params["artistId"] == "3709231"
+        assert params["orderBy"] == "NEW"
+        assert params["pageSize"] == "100"
+        assert params["startIndex"] == "1"
+        assert params["cpId"] == "IS40"
+        assert params["cpKey"] == "17LNM9"
+
+    @respx.mock
+    def test_raises_on_http_error(self, melon_client: MelonClient):
+        respx.get(ARTIST_MAGAZINES_URL).mock(return_value=httpx.Response(500))
+
+        with pytest.raises(httpx.HTTPStatusError):
+            melon_client.get_artist_magazines("3709231")

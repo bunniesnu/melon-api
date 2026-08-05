@@ -2,7 +2,7 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-from melon.chart import MelonClient
+from melon import MelonClient
 
 OUTPUT_DIR = Path("data")
 
