@@ -779,6 +779,59 @@ def sample_artist_chart_response():
         "httpDomain": "http://m2.melon.com"
     }
 
+
+@pytest.fixture
+def sample_artist_songs_response():
+    return {
+        "httpsDomain": "https://m2.melon.com",
+        "response": {
+            "RESULTCODE": "0",
+            "MENUID": "1000000420",
+            "HASMORE": False,
+            "SONGLIST": [
+                {
+                    "SONGID": "602450078",
+                    "SONGNAME": "Pretty Girl",
+                    "ALBUMID": "13788545",
+                    "ALBUMNAME": "Pretty Girl - Special Single",
+                    "ARTISTLIST": [
+                        {"ARTISTID": "3709231", "ARTISTNAME": "RESCENE (리센느)"}
+                    ],
+                    "PLAYTIME": "210",
+                    "GENRELIST": [
+                        {"GENRECODE": "GC0011", "GENRENAME": "Dance"},
+                    ],
+                    "ISMV": True,
+                    "ISADULT": False,
+                    "ISFREE": False,
+                    "ISHITSONG": False,
+                    "ISHOLDBACK": False,
+                    "ISTITLESONG": True,
+                    "ISSERVICE": True,
+                    "ISTRACKZERO": False,
+                    "ALBUMIMG": "https://cdnimg.melon.co.kr/example.jpg",
+                    "ALBUMIMGPATH": "https://cdnimg.melon.co.kr/example.jpg",
+                    "ALBUMIMGLARGE": "https://cdnimg.melon.co.kr/example.jpg",
+                    "ALBUMIMGSMALL": "https://cdnimg.melon.co.kr/example.jpg",
+                    "ISSUEDATE": "2026.07.08",
+                    "CTYPE": "1",
+                    "CONTSTYPECODE": "N10001",
+                },
+            ],
+            "SECTION": "아티스트상세",
+            "PAGE": "아티스트상세_아티스트곡",
+            "TLOG": {
+                "MENUID": "1000000420",
+                "SECTION": "아티스트상세",
+                "PAGE": "아티스트상세_아티스트곡",
+                "CONTSTYPECODE": "N10006",
+                "CONTSTYPENAME": "아티스트",
+                "CONTSID": "3709231",
+                "CONTSNAME": "",
+            },
+        },
+    }
+
 @pytest.fixture
 def sample_album_info():
     return {
