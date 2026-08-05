@@ -1,5 +1,3 @@
-
-
 from typing import Literal
 from melon.base import BaseClient
 from melon.models import ArtistChart, ChartGraph, DailyChart, FiveGraph, Hot100Chart, RealtimeChart, ChartReport, Top100Chart, WeeklyChart
