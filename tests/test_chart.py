@@ -5,7 +5,7 @@ from typing import Any
 
 from melon import MelonClient
 from melon.album import ALBUM_INFO_URL, ALBUM_SONGS_URL
-from melon.artist import ARTIST_ALBUMS_URL, ARTIST_DETAIL_URL, ARTIST_PHOTOS_URL, ARTIST_SONGS_URL, ARTIST_VIDEOS_URL
+from melon.artist import ARTIST_ALBUMS_URL, ARTIST_DETAIL_URL, ARTIST_MAGAZINES_URL, ARTIST_PHOTOS_URL, ARTIST_SONGS_URL, ARTIST_VIDEOS_URL
 from melon.chart import ARTIST_CHART_URL, DAILY_CHART_URL, HOT100_CHART_URL, HOT100_GRAPH_HOUR_URL, TOP100_CHART_URL, WEEKLY_CHART_URL, HOURLY_CHART_URL, CHART_REPORT_URL
 from melon.song import SONG_DETAIL_URL
 
@@ -1063,3 +1063,86 @@ class TestMelonClientGetSongDetail:
 
         with pytest.raises(httpx.HTTPStatusError):
             melon_client.get_song_detail("37928381")
+
+
+class TestMelonClientGetArtistMagazines:
+    """Tests for MelonClient.get_artist_magazines."""
+
+    @respx.mock
+    def test_returns_parsed_artist_magazines(self, melon_client: MelonClient, sample_artist_magazines_response):
+        route = respx.get(ARTIST_MAGAZINES_URL).mock(
+            return_value=httpx.Response(200, json=sample_artist_magazines_response)
+        )
+
+        result = melon_client.get_artist_magazines("3709231")
+
+        assert route.called
+        assert result.result_code == "0"
+        assert result.has_more is False
+        assert len(result.magazines) == 1
+
+    @respx.mock
+    def test_parses_artist_magazine_fields(self, melon_client: MelonClient, sample_artist_magazines_response):
+        respx.get(ARTIST_MAGAZINES_URL).mock(
+            return_value=httpx.Response(200, json=sample_artist_magazines_response)
+        )
+
+        result = melon_client.get_artist_magazines("3709231")
+        magazine = result.magazines[0]
+
+        assert magazine.content_type_code == "N10007"
+        assert magazine.content_id == "17092"
+        assert magazine.content_name == "리메이크로 다시 급부상한 곡들의 Data는?💿🎧"
+        assert magazine.content_img.startswith("https://cdnimg.melon.co.kr")
+
+    @respx.mock
+    def test_parses_magazine_artist_list(self, melon_client: MelonClient, sample_artist_magazines_response):
+        respx.get(ARTIST_MAGAZINES_URL).mock(
+            return_value=httpx.Response(200, json=sample_artist_magazines_response)
+        )
+
+        result = melon_client.get_artist_magazines("3709231")
+        magazine = result.magazines[0]
+
+        assert len(magazine.artist_list) == 2
+        assert magazine.artist_list[0].artist_id == "3709231"
+        assert magazine.artist_list[0].name == "RESCENE (리센느)"
+        assert magazine.artist_list[1].artist_id == "222128"
+        assert magazine.artist_list[1].name == "카라"
+
+    @respx.mock
+    def test_parses_magazine_link(self, melon_client: MelonClient, sample_artist_magazines_response):
+        respx.get(ARTIST_MAGAZINES_URL).mock(
+            return_value=httpx.Response(200, json=sample_artist_magazines_response)
+        )
+
+        result = melon_client.get_artist_magazines("3709231")
+        magazine = result.magazines[0]
+
+        assert magazine.link.link_type == "ZA"
+        assert magazine.link.link_url == "https://m2.melon.com/musicstory/detail.htm?mstorySeq=17092"
+
+    @respx.mock
+    def test_sends_correct_default_params(self, melon_client: MelonClient, sample_artist_magazines_response):
+        route = respx.get(ARTIST_MAGAZINES_URL).mock(
+            return_value=httpx.Response(200, json=sample_artist_magazines_response)
+        )
+
+        melon_client.get_artist_magazines("3709231")
+
+        request = route.calls[0].request
+        params = dict(httpx.QueryParams(request.url.query))
+
+        assert params["artistId"] == "3709231"
+        assert params["orderBy"] == "NEW"
+        assert params["pageSize"] == "100"
+        assert params["startIndex"] == "1"
+        assert params["cpId"] == "IS40"
+        assert params["cpKey"] == "17LNM9"
+
+    @respx.mock
+    def test_raises_on_http_error(self, melon_client: MelonClient):
+        respx.get(ARTIST_MAGAZINES_URL).mock(return_value=httpx.Response(500))
+
+        with pytest.raises(httpx.HTTPStatusError):
+            melon_client.get_artist_magazines("3709231")

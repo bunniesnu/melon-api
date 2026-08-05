@@ -1385,3 +1385,48 @@ def sample_song_detail_response():
         },
         "httpDomain": "http://m2.melon.com"
     }
+
+@pytest.fixture
+def sample_artist_magazines_response():
+    return {
+        "httpsDomain": "https://m2.melon.com",
+        "response": {
+            "RESULTCODE": "0",
+            "MENUID": "1000000442",
+            "HASMORE": False,
+            "MAGAZINELIST": [
+                {
+                    "CONTSTYPECODE": "N10007",
+                    "CONTSID": "17092",
+                    "CONTSNAME": "리메이크로 다시 급부상한 곡들의 Data는?💿🎧",
+                    "ARTISTLIST": [
+                        {
+                            "ARTISTID": "3709231",
+                            "ARTISTNAME": "RESCENE (리센느)"
+                        },
+                        {
+                            "ARTISTID": "222128",
+                            "ARTISTNAME": "카라"
+                        }
+                    ],
+                    "CONTSIMG": "https://cdnimg.melon.co.kr/resource/image/cds/musicstory/2026/07/3b/de7/imgUrl20260715015122338.jpg/melon/resize/366/quality/80/optimize",
+                    "LINK": {
+                        "LINKTYPE": "ZA",
+                        "LINKURL": "https://m2.melon.com/musicstory/detail.htm?mstorySeq=17092"
+                    }
+                }
+            ],
+            "SECTION": "아티스트상세",
+            "PAGE": "아티스트상세_아티스트매거진",
+            "TLOG": {
+                "MENUID": "1000000442",
+                "SECTION": "아티스트상세",
+                "PAGE": "아티스트상세_아티스트매거진",
+                "CONTSTYPECODE": "N10006",
+                "CONTSTYPENAME": "아티스트",
+                "CONTSID": "3709231",
+                "CONTSNAME": ""
+            }
+        },
+        "httpDomain": "http://m2.melon.com"
+    }

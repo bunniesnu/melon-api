@@ -204,3 +204,19 @@ class TestMelonClientLive:
         assert song_detail.result_code == "0"
         assert song_detail.song.song_id == top_song_id
         assert song_detail.song.title
+
+    def test_get_artist_magazines_returns_valid_response(self):
+        with MelonClient() as client:
+            artist_magazines = client.get_artist_magazines("3709231")
+
+        assert artist_magazines.result_code == "0"
+        assert isinstance(artist_magazines.has_more, bool)
+        assert len(artist_magazines.magazines) > 0
+
+        first_magazine = artist_magazines.magazines[0]
+        assert first_magazine.content_id
+        assert first_magazine.content_name
+        assert first_magazine.content_type_code
+        assert first_magazine.content_img
+        assert first_magazine.link
+        assert first_magazine.artist_list
