@@ -127,6 +127,13 @@ class StreamReportInfo(MelonModel):
     age_percent: list[int] = Field(alias="AGEPERCENT")
     guide: str = Field(alias="GUIDE")
 
+    @field_validator("daily_listener_count", "total_listen_count", "total_listener_count", mode="before")
+    @classmethod
+    def comma_string_to_int(cls, value):
+        if isinstance(value, str):
+            return int(value.replace(",", ""))
+        return value
+
 
 class SongAchievementInfo(MelonModel):
     """Chart-achievement data displayed on a song's detail page."""
@@ -157,7 +164,7 @@ class SongDetail(MelonModel):
     lyrics: str = Field(alias="LYRIC")
     is_highlight_available: bool = Field(alias="ISHIGHLIGHTAVAIL")
     lyric_tooltip_message: str = Field(alias="LYRICTOOLTIPMSG")
-    styles: list[SongStyle] = Field(alias="STYLELIST")
+    styles: list[SongStyle] | None = Field(alias="STYLELIST")
     genres: list[Genre] = Field(alias="GENRELIST")
     lyricists: list[ArtistInfo] = Field(alias="LYSTLIST")
     composers: list[ArtistInfo] = Field(alias="CMPSRLIST")
