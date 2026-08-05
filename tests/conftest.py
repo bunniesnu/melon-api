@@ -953,3 +953,146 @@ def sample_album_songs():
         },
         "httpDomain": "http://m2.melon.com"
     }
+
+
+@pytest.fixture
+def sample_song_detail_response():
+    return {
+        "httpsDomain": "https://m2.melon.com",
+        "response": {
+            "RESULTCODE": "0",
+            "RESPONSE": "songInfo",
+            "CPLANCODE": "0",
+            "MENUID": "1000002722",
+            "SONGINFO": {
+                "SONGID": "37928381",
+                "SONGNAME": "LOVE ATTACK",
+                "ALBUMID": "11575849",
+                "ALBUMNAME": "SCENEDROME",
+                "ARTISTLIST": [
+                    {
+                        "ARTISTID": "3709231",
+                        "ARTISTNAME": "RESCENE (리센느)",
+                        "ACTTYPENAME": None,
+                        "DEBUTDAY": None,
+                        "BIRTHDAY": None,
+                        "ARTISTIMG": "https://cdnimg.melon.co.kr/example.jpg",
+                        "IMAGETYPE": "S",
+                        "CONTSTYPECODE": "N10006"
+                    }
+                ],
+                "PLAYTIME": "182",
+                "GENRELIST": [
+                    {
+                        "GENRECODE": "GN0200",
+                        "GENRENAME": "댄스"
+                    }
+                ],
+                "ISMV": True,
+                "ISADULT": False,
+                "ISFREE": False,
+                "ISHITSONG": False,
+                "ISHOLDBACK": False,
+                "ISTITLESONG": True,
+                "ISSERVICE": True,
+                "ISTRACKZERO": False,
+                "ALBUMIMG": "https://cdnimg.melon.co.kr/example.jpg",
+                "ALBUMIMGPATH": "https://cdnimg.melon.co.kr/example.jpg",
+                "ALBUMIMGLARGE": "https://cdnimg.melon.co.kr/example.jpg",
+                "ALBUMIMGSMALL": "https://cdnimg.melon.co.kr/example.jpg",
+                "ISSUEDATE": "2024.08.27",
+                "CTYPE": "1",
+                "CONTSTYPECODE": "N10001",
+                "ISFLACAVAIL": True,
+                "ISFLAC16AVAIL": False,
+                "ISFLAC24AVAIL": False,
+            },
+            "ARTISTLIST": [
+                {
+                    "ARTISTID": "3709231",
+                    "ARTISTNAME": "RESCENE (리센느)",
+                    "ACTTYPENAME": None,
+                    "DEBUTDAY": None,
+                    "BIRTHDAY": None,
+                    "ARTISTIMG": "https://cdnimg.melon.co.kr/example.jpg",
+                    "IMAGETYPE": "S",
+                    "CONTSTYPECODE": "N10006"
+                }
+            ],
+            "SONGFLACINFO": "FLAC",
+            "ISDOLBYATMOS": False,
+            "ALBUMINFO": {
+                "ISSERVICE": True,
+                "ALBUMID": "11575849",
+                "ALBUMNAME": "SCENEDROME",
+                "ARTISTLIST": [
+                    {
+                        "ARTISTID": "3709231",
+                        "ARTISTNAME": "RESCENE (리센느)",
+                        "ACTTYPENAME": None,
+                        "DEBUTDAY": None,
+                        "BIRTHDAY": None,
+                        "ARTISTIMG": "https://cdnimg.melon.co.kr/example.jpg",
+                        "IMAGETYPE": "S",
+                        "CONTSTYPECODE": "N10006"
+                    }
+                ],
+                "ISSUEDATE": "2024.08.27",
+                "ISTRACKZERO": False,
+                "ALBUMIMG": "https://cdnimg.melon.co.kr/example.jpg",
+                "ALBUMIMGLARGE": "https://cdnimg.melon.co.kr/example.jpg",
+                "LIKECNT": "13207",
+                "SONGCNT": "1",
+                "CTYPE": "2",
+                "CONTSTYPECODE": "N10002"
+            },
+            "BOOKLETIMGLIST": None,
+            "LIKECNT": "13207",
+            "LYRIC": "",
+            "ISHIGHLIGHTAVAIL": False,
+            "LYRICTOOLTIPMSG": "",
+            "STYLELIST": [],
+            "GENRELIST": [
+                {
+                    "GENRECODE": "GN0200",
+                    "GENRENAME": "댄스"
+                }
+            ],
+            "LYSTLIST": [],
+            "CMPSRLIST": [],
+            "ARNGRLIST": [],
+            "BBSCHANNELSEQ": "102",
+            "BBSCONTSREFVALUE": "37928381",
+            "POSTIMG": None,
+            "POSTEDITIMG": None,
+            "STREAMREPORTINFO": {
+                "DAILYLISTENERCNT": "203,728",
+                "TOTALLISTENCNT": "48,782,936",
+                "TOTALLISTENERCNT": "2,147,287",
+                "GENDERPERCENT": {"MALE": 0, "FEMALE": 0},
+                "AGEPERCENT": [],
+                "GUIDE": ""
+            },
+            "SONGACHIEVEMENTINFO": {
+                "BESTRANK": 1,
+                "BESTRANKDATE": "2024.08.27",
+                "YESTERDAYCHARTRANK": 2,
+                "INCHARTYN": True,
+                "HASCHARTINHISTORY": True,
+                "GUIDE": ""
+            },
+            "DUMMYTEXT": "dummy",
+            "SECTION": "곡상세",
+            "PAGE": "곡상세_곡홈",
+            "TLOG": {
+                "MENUID": "1000002722",
+                "SECTION": "곡상세",
+                "PAGE": "곡상세_곡홈",
+                "CONTSTYPECODE": "N10001",
+                "CONTSTYPENAME": "곡",
+                "CONTSID": "37928381",
+                "CONTSNAME": "LOVE ATTACK"
+            }
+        },
+        "httpDomain": "http://m2.melon.com"
+    }
