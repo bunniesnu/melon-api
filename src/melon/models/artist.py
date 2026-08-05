@@ -130,3 +130,77 @@ class ArtistPhotos(MelonModel):
     section: str = Field(alias="SECTION")
     page: str = Field(alias="PAGE")
     tlog: TLog = Field(alias="TLOG")
+
+
+class ArtistCreditInfo(MelonModel):
+    """Credit summary block on the artist detail page."""
+
+    release_song_count: int = Field(alias="RELEASESONGCOUNT")
+
+
+class ArtistAward(MelonModel):
+    """An award record listed in artist detail."""
+
+    name: str = Field(alias="NAME")
+    priot: str = Field(alias="PRIOT")
+    date: str = Field(alias="DATE")
+
+
+class ArtistSns(MelonModel):
+    """A social link listed in artist detail."""
+
+    sns_type: str = Field(alias="TYPE")
+    url: str = Field(alias="URL")
+
+
+class ArtistMember(MelonModel):
+    """A member entry listed in artist detail."""
+
+    artist_id: str = Field(alias="ARTISTID")
+    artist_name: str = Field(alias="ARTISTNAME")
+    act_type_name: str = Field(alias="ACTTYPENAME")
+    debut_day: str | None = Field(default=None, alias="DEBUTDAY")
+    birthday: str | None = Field(default=None, alias="BIRTHDAY")
+    artist_img: str | None = Field(default=None, alias="ARTISTIMG")
+    act_genre: str = Field(alias="ACTGENRE")
+    image_type: str = Field(alias="IMAGETYPE")
+    content_type_code: str = Field(alias="CONTSTYPECODE")
+
+
+class ArtistWeekAward(MelonModel):
+    """A weekly award history item in artist detail."""
+
+    award_month: str = Field(alias="AWARDMONTH")
+    award_week: str = Field(alias="AWARDWEEK")
+    award_rank: str = Field(alias="AWARDRANK")
+    song_id: str = Field(alias="SONGID")
+    song_name: str = Field(alias="SONGNAME")
+    artist_name: str = Field(alias="ARTISTNAME")
+    album_img: str = Field(alias="ALBUMIMG")
+
+
+class ArtistDetail(MelonModel):
+    """Artist detail response including bio, members, awards, and debut song."""
+
+    result_code: str = Field(alias="RESULTCODE")
+    menu_id: str = Field(alias="MENUID")
+    artist_id: str = Field(alias="ARTISTID")
+    artist_name: str = Field(alias="ARTISTNAME")
+    credit_info: ArtistCreditInfo = Field(alias="CREDITINFO")
+    debut_date: str = Field(alias="DEBUTDATE")
+    debut_song: ArtistSong = Field(alias="DEBUTSONG")
+    nationality: str = Field(alias="NATIONALITY")
+    gender: str = Field(alias="GENDER")
+    act_type: str = Field(alias="ACTTYPE")
+    act_genre: str = Field(alias="ACTGENRE")
+    company_name: str = Field(alias="COMPNAME")
+    intro: str = Field(alias="INTRO")
+    wiki_button_yn: str = Field(alias="WIKIBUTTONYN")
+    award_list: list[ArtistAward] = Field(alias="AWARDLIST")
+    sns_list: list[ArtistSns] = Field(alias="SNSLIST")
+    member_list: list[ArtistMember] = Field(alias="MEMBERLIST")
+    week_award_list: list[ArtistWeekAward] = Field(alias="WEEKAWARDLIST")
+    dummy_text: str = Field(alias="DUMMYTEXT")
+    section: str = Field(alias="SECTION")
+    page: str = Field(alias="PAGE")
+    tlog: TLog = Field(alias="TLOG")
