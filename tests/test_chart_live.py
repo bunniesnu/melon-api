@@ -40,6 +40,10 @@ class TestMelonClientLive:
         assert report.song_info.song_id == top_song_id
         assert report.song_info.title
 
+    def test_get_chart_report_invalid_song_id_returns_None(self):
+        with MelonClient() as client:
+            assert client.get_chart_report(song_id="34491913") is None
+
     def test_get_top100_chart_returns_valid_response(self):
         with MelonClient() as client:
             chart = client.get_top100_chart()

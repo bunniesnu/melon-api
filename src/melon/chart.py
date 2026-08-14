@@ -50,7 +50,7 @@ class ChartClient(BaseClient):
         cp_id: str = "AS40",
         cp_key: str = "14LNC3",
         app_ver: str = "6.2.0",
-    ) -> ChartReport:
+    ) -> ChartReport | None:
         """Fetch the listener and rank-history report for ``song_id``."""
         params = {
             "cpId": cp_id,
@@ -61,6 +61,8 @@ class ChartClient(BaseClient):
         response = self.client.get(CHART_REPORT_URL, params=params)
         response.raise_for_status()
         raw = response.json()
+        if "response" not in raw:
+            return None
         return ChartReport.model_validate(raw["response"])
 
     def get_top100_chart(
