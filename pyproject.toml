@@ -1,6 +1,6 @@
 [project]
 name = "melon-api-client"
-version = "0.2.1"
+version = "0.2.2"
 description = "An unofficial API SDK for melon app"
 readme = "README.md"
 authors = [
