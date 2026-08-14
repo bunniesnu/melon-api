@@ -696,6 +696,112 @@ def sample_hot100_graph_hour_response():
     }
 
 @pytest.fixture
+def sample_hot100_graph_five_response():
+    return {
+        "httpsDomain": "https://m2.melon.com",
+        "response": {
+            "GRAPHDATALIST": [
+                {
+                    "SONGID": 602450078,
+                    "LSTGRPCURSCORE": 5.63623,
+                    "GRAPHDATA": [
+                        {
+                            "VAL": "5.676",
+                            "X": "0"
+                        },
+                        {
+                            "VAL": "5.10219",
+                            "X": "1"
+                        },
+                        {
+                            "VAL": "5.6013",
+                            "X": "2"
+                        },
+                        {
+                            "VAL": "5.67593",
+                            "X": "3"
+                        },
+                        {
+                            "VAL": "5.63623",
+                            "X": "4"
+                        }
+                    ],
+                    "GRAPHCHARTINFO": {
+                    "SONGID": "602450078",
+                    "SONGNAME": "Pretty Girl",
+                    "ALBUMID": "13788545",
+                    "ALBUMNAME": "Pretty Girl - Special Single",
+                    "ARTISTLIST": [
+                        {
+                            "ARTISTID": "3709231",
+                            "ARTISTNAME": "RESCENE (리센느)"
+                        }
+                    ],
+                    "PLAYTIME": "210",
+                    "GENRELIST": [
+                        {
+                            "GENRECODE": "GC0011",
+                            "GENRENAME": "Dance"
+                        },
+                        {
+                            "GENRECODE": "GC0091",
+                            "GENRENAME": "아이돌 여자"
+                        },
+                        {
+                            "GENRECODE": "GC0093",
+                            "GENRENAME": "아이돌 댄스"
+                        },
+                        {
+                            "GENRECODE": "GC0167",
+                            "GENRENAME": "댄스 20'"
+                        }
+                    ],
+                    "ISMV": True,
+                    "ISADULT": False,
+                    "ISFREE": False,
+                    "ISHITSONG": False,
+                    "ISHOLDBACK": False,
+                    "ISTITLESONG": True,
+                    "ISSERVICE": True,
+                    "ISTRACKZERO": False,
+                    "ALBUMIMG": "https://cdnimg.melon.co.kr/cm2/album/images/137/88/545/13788545_20260707111659_500.jpg/melon/resize/144/optimize/90",
+                    "ALBUMIMGPATH": "https://cdnimg.melon.co.kr/cm2/album/images/137/88/545/13788545_20260707111659_500.jpg/melon/resize/144/optimize/90",
+                    "ALBUMIMGLARGE": "https://cdnimg.melon.co.kr/cm2/album/images/137/88/545/13788545_20260707111659_500.jpg/melon/optimize/90",
+                    "ALBUMIMGSMALL": "https://cdnimg.melon.co.kr/cm2/album/images/137/88/545/13788545_20260707111659_500.jpg/melon/resize/50/optimize/90",
+                    "ISSUEDATE": "2026.07.08",
+                    "CTYPE": "1",
+                    "CONTSTYPECODE": "N10001",
+                    "CURRANK": "2"
+                    },
+                    "GRAPHRANK": 1,
+                    "SHAREVALUE": "21"
+                }
+            ],
+            "XCATE": [
+                "17:00",
+                "17:05",
+                "17:10",
+                "17:15",
+                "17:20"
+            ],
+            "FIVETIME": "18",
+            "RANKDAY": "2026.08.14",
+            "RANKHOUR": "17:20",
+            "FIVEERRORFLAG": False,
+            "STATUS": "0",
+            "MENUID": "1000003038",
+            "SECTION": "멜론차트",
+            "PAGE": "멜론차트_HOT100그래프5분",
+            "TLOG": {
+                "MENUID": "1000003038",
+                "SECTION": "멜론차트",
+                "PAGE": "멜론차트_HOT100그래프5분"
+            }
+        },
+        "httpDomain": "http://m2.melon.com"
+    }
+
+@pytest.fixture
 def sample_artist_chart_response():
     return {
         "httpsDomain": "https://m2.melon.com",
