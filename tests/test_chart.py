@@ -6,7 +6,7 @@ from typing import Any
 from melon import MelonClient
 from melon.album import ALBUM_INFO_URL, ALBUM_SONGS_URL
 from melon.artist import ARTIST_ALBUMS_URL, ARTIST_DETAIL_URL, ARTIST_MAGAZINES_URL, ARTIST_PHOTOS_URL, ARTIST_SONGS_URL, ARTIST_VIDEOS_URL
-from melon.chart import ARTIST_CHART_URL, DAILY_CHART_URL, HOT100_CHART_URL, HOT100_GRAPH_HOUR_URL, TOP100_CHART_URL, WEEKLY_CHART_URL, HOURLY_CHART_URL, CHART_REPORT_URL
+from melon.chart import ARTIST_CHART_URL, DAILY_CHART_URL, HOT100_CHART_URL, HOT100_GRAPH_HOUR_URL, HOT100_GRAPH_5MIN_URL, TOP100_CHART_URL, WEEKLY_CHART_URL, HOURLY_CHART_URL, CHART_REPORT_URL
 from melon.song import SONG_DETAIL_URL
 
 
@@ -527,6 +527,82 @@ class TestMelonClientGetHot100GraphHour:
 
         with pytest.raises(httpx.HTTPStatusError):
             melon_client.get_hot100_graph_hour()
+
+
+class TestMelonClientGetHot100GraphFive:
+    """Tests for MelonClient.get_hot100_graph_five."""
+
+    @respx.mock
+    def test_returns_parsed_hot100_graph(
+        self,
+        melon_client: MelonClient,
+        sample_hot100_graph_five_response,
+    ):
+        route = respx.get(HOT100_GRAPH_5MIN_URL).mock(
+            return_value=httpx.Response(
+                200,
+                json=sample_hot100_graph_five_response,
+            )
+        )
+
+        result = melon_client.get_hot100_graph_five()
+
+        assert route.called
+        assert len(result.graph_data_list) == 1
+
+    @respx.mock
+    def test_parses_graph_entries(
+        self,
+        melon_client: MelonClient,
+        sample_hot100_graph_five_response,
+    ):
+        respx.get(HOT100_GRAPH_5MIN_URL).mock(
+            return_value=httpx.Response(
+                200,
+                json=sample_hot100_graph_five_response,
+            )
+        )
+
+        result = melon_client.get_hot100_graph_five()
+
+        entry = result.graph_data_list[0]
+        point = entry.graph_data[0]
+
+        assert entry.song_id == 602450078
+        assert entry.graph_rank == 1
+        assert point.x == 0
+        assert point.value == 5.676
+
+    @respx.mock
+    def test_sends_correct_params(
+        self,
+        melon_client: MelonClient,
+        sample_hot100_graph_five_response,
+    ):
+        route = respx.get(HOT100_GRAPH_5MIN_URL).mock(
+            return_value=httpx.Response(
+                200,
+                json=sample_hot100_graph_five_response,
+            )
+        )
+
+        melon_client.get_hot100_graph_five()
+
+        request = route.calls[0].request
+        params = dict(httpx.QueryParams(request.url.query))
+
+        assert params["v"] == "4.0"
+        assert params["cpId"] == "IS40"
+        assert params["cpKey"] == "17LNM9"
+
+    @respx.mock
+    def test_raises_on_http_error(self, melon_client: MelonClient):
+        respx.get(HOT100_GRAPH_5MIN_URL).mock(
+            return_value=httpx.Response(500)
+        )
+
+        with pytest.raises(httpx.HTTPStatusError):
+            melon_client.get_hot100_graph_five()
 
 
 class TestMelonClientGetArtistChart:

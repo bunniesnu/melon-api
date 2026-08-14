@@ -88,6 +88,33 @@ class TestMelonClientLive:
         assert graph.graph_data_list[0].graph_rank >= 1
         assert graph.graph_data_list[0].graph_chart_info.current_rank >= 1
 
+    def test_get_hot100_graph_five_returns_valid_response(self):
+        with MelonClient() as client:
+            graph = client.get_hot100_graph_five()
+
+        assert graph.status == "0"
+        assert len(graph.graph_data_list) > 0
+
+        first = graph.graph_data_list[0]
+        assert first.song_id
+        assert first.last_group_current_score >= 0
+        assert first.graph_rank >= 0
+        assert first.share_value >= 0
+        assert first.graph_chart_info.song_id
+        assert first.graph_chart_info.title
+
+        assert len(first.graph_data) > 0
+
+        point = first.graph_data[0]
+        assert point.x >= 0
+        assert point.value >= 0
+
+        assert len(graph.x_categories) > 0
+        assert graph.five_time
+        assert graph.rank_day
+        assert graph.rank_hour
+        assert isinstance(graph.five_error_flag, bool)
+
     def test_get_artist_chart_returns_valid_response(self):
         with MelonClient() as client:
             chart = client.get_artist_chart()

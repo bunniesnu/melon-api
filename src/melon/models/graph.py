@@ -2,7 +2,7 @@ from pydantic import Field
 
 from melon.models.base import MelonModel
 from melon.models.common import ChartInfo, ChartTLog
-from melon.models.song import GraphChartInfo
+from melon.models.song import FiveGraphChartInfo, GraphChartInfo
 
 class GraphDataPoint(MelonModel):
     """An hourly Hot 100 graph point with score and rank-event flags."""
@@ -60,10 +60,10 @@ class FiveGraphDataPoint(MelonModel):
 
 class FiveGraphDataList(MelonModel):
     """One song's five-minute graph series and current score summary."""
-    song_id: str = Field(alias="SONGID")
+    song_id: int = Field(alias="SONGID")
     last_group_current_score: float = Field(alias="LSTGRPCURSCORE")
     graph_data: list[FiveGraphDataPoint] = Field(alias="GRAPHDATA")
-    graph_chart_info: GraphChartInfo = Field(alias="GRAPHCHARTINFO")
+    graph_chart_info: FiveGraphChartInfo = Field(alias="GRAPHCHARTINFO")
     graph_rank: int = Field(alias="GRAPHRANK")
     share_value: int = Field(alias="SHAREVALUE")
 
