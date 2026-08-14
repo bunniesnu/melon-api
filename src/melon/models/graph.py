@@ -1,4 +1,4 @@
-from pydantic import Field
+from pydantic import Field, field_validator
 
 from melon.models.base import MelonModel
 from melon.models.common import ChartInfo, ChartTLog
@@ -56,7 +56,14 @@ class ChartGraph(MelonModel):
 class FiveGraphDataPoint(MelonModel):
     """A five-minute Hot 100 graph score point."""
     x: int = Field(alias="X")
-    value: float = Field(alias="VAL")
+    value: float | None = Field(alias="VAL")
+
+    @field_validator("value", mode="before")
+    @classmethod
+    def empty_value_to_none(cls, v):
+        if v == "":
+            return None
+        return v
 
 class FiveGraphDataList(MelonModel):
     """One song's five-minute graph series and current score summary."""
