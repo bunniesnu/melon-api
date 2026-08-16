@@ -157,7 +157,7 @@ class ChartClient(BaseClient):
         v: str = "4.0",
         cp_id: str = "IS40",
         cp_key: str = "17LNM9",
-    ) -> FiveGraph:
+    ) -> FiveGraph | None:
         """Fetch the five-minute Hot 100 score graph series."""
         params = {
             "v": v,
@@ -167,6 +167,8 @@ class ChartClient(BaseClient):
         response = self.client.get(HOT100_GRAPH_5MIN_URL, params=params)
         response.raise_for_status()
         raw = response.json()
+        if "response" not in raw:
+            return None
         return FiveGraph.model_validate(raw["response"])
 
     def get_artist_chart(
