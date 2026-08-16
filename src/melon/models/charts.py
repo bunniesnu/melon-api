@@ -59,17 +59,17 @@ class WeeklyAwardEntry(MelonModel):
     artist_img: str | None = Field(default=None, alias="ARTISTIMG")
     artist_img_large: str | None = Field(default=None, alias="ARTISTIMGLARGE")
     artist_img_small: str | None = Field(default=None, alias="ARTISTIMGSMALL")
-    vote_percent: int = Field(alias="VOTEPER")
+    vote_percent: int | None = Field(default=None, alias="VOTEPER")
     start_month: int = Field(alias="STARTMONTH")
     start_week: int = Field(alias="STARTWEEK")
 
 class MusicAward(MelonModel):
     """Weekly popularity-award metadata and its ranked vote entries."""
     title: str = Field(alias="TITLE")
-    award_month: int = Field(alias="AWARDMONTH")
-    award_week: int = Field(alias="AWARDWEEK")
-    award_year: int = Field(alias="AWARDYEAR")
-    award_day_of_month: int = Field(alias="AWARDDAYOFMONTH")
+    award_month: int | None = Field(default=None, alias="AWARDMONTH")
+    award_week: int | None = Field(default=None, alias="AWARDWEEK")
+    award_year: int | None= Field(default=None, alias="AWARDYEAR")
+    award_day_of_month: int | None = Field(default=None, alias="AWARDDAYOFMONTH")
     subtitle: str = Field(alias="SUBTITLE")
     week_status: str = Field(alias="WEEKSTATUS")
     week_rank_list: list[WeeklyAwardEntry] = Field(alias="WEEKRANKLIST")
