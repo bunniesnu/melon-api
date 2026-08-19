@@ -123,16 +123,25 @@ class GenderPercent(MelonModel):
 
 class StreamReportInfo(MelonModel):
     """Listening statistics displayed on a song's detail page."""
-    daily_listener_count: int = Field(alias="DAILYLISTENERCNT")
-    total_listen_count: int = Field(alias="TOTALLISTENCNT")
-    total_listener_count: int = Field(alias="TOTALLISTENERCNT")
-    gender_percent: GenderPercent = Field(alias="GENDERPERCENT")
+    daily_listener_count: int | None = Field(alias="DAILYLISTENERCNT")
+    total_listen_count: int | None = Field(alias="TOTALLISTENCNT")
+    total_listener_count: int | None = Field(alias="TOTALLISTENERCNT")
+    gender_percent: GenderPercent | None = Field(alias="GENDERPERCENT")
     age_percent: list[int] = Field(alias="AGEPERCENT")
     guide: str = Field(alias="GUIDE")
 
+    @field_validator("gender_percent", mode="before")
+    @classmethod
+    def empty_gender_percent_to_none(cls, value):
+        if value == {}:
+            return None
+        return value
+
     @field_validator("daily_listener_count", "total_listen_count", "total_listener_count", mode="before")
     @classmethod
-    def comma_string_to_int(cls, value):
+    def validate_counts(cls, value):
+        if value == "":
+            return None
         if isinstance(value, str):
             return int(value.replace(",", ""))
         return value
@@ -177,7 +186,7 @@ class SongDetail(MelonModel):
     post_img: str | None = Field(default=None, alias="POSTIMG")
     post_edit_img: str | None = Field(default=None, alias="POSTEDITIMG")
     stream_report: StreamReportInfo = Field(alias="STREAMREPORTINFO")
-    achievement: SongAchievementInfo = Field(alias="SONGACHIEVEMENTINFO")
+    achievement: SongAchievementInfo | None = Field(alias="SONGACHIEVEMENTINFO")
     dummy_text: str = Field(alias="DUMMYTEXT")
     section: str = Field(alias="SECTION")
     page: str = Field(alias="PAGE")

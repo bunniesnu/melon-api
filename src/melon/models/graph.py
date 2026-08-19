@@ -7,17 +7,31 @@ from melon.models.song import FiveGraphChartInfo, GraphChartInfo
 class GraphDataPoint(MelonModel):
     """An hourly Hot 100 graph point with score and rank-event flags."""
     x: int = Field(alias="X")
-    value: float = Field(alias="VAL")
+    value: float | None = Field(alias="VAL")
     top_count_tick: int = Field(alias="TOPCNTTIC")
     top_count_yn: str = Field(alias="TOPCNTYN")
     immediate_top_tick: bool = Field(alias="IMMTOPTIC")
     first_top_tick: bool = Field(alias="FSTTOPTIC")
     new_rank_tick: bool = Field(alias="NEWRANKTIC")
 
+    @field_validator("value", mode="before")
+    @classmethod
+    def empty_value_to_none(cls, v):
+        if v == "":
+            return None
+        return v
+
 class EntGraphDataPoint(MelonModel):
     """An entertainment-chart rank point aligned to the hourly graph x-axis."""
     x: int = Field(alias="X")
-    rank: int = Field(alias="RANK")
+    rank: int | None = Field(alias="RANK")
+
+    @field_validator("rank", mode="before")
+    @classmethod
+    def empty_value_to_none(cls, v):
+        if v == "":
+            return None
+        return v
 
 class GraphDataList(MelonModel):
     """One song's hourly Hot 100 series and ranking summary."""

@@ -105,7 +105,7 @@ class ChartReport(MelonModel):
     listener_chart: ListenerChart = Field(alias="LISTENERCHART")
     listener_data: ListenerData | None = Field(default=None, alias="LISTENERDATA")
     rank_chart: RankChart = Field(alias="RANKCHART")
-    yester_chart_info: YesterChartInfo = Field(alias="YESTERCHARTINFO")
+    yester_chart_info: YesterChartInfo | None = Field(default=None, alias="YESTERCHARTINFO")
     foot_button: FootButton = Field(alias="FOOTBUTTON")
     menu_id: str = Field(alias="MENUID")
     section: str = Field(alias="SECTION")
