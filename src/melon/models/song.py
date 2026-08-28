@@ -180,7 +180,7 @@ class SongDetail(MelonModel):
     genres: list[Genre] = Field(alias="GENRELIST")
     lyricists: list[ArtistInfo] = Field(alias="LYSTLIST")
     composers: list[ArtistInfo] = Field(alias="CMPSRLIST")
-    arrangers: list[ArtistInfo] = Field(alias="ARNGRLIST")
+    arrangers: list[ArtistInfo] | None = Field(default=None, alias="ARNGRLIST")
     bbs_channel_seq: str = Field(alias="BBSCHANNELSEQ")
     bbs_contents_ref_value: str = Field(alias="BBSCONTSREFVALUE")
     post_img: str | None = Field(default=None, alias="POSTIMG")
