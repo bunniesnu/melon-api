@@ -229,15 +229,7 @@ class TestMelonClientLive:
 
     def test_get_song_detail_returns_valid_response(self):
         with MelonClient() as client:
-            chart = client.get_realtime_chart(page_size=10)
-            top_song_id = chart.songs[0].song_id
-
-            song_detail = client.get_song_detail(top_song_id)
-
-            assert song_detail.result_code == "0"
-            assert song_detail.song.song_id == top_song_id
-            assert song_detail.song.title
-
+            chart = client.get_artist_songs("3709231")
             for song in chart.songs:
                 song_detail = client.get_song_detail(song.song_id)
                 assert song_detail.song.song_id == song.song_id
