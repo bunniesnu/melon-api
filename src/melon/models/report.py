@@ -93,7 +93,7 @@ class NextButton(MelonModel):
 
 class FootButton(MelonModel):
     """Footer navigation container for a chart report."""
-    next_button: NextButton = Field(alias="NEXTBUTTON")
+    next_button: NextButton | None = Field(default=None, alias="NEXTBUTTON")
 
 class ChartReport(MelonModel):
     """Full per-song report: listener metrics, rank history, prediction, and daily record."""
